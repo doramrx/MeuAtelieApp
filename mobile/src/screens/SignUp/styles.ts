@@ -36,12 +36,24 @@ export const styles = StyleSheet.create({
 
   input: {
     backgroundColor: "rgba(255, 239, 241, 0.66)",
+    borderWidth: 1,
+    borderColor: "rgb(250, 200, 206)",
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderRadius: 10,
     fontSize: 22,
   },
 
+  passwordInputContainer: {
+    position: "relative"
+  },
+
+  togglePasswordVisibilityButton: {
+    position: "absolute",
+    right: 10,
+    top: 8.5
+  },
+  
   buttonContainer: {
     display: "flex",
     alignItems: "center",
