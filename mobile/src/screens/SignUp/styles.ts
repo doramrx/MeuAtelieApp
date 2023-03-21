@@ -1,11 +1,14 @@
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, Platform, StyleSheet } from "react-native";
+import Constants from "expo-constants";
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
     justifyContent: "space-between",
-    paddingVertical: 100,
+    marginTop: Platform.OS === "ios" ? 0 : Constants.statusBarHeight,
+    paddingBottom: 100,
+    paddingTop: 20
   },
 
   logoContainer: {
