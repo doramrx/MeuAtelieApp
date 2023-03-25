@@ -13,6 +13,10 @@ export function ListDressMakers({
         navigation.toggleDrawer();
     }
 
+    function handleNavigateToNewDressMakerScreen() {
+        navigation.navigate("newDressMaker");
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.navigator}>
@@ -27,8 +31,7 @@ export function ListDressMakers({
 
             <View>
                 <View style={styles.dressMakerBlock}>
-                    <View style={styles.dressMakerAvatar}>
-                    </View>
+                    <View style={styles.dressMakerAvatar}></View>
                     <View>
                         <Text style={styles.dressMakerName}>
                             Mariana Dantas
@@ -39,8 +42,7 @@ export function ListDressMakers({
                     </View>
                 </View>
                 <View style={styles.dressMakerBlock}>
-                    <View style={styles.dressMakerAvatar}>
-                    </View>
+                    <View style={styles.dressMakerAvatar}></View>
                     <View>
                         <Text style={styles.dressMakerName}>
                             Mariana Dantas
@@ -51,8 +53,7 @@ export function ListDressMakers({
                     </View>
                 </View>
                 <View style={styles.dressMakerBlock}>
-                    <View style={styles.dressMakerAvatar}>
-                    </View>
+                    <View style={styles.dressMakerAvatar}></View>
                     <View>
                         <Text style={styles.dressMakerName}>
                             Mariana Dantas
@@ -65,7 +66,10 @@ export function ListDressMakers({
             </View>
 
             <View style={styles.footer}>
-                <TouchableOpacity style={styles.footerAddButton}>
+                <TouchableOpacity 
+                    onPress={handleNavigateToNewDressMakerScreen}
+                    style={styles.footerAddButton}
+                >
                     <Text style={styles.footerAddButtonText}>+</Text>
                 </TouchableOpacity>
             </View>
