@@ -10,7 +10,8 @@ import ImageExample from "../../assets/Image_example.png";
 
 export function Orders({
     navigation,
-}: DrawerScreenProps<ParamListBase, string, "home">) {
+}: DrawerScreenProps<ParamListBase, string, "orders">) {
+
     function handleToggleDrawer() {
         navigation.toggleDrawer();
     }
