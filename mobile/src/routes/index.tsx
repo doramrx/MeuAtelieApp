@@ -1,9 +1,9 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import { Home } from "../screens/Home";
 import { SignIn } from "../screens/SignIn";
 import { SignUp } from "../screens/SignUp";
+import { DrawerRoutes } from "./DrawerRoutes/index";
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
@@ -17,7 +17,7 @@ export function Routes() {
       >
         <Screen name="signIn" component={SignIn} />
         <Screen name="signUp" component={SignUp} />
-        <Screen name="home" component={Home} />
+        <Screen name="homeDrawerRoutes" component={DrawerRoutes} />
       </Navigator>
     </NavigationContainer>
   );
