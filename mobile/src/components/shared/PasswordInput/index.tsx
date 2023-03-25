@@ -39,13 +39,13 @@ export function PasswordInput({ label, inputValue, onInputChangeText }: Props) {
                         <FeatherIcons
                             name="eye-off"
                             size={32}
-                            color="#666"
+                            color="#667"
                         />
                     ) : (
                         <FeatherIcons
                             name="eye"
                             size={32}
-                            color="#666"
+                            color="#667"
                         />
                     )}
                 </TouchableOpacity>

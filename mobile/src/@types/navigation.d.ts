@@ -1,7 +1,10 @@
 export declare global {
     namespace ReactNavigation {
         interface RootParamList {
-            home: undefined,
+            orders: undefined,
+            newDressMaker: undefined,
+            listDressMakers: undefined,
+            homeDrawerRoutes: undefined,
             signIn: undefined,
             signUp: undefined
         }
