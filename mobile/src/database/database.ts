@@ -23,4 +23,9 @@ database.transaction((transaction) => {
     transaction.executeSql(
         "CREATE TABLE IF NOT EXISTS dressmakers (id INTEGER PRIMARY KEY, name TEXT NOT NULL, email TEXT NOT NULL, phoneNumber TEXT NOT NULL);"
     );
+
+    console.log("CREATING SOME DRESSMAKERS");
+    transaction.executeSql(
+        "INSERT INTO dressmakers (name, email, phoneNumber) VALUES ('Costureira 01', 'costureira01@gmail.com', '(47) 9 4432-3912'), ('Costureira 02', 'costureira02@gmail.com', '(47) 9 4432-3912');"
+    );
 });
