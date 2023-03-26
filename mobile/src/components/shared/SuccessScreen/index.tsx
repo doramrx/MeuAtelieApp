@@ -19,7 +19,11 @@ export function SuccessScreen({ navigation, route }: Params) {
     const routeParams = route.params as Props;
 
     function handleGoBack() {
-        navigation.goBack();
+        if (routeParams.returnTo) {
+            navigation.navigate(routeParams.returnTo);
+        } else {
+            navigation.goBack();
+        }
     }
 
     return (
