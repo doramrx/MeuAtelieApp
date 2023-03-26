@@ -1,12 +1,19 @@
 import { useCallback, useState } from "react";
-import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
+import {
+    Alert,
+    FlatList,
+    Image,
+    Text,
+    TouchableOpacity,
+    View,
+} from "react-native";
 
-import { DrawerScreenProps } from "@react-navigation/drawer";
 import {
     ParamListBase,
     useFocusEffect,
     useNavigation,
 } from "@react-navigation/native";
+import { DrawerScreenProps } from "@react-navigation/drawer";
 
 import { Swipeable } from "react-native-gesture-handler";
 
@@ -23,10 +30,15 @@ interface Dressmaker {
     phoneNumber: string;
 }
 
+interface DressmakerItem extends Dressmaker {
+    onDeleteDressMaker: () => void;
+}
+
 export function ListDressMakers({
     navigation,
 }: DrawerScreenProps<ParamListBase, "listDressMakers">) {
     const [dressmakers, setDressmakers] = useState<Dressmaker[]>([]);
+    const [keyForRefreshing, setKeyForRefreshing] = useState(0);
 
     function handleToggleDrawer() {
         navigation.toggleDrawer();
@@ -34,6 +46,10 @@ export function ListDressMakers({
 
     function handleNavigateToNewDressMakerScreen() {
         navigation.navigate("newDressMaker");
+    }
+
+    function onDeleteDressMaker() {
+        setKeyForRefreshing(keyForRefreshing + 1);
     }
 
     useFocusEffect(
@@ -53,14 +69,11 @@ export function ListDressMakers({
                                 };
                             }
                         );
-
-                        console.log(dressmakersList);
-
                         setDressmakers(dressmakersList);
                     }
                 );
             });
-        }, [])
+        }, [keyForRefreshing])
     );
 
     return (
@@ -83,6 +96,7 @@ export function ListDressMakers({
                             id={item.id}
                             name={item.name}
                             phoneNumber={item.phoneNumber}
+                            onDeleteDressMaker={onDeleteDressMaker}
                         />
                     );
                 }}
@@ -122,7 +136,12 @@ export function ListDressMakers({
     );
 }
 
-function DressMakerItem({ id, name, phoneNumber }: Dressmaker) {
+function DressMakerItem({
+    id,
+    name,
+    phoneNumber,
+    onDeleteDressMaker,
+}: DressmakerItem) {
     return (
         <Swipeable
             onSwipeableOpen={(direction) => {
@@ -130,7 +149,12 @@ function DressMakerItem({ id, name, phoneNumber }: Dressmaker) {
                     return;
                 }
             }}
-            renderLeftActions={() => <LeftItem id={id} />}
+            renderLeftActions={() => (
+                <LeftItem
+                    id={id}
+                    onDeleteDressMaker={onDeleteDressMaker}
+                />
+            )}
             overshootLeft={false}
         >
             <View
@@ -149,19 +173,70 @@ function DressMakerItem({ id, name, phoneNumber }: Dressmaker) {
     );
 }
 
-function LeftItem(props: { id: number }) {
+function LeftItem({
+    id,
+    onDeleteDressMaker,
+}: {
+    id: number;
+    onDeleteDressMaker: () => void;
+}) {
     const navigation = useNavigation();
 
     function handleNavigateToInfoPage() {
         navigation.navigate("showDressMaker", {
-            id: props.id,
+            id,
         });
+    }
+
+    function removeDressMakerFromDatabase() {
+        database.transaction((transaction) => {
+            transaction.executeSql(
+                "DELETE FROM dressmakers WHERE id = ?;",
+                [id],
+                (_, resultSet) => {
+                    if (resultSet.rowsAffected === 1) {
+                        Alert.alert(
+                            "Sucesso!",
+                            "Costureira removida com sucesso"
+                        );
+                    } else {
+                        Alert.alert(
+                            "Erro!",
+                            "Houve um erro ao deletar a costureira."
+                        );
+                    }
+                }
+            );
+        });
+    }
+
+    function handleDeleteDressMaker() {
+        Alert.alert(
+            "Confirmação",
+            "Deseja realmente remover esta costureira?",
+            [
+                {
+                    text: "Sim",
+                    style: "default",
+                    onPress: () => {
+                        removeDressMakerFromDatabase();
+                        onDeleteDressMaker();
+                    },
+                },
+                {
+                    text: "Não",
+                    style: "cancel",
+                    onPress: () => {},
+                },
+            ]
+        );
     }
 
     return (
         <View style={styles.actionButtonsContainer}>
             <TouchableOpacity
                 style={[styles.trashButton, styles.actionButtons]}
+                onPress={handleDeleteDressMaker}
             >
                 <Icon
                     name="trash"
