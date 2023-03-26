@@ -12,6 +12,16 @@ export function NewDressMaker({
         navigation.goBack();
     }
 
+    function handleRegisterNewDressMaker() {
+        // Save dressmaker into database
+        navigation.navigate("successScreen", {
+            headerMessage: "Cadastro de costureira",
+            successMessage: "Costureira cadastrada com sucesso!",
+            buttonMessage: "Retornar a listagem",
+            returnTo: "listDressMakers",
+        });
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.navigator}>
@@ -43,7 +53,10 @@ export function NewDressMaker({
                     placeholder="Senha"
                     style={styles.input}
                 />
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={handleRegisterNewDressMaker}
+                >
                     <Icon
                         name="plus"
                         size={20}

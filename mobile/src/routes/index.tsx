@@ -5,6 +5,7 @@ import { SignIn } from "../screens/SignIn";
 import { SignUp } from "../screens/SignUp";
 import { DrawerRoutes } from "./DrawerRoutes/index";
 import { NewDressMaker } from "../screens/NewDressMaker";
+import { SuccessScreen } from "../components/shared/SuccessScreen";
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
@@ -28,9 +29,14 @@ export function Routes() {
                     name="homeDrawerRoutes"
                     component={DrawerRoutes}
                 />
-                <Screen 
-                  name="newDressMaker"
-                  component={NewDressMaker}
+                <Screen
+                    name="newDressMaker"
+                    component={NewDressMaker}
+                />
+
+                <Screen
+                    name="successScreen"
+                    component={SuccessScreen}
                 />
             </Navigator>
         </NavigationContainer>

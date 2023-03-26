@@ -6,7 +6,8 @@ export declare global {
             listDressMakers: undefined,
             homeDrawerRoutes: undefined,
             signIn: undefined,
-            signUp: undefined
+            signUp: undefined,
+            successScreen: undefined
         }
     }
 }
