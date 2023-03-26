@@ -38,8 +38,8 @@ export function NewDressMaker({
                         }
 
                         transaction.executeSql(
-                            "INSERT INTO dressmakers (name, email) VALUES (?, ?);",
-                            [name, email],
+                            "INSERT INTO dressmakers (name, email, phoneNumber) VALUES (?, ?, ?);",
+                            [name, email, phoneNumber],
                             (_, resultSet) => {
                                 if (resultSet.rowsAffected === 1) {
                                     resolve(resultSet.insertId);
