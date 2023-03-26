@@ -6,6 +6,7 @@ import { SignUp } from "../screens/SignUp";
 import { DrawerRoutes } from "./DrawerRoutes/index";
 import { NewDressMaker } from "../screens/NewDressMaker";
 import { SuccessScreen } from "../components/shared/SuccessScreen";
+import { ShowDressMaker } from "../screens/ShowDressmaker";
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
@@ -33,7 +34,10 @@ export function Routes() {
                     name="newDressMaker"
                     component={NewDressMaker}
                 />
-
+                <Screen
+                    name="showDressMaker"
+                    component={ShowDressMaker}
+                />
                 <Screen
                     name="successScreen"
                     component={SuccessScreen}

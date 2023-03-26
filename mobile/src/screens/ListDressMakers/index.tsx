@@ -2,7 +2,11 @@ import { useCallback, useState } from "react";
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 
 import { DrawerScreenProps } from "@react-navigation/drawer";
-import { ParamListBase, useFocusEffect } from "@react-navigation/native";
+import {
+    ParamListBase,
+    useFocusEffect,
+    useNavigation,
+} from "@react-navigation/native";
 
 import { Swipeable } from "react-native-gesture-handler";
 
@@ -21,7 +25,7 @@ interface Dressmaker {
 
 export function ListDressMakers({
     navigation,
-}: DrawerScreenProps<ParamListBase, string, "listDressMakers">) {
+}: DrawerScreenProps<ParamListBase, "listDressMakers">) {
     const [dressmakers, setDressmakers] = useState<Dressmaker[]>([]);
 
     function handleToggleDrawer() {
@@ -126,7 +130,7 @@ function DressMakerItem({ id, name, phoneNumber }: Dressmaker) {
                     return;
                 }
             }}
-            renderLeftActions={LeftItem}
+            renderLeftActions={() => <LeftItem id={id} />}
             overshootLeft={false}
         >
             <View
@@ -145,7 +149,15 @@ function DressMakerItem({ id, name, phoneNumber }: Dressmaker) {
     );
 }
 
-function LeftItem() {
+function LeftItem(props: { id: number }) {
+    const navigation = useNavigation();
+
+    function handleNavigateToInfoPage() {
+        navigation.navigate("showDressMaker", {
+            id: props.id,
+        });
+    }
+
     return (
         <View style={styles.actionButtonsContainer}>
             <TouchableOpacity
@@ -158,7 +170,10 @@ function LeftItem() {
                 />
             </TouchableOpacity>
 
-            <TouchableOpacity style={[styles.editButton, styles.actionButtons]}>
+            <TouchableOpacity
+                style={[styles.editButton, styles.actionButtons]}
+                onPress={handleNavigateToInfoPage}
+            >
                 <Text>
                     <Icon
                         name="pen"
