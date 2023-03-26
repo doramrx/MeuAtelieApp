@@ -21,6 +21,6 @@ database.transaction((transaction) => {
 
     console.log("CREATING TABLE DRESSMAKERS");
     transaction.executeSql(
-        "CREATE TABLE IF NOT EXISTS dressmakers (id INTEGER PRIMARY KEY, name TEXT NOT NULL, email TEXT NOT NULL);"
+        "CREATE TABLE IF NOT EXISTS dressmakers (id INTEGER PRIMARY KEY, name TEXT NOT NULL, email TEXT NOT NULL, phoneNumber TEXT NOT NULL);"
     );
 });
