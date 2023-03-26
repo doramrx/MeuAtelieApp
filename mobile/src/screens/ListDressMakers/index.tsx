@@ -1,6 +1,6 @@
 import { DrawerScreenProps } from "@react-navigation/drawer";
 import { ParamListBase, useFocusEffect } from "@react-navigation/native";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 
 import { styles } from "./styles";
 import HamburguerIcon from "../../assets/Hamburguer_icon.png";
@@ -65,26 +65,27 @@ export function ListDressMakers({
                 <Text style={styles.navigatorText}>Costureiras</Text>
             </View>
 
-            <View>
-                {dressmakers.map(({ id, name, phoneNumber }) => {
+            <FlatList
+                data={dressmakers}
+                renderItem={({ item }) => {
                     return (
                         <View
-                            key={id}
+                            key={item.id}
                             style={styles.dressMakerBlock}
                         >
                             <View style={styles.dressMakerAvatar}></View>
                             <View>
                                 <Text style={styles.dressMakerName}>
-                                    {name}
+                                    {item.name}
                                 </Text>
                                 <Text style={styles.dressMakerPhoneNumber}>
-                                    Telefone: {phoneNumber}
+                                    Telefone: {item.phoneNumber}
                                 </Text>
                             </View>
                         </View>
                     );
-                })}
-            </View>
+                }}
+            />
 
             <View style={styles.footer}>
                 <TouchableOpacity

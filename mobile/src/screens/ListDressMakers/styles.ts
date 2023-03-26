@@ -5,6 +5,7 @@ export const styles = StyleSheet.create({
         flex: 1,
         paddingTop: 50,
         backgroundColor: "#F5F5F5",
+        paddingBottom: 61
     },
 
     navigator: {
