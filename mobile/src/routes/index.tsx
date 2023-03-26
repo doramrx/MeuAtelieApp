@@ -7,6 +7,7 @@ import { DrawerRoutes } from "./DrawerRoutes/index";
 import { NewDressMaker } from "../screens/NewDressMaker";
 import { SuccessScreen } from "../components/shared/SuccessScreen";
 import { ShowDressMaker } from "../screens/ShowDressmaker";
+import { EditDressMaker } from "../screens/EditDressMaker";
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
@@ -37,6 +38,10 @@ export function Routes() {
                 <Screen
                     name="showDressMaker"
                     component={ShowDressMaker}
+                />
+                <Screen 
+                    name="editDressMaker"
+                    component={EditDressMaker}
                 />
                 <Screen
                     name="successScreen"

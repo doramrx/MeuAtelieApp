@@ -30,6 +30,12 @@ export function ShowDressMaker({ navigation, route }: Props) {
         navigation.goBack();
     }
 
+    function handleEditDressMaker() {
+        navigation.navigate("editDressMaker", {
+            id: routeParams.id
+        });
+    }
+
     useFocusEffect(
         useCallback(() => {
             database.transaction((transaction) => {
@@ -68,7 +74,7 @@ export function ShowDressMaker({ navigation, route }: Props) {
                     />
                 </TouchableOpacity>
                 <Text style={styles.headertext}>Dados da costureira</Text>
-                <TouchableOpacity onPress={() => {}}>
+                <TouchableOpacity onPress={handleEditDressMaker}>
                     <Icon
                         name="pen"
                         color="#FFF"

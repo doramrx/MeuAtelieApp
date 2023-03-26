@@ -7,6 +7,9 @@ export declare global {
             showDressMaker: {
                 id: number
             },
+            editDressMaker: {
+                id: number
+            },
             homeDrawerRoutes: undefined,
             signIn: undefined,
             signUp: undefined,
