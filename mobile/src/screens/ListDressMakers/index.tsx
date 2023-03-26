@@ -1,13 +1,22 @@
 import { DrawerScreenProps } from "@react-navigation/drawer";
-import { ParamListBase } from "@react-navigation/native";
+import { ParamListBase, useFocusEffect } from "@react-navigation/native";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 
 import { styles } from "./styles";
 import HamburguerIcon from "../../assets/Hamburguer_icon.png";
+import { useCallback, useState } from "react";
+import { database } from "../../database/database";
+
+interface Dressmaker {
+    id: number;
+    name: string;
+    phoneNumber: string;
+}
 
 export function ListDressMakers({
     navigation,
 }: DrawerScreenProps<ParamListBase, string, "listDressMakers">) {
+    const [dressmakers, setDressmakers] = useState<Dressmaker[]>([]);
 
     function handleToggleDrawer() {
         navigation.toggleDrawer();
@@ -16,6 +25,33 @@ export function ListDressMakers({
     function handleNavigateToNewDressMakerScreen() {
         navigation.navigate("newDressMaker");
     }
+
+    useFocusEffect(
+        useCallback(() => {
+            database.transaction((transaction) => {
+                transaction.executeSql(
+                    "SELECT id, name, phoneNumber FROM dressmakers;",
+                    undefined,
+                    (_, resultSet) => {
+                        const rawResultSet = resultSet.rows._array;
+                        const dressmakersList: Dressmaker[] = rawResultSet.map(
+                            (result) => {
+                                return {
+                                    id: result.id,
+                                    name: result.name,
+                                    phoneNumber: result.phoneNumber,
+                                };
+                            }
+                        );
+
+                        console.log(dressmakersList);
+
+                        setDressmakers(dressmakersList);
+                    }
+                );
+            });
+        }, [])
+    );
 
     return (
         <View style={styles.container}>
@@ -30,43 +66,28 @@ export function ListDressMakers({
             </View>
 
             <View>
-                <View style={styles.dressMakerBlock}>
-                    <View style={styles.dressMakerAvatar}></View>
-                    <View>
-                        <Text style={styles.dressMakerName}>
-                            Mariana Dantas
-                        </Text>
-                        <Text style={styles.dressMakerPhoneNumber}>
-                            Telefone: (47) 988143-3921
-                        </Text>
-                    </View>
-                </View>
-                <View style={styles.dressMakerBlock}>
-                    <View style={styles.dressMakerAvatar}></View>
-                    <View>
-                        <Text style={styles.dressMakerName}>
-                            Mariana Dantas
-                        </Text>
-                        <Text style={styles.dressMakerPhoneNumber}>
-                            Telefone: (47) 988143-3921
-                        </Text>
-                    </View>
-                </View>
-                <View style={styles.dressMakerBlock}>
-                    <View style={styles.dressMakerAvatar}></View>
-                    <View>
-                        <Text style={styles.dressMakerName}>
-                            Mariana Dantas
-                        </Text>
-                        <Text style={styles.dressMakerPhoneNumber}>
-                            Telefone: (47) 988143-3921
-                        </Text>
-                    </View>
-                </View>
+                {dressmakers.map(({ id, name, phoneNumber }) => {
+                    return (
+                        <View
+                            key={id}
+                            style={styles.dressMakerBlock}
+                        >
+                            <View style={styles.dressMakerAvatar}></View>
+                            <View>
+                                <Text style={styles.dressMakerName}>
+                                    {name}
+                                </Text>
+                                <Text style={styles.dressMakerPhoneNumber}>
+                                    Telefone: {phoneNumber}
+                                </Text>
+                            </View>
+                        </View>
+                    );
+                })}
             </View>
 
             <View style={styles.footer}>
-                <TouchableOpacity 
+                <TouchableOpacity
                     onPress={handleNavigateToNewDressMakerScreen}
                     style={styles.footerAddButton}
                 >
