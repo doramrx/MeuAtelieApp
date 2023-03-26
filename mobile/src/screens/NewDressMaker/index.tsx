@@ -13,7 +13,6 @@ export function NewDressMaker({
     const [name, setName] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
 
     function handleToggleDrawer() {
         navigation.goBack();
@@ -23,31 +22,30 @@ export function NewDressMaker({
         if (
             name.trim() === "" ||
             phoneNumber.trim() === "" ||
-            email.trim() === "" ||
-            password.trim() === ""
+            email.trim() === ""
         ) {
             return Alert.alert("Preencha todos os campos!");
         }
 
-        const registerUserPromise = new Promise((resolve, reject) => {
+        const registerDressmakerPromise = new Promise((resolve, reject) => {
             database.transaction((transaction) => {
                 transaction.executeSql(
-                    "SELECT * FROM users WHERE email = ?",
+                    "SELECT * FROM dressmakers WHERE email = ?",
                     [email],
                     (transaction, resultSet) => {
                         if (resultSet.rows.length !== 0) {
-                            return reject("Usuário já cadastrado!");
+                            return reject("Costureira já cadastrada!");
                         }
 
                         transaction.executeSql(
-                            "INSERT INTO users (name, email, password) VALUES (?, ?, ?);",
-                            [name, email, password],
+                            "INSERT INTO dressmakers (name, email) VALUES (?, ?);",
+                            [name, email],
                             (_, resultSet) => {
                                 if (resultSet.rowsAffected === 1) {
                                     resolve(resultSet.insertId);
                                 } else {
                                     reject(
-                                        "Não foi possível cadastrar o usuário! Tente novamente."
+                                        "Não foi possível cadastrar a costureira! Tente novamente."
                                     );
                                 }
                             }
@@ -57,7 +55,7 @@ export function NewDressMaker({
             });
         });
 
-        registerUserPromise
+        registerDressmakerPromise
             .then((userId) => {
                 console.log(`userId: ${userId}`);
                 navigation.navigate("successScreen", {
@@ -104,14 +102,6 @@ export function NewDressMaker({
                     onChangeText={setEmail}
                     placeholder="Email"
                     style={styles.input}
-                />
-                <TextInput
-                    value={password}
-                    onChangeText={setPassword}
-                    placeholder="Senha"
-                    style={styles.input}
-                    textContentType="password"
-                    secureTextEntry={true}
                 />
                 <TouchableOpacity
                     style={styles.button}
