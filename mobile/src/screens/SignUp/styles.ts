@@ -49,8 +49,9 @@ export const styles = StyleSheet.create({
     padding: 20,
   },
 
-  signUpLink: {
+  signInLink: {
     color: "#FC7482",
     fontWeight: "bold",
+    padding: 20,
   },
 });
