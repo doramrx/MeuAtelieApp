@@ -27,7 +27,6 @@ export function PasswordInput({ label, inputValue, onInputChangeText }: Props) {
                     value={inputValue}
                     onChangeText={onInputChangeText}
                     textContentType="password"
-                    placeholder="* * * * * * * *"
                     secureTextEntry={!isPasswordVisible}
                 ></TextInput>
 
@@ -37,14 +36,14 @@ export function PasswordInput({ label, inputValue, onInputChangeText }: Props) {
                 >
                     {isPasswordVisible ? (
                         <FeatherIcons
-                            name="eye-off"
-                            size={32}
+                            name="eye"
+                            size={23}
                             color="#667"
                         />
                     ) : (
                         <FeatherIcons
-                            name="eye"
-                            size={32}
+                            name="eye-off"
+                            size={23}
                             color="#667"
                         />
                     )}
