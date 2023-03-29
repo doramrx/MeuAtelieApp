@@ -5,6 +5,7 @@ export const styles = StyleSheet.create({
         flex: 1,
         paddingTop: 50,
         backgroundColor: "#F5F5F5",
+        paddingBottom: 61
     },
 
     navigator: {
@@ -57,9 +58,32 @@ export const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         padding: 20,
-        borderBottomWidth: 1,
-        borderBottomColor: "#D9D9D9"
     },
+
+    actionButtonsContainer: {
+        paddingLeft: 10,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
+    },
+
+    actionButtons: {
+        borderRadius: 100,
+        alignItems: "center",
+        justifyContent: "center"
+    },
+
+    trashButton: {
+        paddingVertical: 9,
+        paddingHorizontal: 10,
+        backgroundColor: "#FF4558",
+        marginBottom: 6
+    },
+    editButton: {
+        padding: 10,
+        backgroundColor: "#003249"
+    },
+
     dressMakerAvatar: {
         width: 80,
         height: 80,

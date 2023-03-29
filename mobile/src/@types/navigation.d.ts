@@ -4,9 +4,16 @@ export declare global {
             orders: undefined,
             newDressMaker: undefined,
             listDressMakers: undefined,
+            showDressMaker: {
+                id: number
+            },
+            editDressMaker: {
+                id: number
+            },
             homeDrawerRoutes: undefined,
             signIn: undefined,
-            signUp: undefined
+            signUp: undefined,
+            successScreen: undefined
         }
     }
 }
