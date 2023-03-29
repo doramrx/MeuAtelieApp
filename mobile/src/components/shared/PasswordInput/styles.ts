@@ -16,6 +16,7 @@ export const styles = StyleSheet.create({
         borderColor: "rgb(250, 200, 206)",
         paddingVertical: 10,
         paddingHorizontal: 15,
+        paddingRight: 48,
         borderRadius: 10,
         fontSize: 22,
     },
@@ -25,7 +26,8 @@ export const styles = StyleSheet.create({
 
     togglePasswordVisibilityButton: {
         position: "absolute",
-        right: 10,
-        top: 8.5,
+        right: 0,
+        top: 0,
+        padding: 14,
     },
 });
