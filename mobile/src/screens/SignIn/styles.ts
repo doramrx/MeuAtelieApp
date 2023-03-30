@@ -1,5 +1,5 @@
-import { Dimensions, Platform, StyleSheet } from "react-native";
-import Constants from "expo-constants"
+import { Platform, StyleSheet } from "react-native";
+import Constants from "expo-constants";
 
 export const styles = StyleSheet.create({
   container: {
@@ -52,6 +52,7 @@ export const styles = StyleSheet.create({
   signUpLink: {
     color: "#FC7482",
     fontWeight: "bold",
+    padding: 20,
   },
 });
 

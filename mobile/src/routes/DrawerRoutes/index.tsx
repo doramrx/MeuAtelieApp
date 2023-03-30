@@ -8,7 +8,7 @@ import {
 
 import { styles } from "./styles";
 import FooterLogoImage from "../../assets/footer_logo.png";
-import Icon from "react-native-vector-icons/FontAwesome5";
+import FeatherIcons from "@expo/vector-icons/Feather";
 
 import { Orders } from "../../screens/Orders";
 import { ListDressMakers } from "../../screens/ListDressMakers";
@@ -22,7 +22,6 @@ export function DrawerRoutes() {
             drawerContent={(props) => <CustomDrawerContent {...props} />}
             screenOptions={{
                 headerShown: false,
-                swipeEnabled: false,
             }}
         >
             <Screen
@@ -31,7 +30,7 @@ export function DrawerRoutes() {
                 options={{
                     drawerIcon: ({ focused }) => {
                         return (
-                            <Icon
+                            <FeatherIcons
                                 name="shopping-bag"
                                 color={focused ? "#FC7482" : "#999999"}
                                 size={18}
@@ -49,8 +48,8 @@ export function DrawerRoutes() {
                 options={{
                     drawerIcon: ({ focused }) => {
                         return (
-                            <Icon
-                                name="users"
+                            <FeatherIcons
+                                name="user"
                                 color={focused ? "#FC7482" : "#999999"}
                                 size={18}
                             />

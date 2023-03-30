@@ -113,7 +113,7 @@ export function SignUp() {
                     Já possui conta?
                     <Link
                         to={{ screen: "signIn" }}
-                        style={styles.signUpLink}
+                        style={styles.signInLink}
                     >
                         {" "}
                         Entrar

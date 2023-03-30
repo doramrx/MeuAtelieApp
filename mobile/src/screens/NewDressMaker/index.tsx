@@ -2,7 +2,7 @@ import { DrawerScreenProps } from "@react-navigation/drawer";
 import { ParamListBase } from "@react-navigation/native";
 import { useState } from "react";
 import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome5";
+import FeatherIcons from "@expo/vector-icons/Feather";
 import { database } from "../../database/database";
 
 import { styles } from "./styles";
@@ -74,10 +74,10 @@ export function NewDressMaker({
         <View style={styles.container}>
             <View style={styles.navigator}>
                 <TouchableOpacity onPress={handleToggleDrawer}>
-                    <Icon
+                    <FeatherIcons
                         name="arrow-left"
                         color="#FFF"
-                        size={24}
+                        size={30}
                     />
                 </TouchableOpacity>
                 <Text style={styles.navigatorText}>Cadastrar costureira</Text>
@@ -107,7 +107,7 @@ export function NewDressMaker({
                     style={styles.button}
                     onPress={handleRegisterNewDressMaker}
                 >
-                    <Icon
+                    <FeatherIcons
                         name="plus"
                         size={20}
                         color="#FFF"

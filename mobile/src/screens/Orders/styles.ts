@@ -1,10 +1,11 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Platform, Dimensions } from "react-native";
+import Constants from "expo-constants";
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 50,
-    backgroundColor:"#F5F5F5"
+    backgroundColor:"#F5F5F5",
+    marginTop: Platform.OS === "ios" ? 0 : Constants.statusBarHeight,
   },
 
   navigator: {
@@ -23,11 +24,6 @@ export const styles = StyleSheet.create({
     fontSize: 20,
     marginTop: 1.7,
     marginEnd: 140
-  },
-
-  navigatorIcons: {
-    resizeMode: "contain",
-    width: 30
   },
 
   sectionBar: {

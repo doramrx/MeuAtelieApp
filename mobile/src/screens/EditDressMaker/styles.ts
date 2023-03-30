@@ -61,15 +61,16 @@ export const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-around",
-        width: "60%",
-        marginTop: 20,
+        marginTop: 35,
         paddingVertical: 12,
-        paddingHorizontal: 14,
+        paddingLeft: 13,
+        paddingRight: 18,
         borderRadius: 20
     },
     buttonText: {
         fontSize: 20,
         fontWeight: "600",
-        color: "#FFF"
+        color: "#FFF", 
+        marginLeft: 10
     },
 });
