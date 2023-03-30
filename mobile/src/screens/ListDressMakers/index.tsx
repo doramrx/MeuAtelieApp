@@ -17,7 +17,7 @@ import { DrawerScreenProps } from "@react-navigation/drawer";
 
 import { Swipeable } from "react-native-gesture-handler";
 
-import Icon from "react-native-vector-icons/FontAwesome5";
+import FeatherIcons from "@expo/vector-icons/Feather";
 
 import { styles } from "./styles";
 
@@ -80,9 +80,10 @@ export function ListDressMakers({
         <View style={styles.container}>
             <View style={styles.navigator}>
                 <TouchableOpacity onPress={handleToggleDrawer}>
-                    <Image
-                        source={HamburguerIcon}
-                        style={styles.navigatorIcons}
+                    <FeatherIcons
+                        name="menu"
+                        color="#FFFFFF"
+                        size={30}
                     />
                 </TouchableOpacity>
                 <Text style={styles.navigatorText}>Costureiras</Text>
@@ -238,8 +239,8 @@ function LeftItem({
                 style={[styles.trashButton, styles.actionButtons]}
                 onPress={handleDeleteDressMaker}
             >
-                <Icon
-                    name="trash"
+                <FeatherIcons
+                    name="trash-2"
                     size={15}
                     color="#FFF"
                 />
@@ -250,8 +251,8 @@ function LeftItem({
                 onPress={handleNavigateToInfoPage}
             >
                 <Text>
-                    <Icon
-                        name="pen"
+                    <FeatherIcons
+                        name="edit-2"
                         size={15}
                         color="#FFF"
                     />
