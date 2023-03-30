@@ -26,11 +26,6 @@ export const styles = StyleSheet.create({
     marginEnd: 140
   },
 
-  navigatorIcons: {
-    resizeMode: "contain",
-    width: 30
-  },
-
   sectionBar: {
     height: 80,
     display: "flex",

@@ -2,7 +2,7 @@ import { Alert, Text, TouchableOpacity, View } from "react-native";
 import { ParamListBase, useFocusEffect } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-import Icon from "react-native-vector-icons/FontAwesome5";
+import FeatherIcons from "@expo/vector-icons/Feather"; 
 
 import { styles } from "./styles";
 import { useCallback, useState } from "react";
@@ -67,16 +67,16 @@ export function ShowDressMaker({ navigation, route }: Props) {
         <View style={styles.container}>
             <View style={styles.header}>
                 <TouchableOpacity onPress={handleGoBack}>
-                    <Icon
+                    <FeatherIcons
                         name="arrow-left"
                         color="#FFF"
-                        size={24}
+                        size={30}
                     />
                 </TouchableOpacity>
                 <Text style={styles.headertext}>Dados da costureira</Text>
                 <TouchableOpacity onPress={handleEditDressMaker}>
-                    <Icon
-                        name="pen"
+                    <FeatherIcons
+                        name="edit-2"
                         color="#FFF"
                         size={24}
                     />

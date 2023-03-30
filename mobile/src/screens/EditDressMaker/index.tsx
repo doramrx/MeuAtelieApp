@@ -7,7 +7,7 @@ import {
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useCallback, useState } from "react";
 import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome5";
+import FeatherIcons from "@expo/vector-icons/Feather";
 import { database } from "../../database/database";
 
 import { styles } from "./styles";
@@ -114,10 +114,10 @@ export function EditDressMaker({ route, navigation }: Props) {
                     onPress={handleGoBack}
                     style={styles.goBackButton}
                 >
-                    <Icon
+                    <FeatherIcons
                         name="arrow-left"
                         color="#FFF"
-                        size={24}
+                        size={30}
                     />
                 </TouchableOpacity>
                 <Text style={styles.headertext}>Editar costureira</Text>
@@ -153,10 +153,10 @@ export function EditDressMaker({ route, navigation }: Props) {
                     onPress={handleUpdateDressMaker}
                     style={styles.button}
                 >
-                    <Icon
+                    <FeatherIcons
                         name="check"
                         color="#FFF"
-                        size={20}
+                        size={24}
                     />
                     <Text style={styles.buttonText}>Salvar alterações</Text>
                 </TouchableOpacity>

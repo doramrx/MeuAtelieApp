@@ -4,8 +4,7 @@ import { DrawerScreenProps } from "@react-navigation/drawer";
 
 import { styles } from "./styles";
 
-import HamburguerIcon from "../../assets/Hamburguer_icon.png";
-import SearchIcon from "../../assets/Search_icon.png";
+import FeatherIcons from "@expo/vector-icons/Feather";
 import ImageExample from "../../assets/Image_example.png";
 
 export function Orders({
@@ -20,16 +19,18 @@ export function Orders({
         <View style={styles.container}>
             <View style={styles.navigator}>
                 <TouchableOpacity onPress={handleToggleDrawer}>
-                    <Image
-                        source={HamburguerIcon}
-                        style={styles.navigatorIcons}
+                    <FeatherIcons
+                        name="menu"
+                        color="#FFFFFF"
+                        size={30}
                     />
                 </TouchableOpacity>
                 <Text style={styles.navigatorText}>Pedidos</Text>
                 <TouchableOpacity>
-                    <Image
-                        source={SearchIcon}
-                        style={styles.navigatorIcons}
+                    <FeatherIcons
+                        name="search"
+                        color="#FFFFFF"
+                        size={30}
                     />
                 </TouchableOpacity>
             </View>

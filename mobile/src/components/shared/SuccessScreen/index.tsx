@@ -1,7 +1,8 @@
 import { ParamListBase } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Text, TouchableOpacity, View } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome5";
+import FeatherIcons from "@expo/vector-icons/Feather";
+
 
 import { styles } from "./styles";
 
@@ -35,11 +36,10 @@ export function SuccessScreen({ navigation, route }: Params) {
             </View>
 
             <View style={styles.content}>
-                <Icon
-                    style={styles.successIcon}
-                    name="check"
-                    size={40}
-                    color="#00B407"
+                <FeatherIcons
+                        name="check-circle"
+                        size={120}
+                        color="#00B407"
                 />
                 <Text style={styles.successMessage}>
                     {routeParams.successMessage}
@@ -48,7 +48,7 @@ export function SuccessScreen({ navigation, route }: Params) {
                     style={styles.goBackButton}
                     onPress={handleGoBack}
                 >
-                    <Icon
+                    <FeatherIcons
                         name="arrow-left"
                         color="#FFF"
                         size={20}

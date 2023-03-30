@@ -57,10 +57,11 @@ export const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
-        padding: 10,
-        marginTop: 20,
+        paddingVertical: 12,
+        paddingLeft: 12,
+        paddingRight: 17,
+        marginTop: 25,
         borderRadius: 25,
-        width: "60%",
         alignSelf: "center",
     },
 
@@ -68,6 +69,6 @@ export const styles = StyleSheet.create({
         color: "#FFF",
         fontSize: 20,
         fontWeight: "400",
-        marginLeft: 15
+        marginLeft: 10
     }
 })
