@@ -18,7 +18,7 @@ export function SignIn() {
     const [password, setPassword] = useState("");
 
     const { setSetUserId } = useContext(AuthContext);
-
+    
     function authenticateUser() {
         if (!email.trim() || !password.trim()) {
             Alert.alert(
@@ -31,13 +31,13 @@ export function SignIn() {
         const signInUserPromise = new Promise((resolve, reject) => {
             database.transaction((transaction) => {
                 transaction.executeSql(
-                    "SELECT id FROM users WHERE email = ? AND password = ?;",
+                    "SELECT id FROM dressmakers WHERE email = ? AND password = ?;",
                     [email, password],
                     (_, resultSet) => {
                         console.log(resultSet.rows.length);
 
                         if (resultSet.rows.length === 0) {
-                            reject("Usuário não cadastrado!");
+                            reject("Costureira não cadastrado!");
                         } else {
                             resolve({
                                 userId: resultSet.rows.item(0).id,
@@ -50,7 +50,7 @@ export function SignIn() {
 
         signInUserPromise
             .then((userId) => {
-                console.log(`userId: `, userId);
+                console.log(`dressmakerId: `, userId);
                 setSetUserId(userId as number);
 
                 Alert.alert("Login realizado com sucesso!");
