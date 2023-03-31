@@ -39,9 +39,7 @@ export function SignIn() {
                         if (resultSet.rows.length === 0) {
                             reject("Costureira não cadastrado!");
                         } else {
-                            resolve({
-                                userId: resultSet.rows.item(0).id,
-                            });
+                            resolve(resultSet.rows.item(0).id);
                         }
                     }
                 );
