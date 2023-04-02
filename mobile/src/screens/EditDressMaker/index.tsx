@@ -16,8 +16,7 @@ interface RouteParams {
     id: number;
 }
 
-interface Props
-    extends DrawerScreenProps<ParamListBase, "showDressMaker"> {}
+interface Props extends DrawerScreenProps<ParamListBase, "showDressMaker"> {}
 
 export function EditDressMaker({ route, navigation }: Props) {
     const routeParams = route.params as RouteParams;
@@ -25,6 +24,9 @@ export function EditDressMaker({ route, navigation }: Props) {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
+    const [oldPassword, setOldPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [confirmationPassword, setConfirmationPassword] = useState("");
 
     function handleGoBack() {
         navigation.goBack();
@@ -34,7 +36,10 @@ export function EditDressMaker({ route, navigation }: Props) {
         if (
             name.trim() === "" ||
             email.trim() === "" ||
-            phoneNumber.trim() === ""
+            phoneNumber.trim() === "" ||
+            newPassword.trim() === "" ||
+            oldPassword.trim() === "" ||
+            confirmationPassword === ""
         ) {
             return Alert.alert(
                 "Erro ao atualizar costureira!",
@@ -55,16 +60,34 @@ export function EditDressMaker({ route, navigation }: Props) {
                         }
 
                         transaction.executeSql(
-                            "UPDATE dressmakers SET name = ?, email = ?, phoneNumber = ? WHERE id = ?;",
-                            [name, email, phoneNumber, routeParams.id],
-                            (_, resultSet) => {
-                                if (resultSet.rowsAffected === 1) {
-                                    resolve(null);
-                                } else {
-                                    reject(
-                                        "Não foi possível atualizar a costureira! Tente novamente."
-                                    );
+                            "SELECT * FROM dressmakers WHERE id = ?;",
+                            [routeParams.id],
+                            (transaction, resultSet) => {
+                                console.log(resultSet.rows);
+                                
+                                const currentPassword = resultSet.rows.item(0).password;
+
+                                if (oldPassword !== currentPassword) {
+                                    return reject("Credenciais inválidas!");
                                 }
+
+                                if (newPassword !== confirmationPassword) {
+                                    return reject("Senhas não conferem!");
+                                }
+
+                                transaction.executeSql(
+                                    "UPDATE dressmakers SET name = ?, email = ?, phoneNumber = ?, password = ? WHERE id = ?;",
+                                    [name, email, phoneNumber, newPassword, routeParams.id],
+                                    (_, resultSet) => {
+                                        if (resultSet.rowsAffected === 1) {
+                                            resolve(null);
+                                        } else {
+                                            reject(
+                                                "Não foi possível atualizar a costureira! Tente novamente."
+                                            );
+                                        }
+                                    }
+                                );
                             }
                         );
                     }
@@ -73,7 +96,7 @@ export function EditDressMaker({ route, navigation }: Props) {
         });
 
         updateDressMakerPromise
-            .then((something) => {
+            .then(() => {
                 Alert.alert("Sucesso!", "Costureira atualizada com sucesso!");
                 return navigation.navigate("listDressMakers");
             })
@@ -147,6 +170,36 @@ export function EditDressMaker({ route, navigation }: Props) {
                         value={email}
                         onChangeText={setEmail}
                         style={styles.input}
+                    />
+                </View>
+                <View style={styles.infoBlock}>
+                    <Text style={styles.label}>Senha antiga</Text>
+                    <TextInput
+                        value={oldPassword}
+                        onChangeText={setOldPassword}
+                        style={styles.input}
+                        textContentType="password"
+                        secureTextEntry={true}
+                    />
+                </View>
+                <View style={styles.infoBlock}>
+                    <Text style={styles.label}>Nova Senha</Text>
+                    <TextInput
+                        value={newPassword}
+                        onChangeText={setNewPassword}
+                        style={styles.input}
+                        textContentType="password"
+                        secureTextEntry={true}
+                    />
+                </View>
+                <View style={styles.infoBlock}>
+                    <Text style={styles.label}>Confirmar senha</Text>
+                    <TextInput
+                        value={confirmationPassword}
+                        onChangeText={setConfirmationPassword}
+                        style={styles.input}
+                        textContentType="password"
+                        secureTextEntry={true}
                     />
                 </View>
                 <TouchableOpacity
