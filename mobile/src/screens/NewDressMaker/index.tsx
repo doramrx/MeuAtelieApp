@@ -13,6 +13,8 @@ export function NewDressMaker({
     const [name, setName] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmationPassword, setConfirmationPassword] = useState("");
 
     function handleToggleDrawer() {
         navigation.goBack();
@@ -22,7 +24,9 @@ export function NewDressMaker({
         if (
             name.trim() === "" ||
             phoneNumber.trim() === "" ||
-            email.trim() === ""
+            email.trim() === "" ||
+            password.trim() === "" ||
+            confirmationPassword.trim() === ""
         ) {
             return Alert.alert("Preencha todos os campos!");
         }
@@ -37,9 +41,13 @@ export function NewDressMaker({
                             return reject("Costureira já cadastrada!");
                         }
 
+                        if (password.trim() !== confirmationPassword.trim()) {
+                            return reject("Senhas não conferem!");
+                        }
+
                         transaction.executeSql(
-                            "INSERT INTO dressmakers (name, email, phoneNumber) VALUES (?, ?, ?);",
-                            [name, email, phoneNumber],
+                            "INSERT INTO dressmakers (name, email, phoneNumber, password) VALUES (?, ?, ?, ?);",
+                            [name, email, phoneNumber, password],
                             (_, resultSet) => {
                                 if (resultSet.rowsAffected === 1) {
                                     resolve(resultSet.insertId);
@@ -101,6 +109,20 @@ export function NewDressMaker({
                     value={email}
                     onChangeText={setEmail}
                     placeholder="Email"
+                    style={styles.input}
+                />
+                <TextInput
+                    value={password}
+                    onChangeText={setPassword}
+                    placeholder="Senha"
+                    style={styles.input}
+                    secureTextEntry={true}
+                />
+                <TextInput
+                    value={confirmationPassword}
+                    onChangeText={setConfirmationPassword}
+                    placeholder="Confirmar senha"
+                    secureTextEntry={true}
                     style={styles.input}
                 />
                 <TouchableOpacity
