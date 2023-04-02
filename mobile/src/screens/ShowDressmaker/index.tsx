@@ -1,12 +1,13 @@
+import { useCallback, useContext, useState } from "react";
 import { Alert, Text, TouchableOpacity, View } from "react-native";
 import { ParamListBase, useFocusEffect } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-import FeatherIcons from "@expo/vector-icons/Feather"; 
+import FeatherIcons from "@expo/vector-icons/Feather";
 
 import { styles } from "./styles";
-import { useCallback, useState } from "react";
 import { database } from "../../database/database";
+import { AuthContext } from "../../contexts/AuthContext";
 
 interface RouteParams {
     id: number;
@@ -24,6 +25,8 @@ interface Props
 export function ShowDressMaker({ navigation, route }: Props) {
     const routeParams = route.params as RouteParams;
 
+    const { userId, isAdm } = useContext(AuthContext);
+
     const [dressMakerInfo, setDressMakerInfo] = useState<DressMakerInfo>();
 
     function handleGoBack() {
@@ -32,7 +35,7 @@ export function ShowDressMaker({ navigation, route }: Props) {
 
     function handleEditDressMaker() {
         navigation.navigate("editDressMaker", {
-            id: routeParams.id
+            id: routeParams.id,
         });
     }
 
@@ -66,21 +69,31 @@ export function ShowDressMaker({ navigation, route }: Props) {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <TouchableOpacity onPress={handleGoBack}>
+                <TouchableOpacity
+                    style={styles.goBackButton}
+                    onPress={handleGoBack}
+                >
                     <FeatherIcons
                         name="arrow-left"
                         color="#FFF"
                         size={30}
                     />
                 </TouchableOpacity>
+
                 <Text style={styles.headertext}>Dados da costureira</Text>
-                <TouchableOpacity onPress={handleEditDressMaker}>
-                    <FeatherIcons
-                        name="edit-2"
-                        color="#FFF"
-                        size={24}
-                    />
-                </TouchableOpacity>
+
+                {(isAdm || userId === routeParams.id) && (
+                    <TouchableOpacity
+                        style={styles.editDressMakerButton}
+                        onPress={handleEditDressMaker}
+                    >
+                        <FeatherIcons
+                            name="edit-2"
+                            color="#FFF"
+                            size={24}
+                        />
+                    </TouchableOpacity>
+                )}
             </View>
 
             <View style={styles.infoContainer}>

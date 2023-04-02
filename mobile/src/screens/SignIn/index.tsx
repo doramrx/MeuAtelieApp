@@ -11,13 +11,18 @@ import LogoImage from "../../assets/Logo.png";
 import { Input } from "../../components/shared/Input";
 import { PasswordInput } from "../../components/shared/PasswordInput";
 
+interface UserData {
+    id: number;
+    isAdm: boolean;
+}
+
 export function SignIn() {
     const navigation = useNavigation();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const { setSetUserId } = useContext(AuthContext);
+    const { setSetUserId, setIsAdm } = useContext(AuthContext);
 
     function authenticateUser() {
         if (!email.trim() || !password.trim()) {
@@ -28,19 +33,20 @@ export function SignIn() {
             return;
         }
 
-        const signInUserPromise = new Promise((resolve, reject) => {
+        const signInUserPromise = new Promise<UserData>((resolve, reject) => {
             database.transaction((transaction) => {
                 transaction.executeSql(
-                    "SELECT id FROM users WHERE email = ? AND password = ?;",
+                    "SELECT id, isAdm FROM dressmakers WHERE email = ? AND password = ?;",
                     [email, password],
                     (_, resultSet) => {
                         console.log(resultSet.rows.length);
 
                         if (resultSet.rows.length === 0) {
-                            reject("Usuário não cadastrado!");
+                            reject("Costureira não cadastrado!");
                         } else {
                             resolve({
-                                userId: resultSet.rows.item(0).id,
+                                id: resultSet.rows.item(0).id,
+                                isAdm: resultSet.rows.item(0).isAdm === 1,
                             });
                         }
                     }
@@ -49,9 +55,10 @@ export function SignIn() {
         });
 
         signInUserPromise
-            .then((userId) => {
-                console.log(`userId: `, userId);
-                setSetUserId(userId as number);
+            .then((user) => {
+                console.log(`dressmakerId: `, user.id, " isAdm: ", user.isAdm);
+                setSetUserId(user.id);
+                setIsAdm(user.isAdm);
 
                 Alert.alert("Login realizado com sucesso!");
 

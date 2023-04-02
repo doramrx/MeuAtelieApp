@@ -75,22 +75,24 @@ export const styles = StyleSheet.create({
     },
 
     trashButton: {
-        paddingVertical: 9,
-        paddingHorizontal: 10,
+        paddingVertical: 8,
+        paddingHorizontal: 8,
         backgroundColor: "#FF4558",
         marginBottom: 6
     },
     editButton: {
-        padding: 10,
+        padding: 8,
         backgroundColor: "#003249"
     },
 
     dressMakerAvatar: {
-        width: 80,
-        height: 80,
+        width: 50,
+        height: 50,
         borderRadius: 100,
-        backgroundColor: "#BBB",
-        marginRight: 18
+        backgroundColor: "#FC7482",
+        marginRight: 18,
+        alignItems: "center",
+        justifyContent: "center"
     },
     dressMakerName: {
         fontSize: 20,

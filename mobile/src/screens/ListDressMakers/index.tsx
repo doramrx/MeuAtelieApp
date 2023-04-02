@@ -1,12 +1,5 @@
-import { useCallback, useState } from "react";
-import {
-    Alert,
-    FlatList,
-    Image,
-    Text,
-    TouchableOpacity,
-    View,
-} from "react-native";
+import { useCallback, useContext, useState } from "react";
+import { Alert, FlatList, Text, TouchableOpacity, View } from "react-native";
 
 import {
     ParamListBase,
@@ -21,8 +14,8 @@ import FeatherIcons from "@expo/vector-icons/Feather";
 
 import { styles } from "./styles";
 
-import HamburguerIcon from "../../assets/Hamburguer_icon.png";
 import { database } from "../../database/database";
+import { AuthContext } from "../../contexts/AuthContext";
 
 interface Dressmaker {
     id: number;
@@ -37,6 +30,8 @@ interface DressmakerItem extends Dressmaker {
 export function ListDressMakers({
     navigation,
 }: DrawerScreenProps<ParamListBase, "listDressMakers">) {
+    const { userId, isAdm } = useContext(AuthContext);
+
     const [dressmakers, setDressmakers] = useState<Dressmaker[]>([]);
     const [keyForRefreshing, setKeyForRefreshing] = useState(0);
 
@@ -56,8 +51,8 @@ export function ListDressMakers({
         useCallback(() => {
             database.transaction((transaction) => {
                 transaction.executeSql(
-                    "SELECT id, name, phoneNumber FROM dressmakers;",
-                    undefined,
+                    "SELECT id, name, phoneNumber FROM dressmakers WHERE NOT id = ?;",
+                    [userId],
                     (_, resultSet) => {
                         const rawResultSet = resultSet.rows._array;
                         const dressmakersList: Dressmaker[] = rawResultSet.map(
@@ -125,14 +120,16 @@ export function ListDressMakers({
                 }}
             />
 
-            <View style={styles.footer}>
-                <TouchableOpacity
-                    onPress={handleNavigateToNewDressMakerScreen}
-                    style={styles.footerAddButton}
-                >
-                    <Text style={styles.footerAddButtonText}>+</Text>
-                </TouchableOpacity>
-            </View>
+            {isAdm && (
+                <View style={styles.footer}>
+                    <TouchableOpacity
+                        onPress={handleNavigateToNewDressMakerScreen}
+                        style={styles.footerAddButton}
+                    >
+                        <Text style={styles.footerAddButtonText}>+</Text>
+                    </TouchableOpacity>
+                </View>
+            )}
         </View>
     );
 }
@@ -162,7 +159,13 @@ function DressMakerItem({
                 key={id}
                 style={styles.dressMakerBlock}
             >
-                <View style={styles.dressMakerAvatar}></View>
+                <View style={styles.dressMakerAvatar}>
+                    <FeatherIcons
+                        name="user"
+                        color="#FFF"
+                        size={32}
+                    />
+                </View>
                 <View>
                     <Text style={styles.dressMakerName}>{name}</Text>
                     <Text style={styles.dressMakerPhoneNumber}>
@@ -181,6 +184,7 @@ function LeftItem({
     id: number;
     onDeleteDressMaker: () => void;
 }) {
+    const { isAdm } = useContext(AuthContext);
     const navigation = useNavigation();
 
     function handleNavigateToInfoPage() {
@@ -235,28 +239,40 @@ function LeftItem({
 
     return (
         <View style={styles.actionButtonsContainer}>
-            <TouchableOpacity
-                style={[styles.trashButton, styles.actionButtons]}
-                onPress={handleDeleteDressMaker}
-            >
-                <FeatherIcons
-                    name="trash-2"
-                    size={15}
-                    color="#FFF"
-                />
-            </TouchableOpacity>
+            {isAdm && (
+                <TouchableOpacity
+                    style={[styles.trashButton, styles.actionButtons]}
+                    onPress={handleDeleteDressMaker}
+                >
+                    <FeatherIcons
+                        name="trash-2"
+                        size={20}
+                        color="#FFF"
+                    />
+                </TouchableOpacity>
+            )}
 
             <TouchableOpacity
                 style={[styles.editButton, styles.actionButtons]}
                 onPress={handleNavigateToInfoPage}
             >
-                <Text>
-                    <FeatherIcons
-                        name="edit-2"
-                        size={15}
-                        color="#FFF"
-                    />
-                </Text>
+                {isAdm ? (
+                    <Text>
+                        <FeatherIcons
+                            name="edit-2"
+                            size={20}
+                            color="#FFF"
+                        />
+                    </Text>
+                ) : (
+                    <Text>
+                        <FeatherIcons
+                            name="info"
+                            size={20}
+                            color="#FFF"
+                        />
+                    </Text>
+                )}
             </TouchableOpacity>
         </View>
     );

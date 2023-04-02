@@ -1,11 +1,5 @@
 import { useState } from "react";
-import {
-    Text,
-    View,
-    TouchableOpacity,
-    Image,
-    Alert,
-} from "react-native";
+import { Text, View, TouchableOpacity, Image, Alert } from "react-native";
 import { Link, useNavigation } from "@react-navigation/native";
 
 import { styles } from "./styles";
@@ -18,9 +12,10 @@ import { PasswordInput } from "../../components/shared/PasswordInput";
 export function SignUp() {
     const navigation = useNavigation();
 
-    const [username, setUsername] = useState("teste");
-    const [email, setEmail] = useState("teste@gmail.com");
-    const [password, setPassword] = useState("12345");
+    const [username, setUsername] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
     function handleSignUp() {
         if (!username.trim() || !email.trim() || !password.trim()) {
@@ -34,24 +29,24 @@ export function SignUp() {
         const registerUserPromise = new Promise((resolve, reject) => {
             database.transaction((transaction) => {
                 transaction.executeSql(
-                    "SELECT * FROM users WHERE email = ?",
+                    "SELECT * FROM dressmakers WHERE email = ?;",
                     [email],
                     (transaction, resultSet) => {
                         console.log(resultSet.rows.length);
 
                         if (resultSet.rows.length !== 0) {
-                            return reject("Usuário já cadastrado!");
+                            return reject("Costureira já cadastrado!");
                         }
 
                         transaction.executeSql(
-                            "INSERT INTO users (name, email, password) VALUES (?, ?, ?);",
-                            [username, email, password],
+                            "INSERT INTO dressmakers (name, email, password, phoneNumber) VALUES (?, ?, ?, ?);",
+                            [username, email, password, phoneNumber],
                             (_, resultSet) => {
                                 if (resultSet.rowsAffected === 1) {
                                     resolve(resultSet.insertId);
                                 } else {
                                     reject(
-                                        "Não foi possível cadastrar o usuário! Tente novamente."
+                                        "Não foi possível cadastrar a costureira! Tente novamente."
                                     );
                                 }
                             }
@@ -87,6 +82,11 @@ export function SignUp() {
                     label="Nome"
                     value={username}
                     onChangeText={setUsername}
+                />
+                <Input
+                    label="Telefone"
+                    value={phoneNumber}
+                    onChangeText={setPhoneNumber}
                 />
                 <Input
                     label="Email"

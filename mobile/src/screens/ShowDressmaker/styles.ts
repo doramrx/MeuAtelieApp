@@ -9,15 +9,26 @@ export const styles = StyleSheet.create({
     header: {
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-between",
+        justifyContent: "center",
         backgroundColor: "#003249",
         height: 65,
         paddingHorizontal: 25
     },
+
+    goBackButton: {
+        position: "absolute",
+        left: 25
+    },
+
     headertext: {
         color: "#FFF",
         fontWeight: "500",
         fontSize: 20,
+    },
+
+    editDressMakerButton: {
+        position: "absolute",
+        right: 25
     },
 
     infoContainer: {
