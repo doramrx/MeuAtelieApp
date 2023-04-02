@@ -73,6 +73,7 @@ export function DrawerRoutes() {
 function CustomDrawerContent(props: DrawerContentComponentProps) {
     const { userId, setSetUserId } = useContext(AuthContext);
     const navigation = useNavigation();
+
     const [name, setName] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
 
@@ -80,6 +81,10 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
         setSetUserId(null);
 
         navigation.navigate("signIn");
+    }
+
+    function handleNavigateToProfile() {
+        navigation.navigate("showDressMaker", { id: userId ? userId : -1 });
     }
 
     useEffect(() => {
@@ -112,12 +117,20 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
             }}
             {...props}
         >
-            <View
-                style={styles.profileContainer}
-            >
+            <View style={styles.profileContainer}>
                 <View style={styles.profileAvatar} />
-                <Text style={styles.username}>{name}</Text>
-                <Text style={styles.phoneNumber}>{phoneNumber}</Text>
+                <Text
+                    onPress={handleNavigateToProfile}
+                    style={styles.username}
+                >
+                    {name}
+                </Text>
+                <Text
+                    onPress={handleNavigateToProfile}
+                    style={styles.phoneNumber}
+                >
+                    {phoneNumber}
+                </Text>
             </View>
 
             <View
@@ -135,7 +148,7 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
                     source={FooterLogoImage}
                     style={styles.logoImage}
                 />
-                <TouchableOpacity 
+                <TouchableOpacity
                     onPress={handleLogOut}
                     style={styles.logOutButton}
                 >
