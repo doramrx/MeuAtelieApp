@@ -17,6 +17,7 @@ import { ListDressMakers } from "../../screens/ListDressMakers";
 import { AuthContext } from "../../contexts/AuthContext";
 import { database } from "../../database/database";
 import { useNavigation } from "@react-navigation/native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const { Navigator, Screen } = createDrawerNavigator();
 
@@ -70,10 +71,16 @@ export function DrawerRoutes() {
 }
 
 function CustomDrawerContent(props: DrawerContentComponentProps) {
-    const { userId } = useContext(AuthContext);
+    const { userId, setSetUserId } = useContext(AuthContext);
     const navigation = useNavigation();
     const [name, setName] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
+
+    function handleLogOut() {
+        setSetUserId(null);
+
+        navigation.navigate("signIn");
+    }
 
     useEffect(() => {
         database.transaction((transaction) => {
@@ -84,7 +91,9 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
                     console.log(resultSet);
 
                     if (resultSet.rows._array.length === 0) {
-                        Alert.alert("Costureira informada não está cadastrada!");
+                        Alert.alert(
+                            "Costureira informada não está cadastrada!"
+                        );
                         navigation.navigate("signIn");
                     } else {
                         setName(resultSet.rows.item(0).name);
@@ -103,7 +112,9 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
             }}
             {...props}
         >
-            <View style={styles.profileContainer}>
+            <View
+                style={styles.profileContainer}
+            >
                 <View style={styles.profileAvatar} />
                 <Text style={styles.username}>{name}</Text>
                 <Text style={styles.phoneNumber}>{phoneNumber}</Text>
@@ -113,15 +124,28 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
                 style={{
                     maxHeight: "60%",
                     overflow: "scroll",
+                    zIndex: 1,
                 }}
             >
                 <DrawerItemList {...props} />
             </View>
 
-            <Image
-                source={FooterLogoImage}
-                style={styles.logoImage}
-            />
+            <View style={styles.footer}>
+                <Image
+                    source={FooterLogoImage}
+                    style={styles.logoImage}
+                />
+                <TouchableOpacity 
+                    onPress={handleLogOut}
+                    style={styles.logOutButton}
+                >
+                    <FeatherIcons
+                        name="log-out"
+                        color="#FFF"
+                        size={40}
+                    />
+                </TouchableOpacity>
+            </View>
         </DrawerContentScrollView>
     );
 }
