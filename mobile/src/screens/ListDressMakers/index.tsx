@@ -31,9 +31,11 @@ export function ListDressMakers({
     navigation,
 }: DrawerScreenProps<ParamListBase, "listDressMakers">) {
     const { userId, isAdm } = useContext(AuthContext);
-
+    
     const [dressmakers, setDressmakers] = useState<Dressmaker[]>([]);
     const [keyForRefreshing, setKeyForRefreshing] = useState(0);
+    const [reachedLimit, setReachedLimit] = useState(false);
+    const [lowerOffsetBound, setLowerOffsetBound] = useState(0);
 
     function handleToggleDrawer() {
         navigation.toggleDrawer();
@@ -51,11 +53,30 @@ export function ListDressMakers({
         useCallback(() => {
             database.transaction((transaction) => {
                 transaction.executeSql(
-                    "SELECT id, name, phoneNumber FROM dressmakers WHERE NOT id = ?;",
+                    `SELECT id, name, phoneNumber 
+                    FROM dressmakers 
+                    WHERE NOT id = ? 
+                    AND id > ${lowerOffsetBound}
+                    ORDER BY id
+                    LIMIT 20;`,
                     [userId],
                     (_, resultSet) => {
                         const rawResultSet = resultSet.rows._array;
-                        const dressmakersList: Dressmaker[] = rawResultSet.map(
+
+                        if (rawResultSet.length === 0) {
+                            setReachedLimit(true);
+                            return;
+                        } else {
+                            if (reachedLimit) {
+                                setReachedLimit(false);
+                            }
+                        }
+
+                        for (const item of rawResultSet) {
+                            console.log(item);
+                        }
+
+                        const newDressmakersList: Dressmaker[] = rawResultSet.map(
                             (result) => {
                                 return {
                                     id: result.id,
@@ -64,7 +85,11 @@ export function ListDressMakers({
                                 };
                             }
                         );
-                        setDressmakers(dressmakersList);
+
+                        setLowerOffsetBound(newDressmakersList[newDressmakersList.length - 1].id);
+                        console.log(lowerOffsetBound);
+
+                        setDressmakers([...dressmakers, ...newDressmakersList]);
                     }
                 );
             });
@@ -117,6 +142,9 @@ export function ListDressMakers({
                             }}
                         />
                     );
+                }}
+                onEndReached={(info) => {
+                    setKeyForRefreshing(keyForRefreshing + 1);
                 }}
             />
 
