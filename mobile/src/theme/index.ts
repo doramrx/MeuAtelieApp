@@ -9,6 +9,7 @@ export const THEME = {
         PINK: {
             V1: "#FB6871",
             V2: "#FF9FA4",
+            V2_UNDERLAY: "#F2777C"
         },
 
         GRAY: {
