@@ -1,6 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
+import { Inaugural } from "../screens/Inaugural";
 import { SignIn } from "../screens/SignIn";
 import { SignUp } from "../screens/SignUp";
 import { DrawerRoutes } from "./DrawerRoutes/index";
@@ -21,6 +22,10 @@ export function Routes() {
                         headerShown: false,
                     }}
                 >
+                    <Screen
+                        name="inaugural"
+                        component={Inaugural}
+                    />
                     <Screen
                         name="signIn"
                         component={SignIn}
