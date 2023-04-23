@@ -1,24 +1,32 @@
 import { useState } from "react";
-import { Text, View, TouchableOpacity, Image, Alert } from "react-native";
+import { Text, View, Image, Alert, TouchableHighlight } from "react-native";
 import { Link, useNavigation } from "@react-navigation/native";
 
 import { styles } from "./styles";
-import LogoImage from "../../assets/Logo.png";
+import Logo from "../../assets/Logo.png";
+import EmailIcon from "../../assets/icons/email-icon.svg";
+import PasswordIcon from "../../assets/icons/password-icon.svg";
+import UserIcon from "../../assets/icons/profile-user-icon.svg";
+import { THEME } from "../../theme";
 
 import { database } from "../../database/database";
 import { Input } from "../../components/shared/Input";
-import { PasswordInput } from "../../components/shared/PasswordInput";
 
 export function SignUp() {
     const navigation = useNavigation();
 
     const [username, setUsername] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmationPassword, setConfirmationPassword] = useState("");
 
     function handleSignUp() {
-        if (!username.trim() || !email.trim() || !password.trim()) {
+        if (
+            !username.trim() ||
+            !email.trim() ||
+            !password.trim() ||
+            !confirmationPassword.trim()
+        ) {
             Alert.alert(
                 "Falha ao realizar o cadastro!",
                 "Existem campos que não foram preenchidos."
@@ -27,6 +35,10 @@ export function SignUp() {
         }
 
         const registerUserPromise = new Promise((resolve, reject) => {
+            if (password.trim() !== confirmationPassword.trim()) {
+                return reject("As senhas informadas não são iguais!");
+            }
+
             database.transaction((transaction) => {
                 transaction.executeSql(
                     "SELECT * FROM dressmakers WHERE email = ?;",
@@ -39,8 +51,8 @@ export function SignUp() {
                         }
 
                         transaction.executeSql(
-                            "INSERT INTO dressmakers (name, email, password, phoneNumber) VALUES (?, ?, ?, ?);",
-                            [username, email, password, phoneNumber],
+                            "INSERT INTO dressmakers (name, email, password) VALUES (?, ?, ?);",
+                            [username, email, password],
                             (_, resultSet) => {
                                 if (resultSet.rowsAffected === 1) {
                                     resolve(resultSet.insertId);
@@ -73,52 +85,88 @@ export function SignUp() {
     return (
         <View style={styles.container}>
             <View style={styles.logoContainer}>
-                <Image source={LogoImage} />
-                <Text style={styles.signInText}>Cadastrar</Text>
-            </View>
-
-            <View>
-                <Input
-                    label="Nome"
-                    value={username}
-                    onChangeText={setUsername}
-                />
-                <Input
-                    label="Telefone"
-                    value={phoneNumber}
-                    onChangeText={setPhoneNumber}
-                />
-                <Input
-                    label="Email"
-                    value={email}
-                    onChangeText={setEmail}
-                    textContentType="emailAddress"
-                    keyboardType="email-address"
-                />
-                <PasswordInput
-                    label="Senha"
-                    inputValue={password}
-                    onInputChangeText={setPassword}
+                <Image
+                    source={Logo}
+                    style={styles.logoImage}
                 />
             </View>
 
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={handleSignUp}
-                >
-                    <Text style={styles.buttonText}>Cadastrar</Text>
-                </TouchableOpacity>
-                <Text style={styles.textButtonBelow}>
-                    Já possui conta?
-                    <Link
-                        to={{ screen: "signIn" }}
-                        style={styles.signInLink}
+            <View style={styles.mainContainer}>
+                <Text style={styles.title}>Cadastro</Text>
+
+                <View>
+                    <Input
+                        value={username}
+                        onChangeText={setUsername}
+                        placeholder="Nome"
+                        leftIcon={
+                            <UserIcon
+                                width={26}
+                                height={26}
+                            />
+                        }
+                        marginBottom={14}
+                    />
+                    <Input
+                        value={email}
+                        onChangeText={setEmail}
+                        placeholder="Email"
+                        leftIcon={
+                            <EmailIcon
+                                width={26}
+                                height={26}
+                            />
+                        }
+                        marginBottom={14}
+                    />
+                    <Input
+                        value={password}
+                        onChangeText={setPassword}
+                        placeholder="Senha"
+                        isPasswordInput={true}
+                        leftIcon={
+                            <PasswordIcon
+                                width={26}
+                                height={26}
+                            />
+                        }
+                        marginBottom={14}
+                    />
+                    <Input
+                        value={confirmationPassword}
+                        onChangeText={setConfirmationPassword}
+                        placeholder="Confirmar senha"
+                        isPasswordInput={true}
+                        leftIcon={
+                            <PasswordIcon
+                                width={26}
+                                height={26}
+                            />
+                        }
+                    />
+                </View>
+
+                <View style={styles.wrapper}>
+                    <TouchableHighlight
+                        style={styles.button}
+                        underlayColor={THEME.COLORS.PINK.V2_UNDERLAY}
+                        activeOpacity={0.98}
+                        onPress={handleSignUp}
                     >
-                        {" "}
-                        Entrar
-                    </Link>
-                </Text>
+                        <Text style={styles.buttonText}>Cadastrar</Text>
+                    </TouchableHighlight>
+                    <View style={styles.signInMessageWrapper}>
+                        <Text style={[styles.text, styles.message]}>
+                            Já possui uma conta?
+                        </Text>
+                        <Link
+                            to="/signIn"
+                            style={[styles.text, styles.link]}
+                        >
+                            Entrar
+                        </Link>
+                    </View>
+                </View>
             </View>
         </View>
     );
