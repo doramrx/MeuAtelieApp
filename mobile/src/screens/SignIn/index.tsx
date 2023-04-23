@@ -1,15 +1,19 @@
 import { useState, useContext } from "react";
+import { Text, View, Image, Alert, TouchableHighlight } from "react-native";
 import { Link, useNavigation } from "@react-navigation/native";
-import { Text, View, TouchableOpacity, Image, Alert } from "react-native";
+
 import { database } from "../../database/database";
 
 import { AuthContext } from "../../contexts/AuthContext";
 
+import { Input } from "../../components/shared/Input";
+
 import { styles } from "./styles";
 
-import LogoImage from "../../assets/Logo.png";
-import { Input } from "../../components/shared/Input";
-import { PasswordInput } from "../../components/shared/PasswordInput";
+import Logo from "../../assets/Logo.png";
+import EmailIcon from "../../assets/icons/email-icon.svg";
+import PasswordIcon from "../../assets/icons/password-icon.svg";
+import { THEME } from "../../theme";
 
 interface UserData {
     id: number;
@@ -72,40 +76,62 @@ export function SignIn() {
     return (
         <View style={styles.container}>
             <View style={styles.logoContainer}>
-                <Image source={LogoImage} />
-                <Text style={styles.signInText}>Entrar</Text>
-            </View>
-
-            <View>
-                <Input
-                    label="Email"
-                    value={email}
-                    onChangeText={setEmail}
-                />
-                <PasswordInput
-                    label="Senha"
-                    inputValue={password}
-                    onInputChangeText={setPassword}
+                <Image
+                    source={Logo}
+                    style={styles.logoImage}
                 />
             </View>
 
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={authenticateUser}
-                >
-                    <Text style={styles.buttonText}>Entrar</Text>
-                </TouchableOpacity>
-                <Text style={styles.textButtonBelow}>
-                    Não possui conta?
-                    <Link
-                        to={{ screen: "signUp" }}
-                        style={styles.signUpLink}
+            <View style={styles.mainContainer}>
+                <Text style={styles.title}>Entrar</Text>
+
+                <View>
+                    <Input
+                        value={email}
+                        onChangeText={setEmail}
+                        placeholder="Email"
+                        leftIcon={
+                            <EmailIcon
+                                width={26}
+                                height={26}
+                            />
+                        }
+                        marginBottom={14}
+                    />
+                    <Input
+                        value={password}
+                        onChangeText={setPassword}
+                        placeholder="Senha"
+                        isPasswordInput={true}
+                        leftIcon={
+                            <PasswordIcon
+                                width={26}
+                                height={26}
+                            />
+                        }
+                    />
+                </View>
+
+                <Text style={styles.forgotPassword}>Esqueci minha senha</Text>
+
+                <View style={styles.wrapper}>
+                    <TouchableHighlight
+                        style={styles.button}
+                        underlayColor={THEME.COLORS.PINK.V2_UNDERLAY}
+                        activeOpacity={0.98}
+                        onPress={authenticateUser}
                     >
-                        {" "}
-                        Cadastrar
-                    </Link>
-                </Text>
+                        <Text style={styles.buttonText}>Entrar</Text>
+                    </TouchableHighlight>
+                    <View style={styles.signUpMessageWrapper}>
+                        <Text style={[styles.text, styles.message]}>
+                            Não possui conta?
+                        </Text>
+                        <Link to="/signUp" style={[styles.text, styles.link]}>
+                            Cadastrar
+                        </Link>
+                    </View>
+                </View>
             </View>
         </View>
     );

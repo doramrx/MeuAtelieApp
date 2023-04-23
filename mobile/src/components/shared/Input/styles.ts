@@ -1,23 +1,28 @@
-import { Dimensions } from "react-native";
 import { StyleSheet } from "react-native";
+import { THEME } from "../../../theme";
 
 export const styles = StyleSheet.create({
-    inputContainer: {
-        width: Dimensions.get("window").width * 0.85,
-    },
-    inputLabel: {
-        fontSize: 20,
-        paddingLeft: 5,
-        marginTop: 7,
-        marginBottom: 5,
-    },
+    wrapper: {},
     input: {
-        backgroundColor: "rgba(255, 239, 241, 0.66)",
-        borderWidth: 1,
-        borderColor: "rgb(250, 200, 206)",
-        paddingVertical: 10,
-        paddingHorizontal: 15,
-        borderRadius: 10,
-        fontSize: 22,
+        paddingVertical: 14,
+        paddingLeft: 56,
+        paddingRight: 16,
+        borderRadius: 12,
+        fontSize: 18,
+        borderBottomWidth: 2,
+        color: THEME.COLORS.GRAY.DARK.V3,
+        backgroundColor: THEME.COLORS.GRAY.LIGH.V2,
+        borderBottomColor: THEME.COLORS.GRAY.LIGH.V1,
+    },
+    leftIcon: {
+        position: "absolute",
+        left: 18,
+        top: 16,
+        zIndex: 1,
+    },
+    passwordButtonWrapper: {
+        position: "absolute",
+        right: 18,
+        top: 14,
     },
 });

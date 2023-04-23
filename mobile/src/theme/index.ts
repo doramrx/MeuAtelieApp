@@ -28,4 +28,10 @@ export const THEME = {
             },
         },
     },
+    FONT: {
+        WEIGHT: {
+            REGULAR: "400",
+            MEDIUM: "500",
+        }
+    }
 };
