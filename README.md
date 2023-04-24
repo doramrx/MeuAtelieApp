@@ -3,16 +3,16 @@
 **MeuAtelieApp**
 :womans_clothes: _Melhor aplicativo para organizar o seu Ateliê_ 
 
-# :pushpin: Table of contents
+# :pushpin: Conteúdo
 
-* About
-* Technologies
-* How to run
-* Screenshots
-* License
+* Sobre
+* Tecnologias
+* Como rodar
+* Prints
+* Licença
 
-# :question: About
-# :computer: Technologies
-# How to run
-# Screenshots
-# License
+# :question: Sobre
+# :computer: Tecnologias
+# Como rodar
+# Prints
+# Licença
