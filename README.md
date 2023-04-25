@@ -17,6 +17,9 @@
 
 <a name="Sobre"></a>
 # :womans_clothes: Sobre
+
+O projeto MeuAteliêApp é desenvolvido para a disciplina de Projeto Integrador I e II do curso de Análise e Desenvolvimento de Sistemas (ADS) do Instituto Federal de Santa Catarina (IFSC).
+
 O MeuAteliêApp é um aplicativo mobile para gerenciar e automatizar os processos realizados dentro de um Ateliê de costura. Através do aplicativo é possível visualizar serviços pendentes, histórico de serviços realizados e cadastrar clientes e serviços.
 
 <a name="Tecnologias"></a>
