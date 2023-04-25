@@ -4,7 +4,7 @@
 
 
 <p align="center"> 
- :womans_clothes: <i>Melhor aplicativo para organizar o seu Ateliê</i>
+ :dress: <i>Melhor aplicativo para organizar o seu Ateliê</i>
 </p>
 
 # :pushpin: Conteúdo
