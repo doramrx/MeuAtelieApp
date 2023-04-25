@@ -29,6 +29,17 @@ O MeuAteliêApp é um aplicativo mobile para gerenciar e automatizar os processo
 
 <a name="Como_rodar"></a>
 # :clipboard: Como rodar
+Primeiramente, clone o projeto para a sua máquina
+```shell
+$ git clone https://github.com/doramrx/MeuAtelieApp
+$ cd ./MeuAtelieApp/mobile
+```
+Em seguida, instale as dependências e execute o projeto com os seguintes comandos:
+```shell
+$ npm install
+$ npx expo start
+```
+Caso deseje emular o aplicativo por um dispositivo físico, conecte-o no computador ou na mesma rede onde a aplicação será executada e escaneie o QR code que irá aparecer no terminal. Caso contrário, se você estiver executando em um emulador, basta abrir o dispositivo virtual e selecionar a opç
 
 <a name="Prints"></a>
 # :camera: Prints
