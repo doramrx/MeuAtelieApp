@@ -39,7 +39,7 @@ Em seguida, instale as dependências e execute o projeto com os seguintes comand
 $ npm install
 $ npx expo start
 ```
-Caso deseje emular o aplicativo por um dispositivo físico, conecte-o no computador ou na mesma rede onde a aplicação será executada e escaneie o QR code que irá aparecer no terminal. Caso contrário, se você estiver executando em um emulador, basta abrir o dispositivo virtual e selecionar a opç
+Caso deseje emular o aplicativo por um dispositivo físico, conecte-o no computador ou na mesma rede onde a aplicação será executada e escaneie o QR code que irá aparecer no terminal. Caso contrário, se você estiver executando em um emulador, basta abrir o dispositivo virtual e selecionar a opção 'a'.
 
 <a name="Prints"></a>
 # :camera: Prints
