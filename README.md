@@ -5,14 +5,31 @@
 
 # :pushpin: Conteúdo
 
-* Sobre
-* Tecnologias
-* Como rodar
-* Prints
-* Licença
+* [Sobre](#Sobre)
+* [Tecnologias](#Tecnologias)
+* [Como rodar](#Como_rodar)
+* [Prints](#Prints)
+* [Licença](#Licenca)
 
+<a name="Sobre"></a>
 # :question: Sobre
+O MeuAteliêApp é um aplicativo mobile para gerenciar e automatizar os processos realizados dentro de um Ateliê de costura. Através do aplicativo é possível visualizar serviços pendentes, histórico de serviços realizados e cadastrar clientes e serviços.
+
+<a name="Tecnologias"></a>
 # :computer: Tecnologias
-# Como rodar
-# Prints
-# Licença
+
+* [Expo](https://expo.dev/)
+* [Typescript](https://www.typescriptlang.org/)
+* [React Native](https://reactnative.dev/)
+* [SQLite](https://sqlite.org/index.html)
+
+<a name="Como_rodar"></a>
+# :clipboard: Como rodar
+
+<a name="Prints"></a>
+# :camera: Prints
+
+<a name="Licenca"></a>
+# :page_facing_up: Licença
+**_Este projeto está sob as diretrizes [BSD 2-Clause](https://github.com/doramrx/MeuAtelieApp/blob/main/LICENSE)_**
+
