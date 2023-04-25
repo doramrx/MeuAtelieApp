@@ -16,7 +16,7 @@
 * [Licença](#Licenca)
 
 <a name="Sobre"></a>
-# :question: Sobre
+# :womans_clothes: Sobre
 O MeuAteliêApp é um aplicativo mobile para gerenciar e automatizar os processos realizados dentro de um Ateliê de costura. Através do aplicativo é possível visualizar serviços pendentes, histórico de serviços realizados e cadastrar clientes e serviços.
 
 <a name="Tecnologias"></a>
