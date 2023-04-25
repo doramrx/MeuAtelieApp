@@ -1,7 +1,11 @@
-![meuAtelieBanner](https://user-images.githubusercontent.com/87739902/234084819-caf235a5-a73d-4cb1-b66b-67a0d44cd520.png)
- :----:
-**MeuAtelieApp**
-:womans_clothes: _Melhor aplicativo para organizar o seu Ateliê_ 
+<p align="center">
+ <img src="https://github.com/doramrx/MeuAtelieApp/blob/main/.github/banner.png"/>
+</p>
+
+
+<p align="center"> 
+ :womans_clothes: <i>Melhor aplicativo para organizar o seu Ateliê</i>
+</p>
 
 # :pushpin: Conteúdo
 
