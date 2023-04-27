@@ -6,7 +6,7 @@ import {
     useFocusEffect,
     useNavigation,
 } from "@react-navigation/native";
-import { DrawerScreenProps } from "@react-navigation/drawer";
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 
 import { Swipeable } from "react-native-gesture-handler";
 
@@ -29,7 +29,7 @@ interface DressmakerItem extends Dressmaker {
 
 export function ListDressMakers({
     navigation,
-}: DrawerScreenProps<ParamListBase, "listDressMakers">) {
+}: BottomTabScreenProps<ParamListBase, "listDressMakers">) {
     const { userId, isAdm } = useContext(AuthContext);
     
     const [dressmakers, setDressmakers] = useState<Dressmaker[]>([]);
@@ -38,7 +38,7 @@ export function ListDressMakers({
     const [lowerOffsetBound, setLowerOffsetBound] = useState(0);
 
     function handleToggleDrawer() {
-        navigation.toggleDrawer();
+        // navigation.toggleDrawer();
     }
 
     function handleNavigateToNewDressMakerScreen() {

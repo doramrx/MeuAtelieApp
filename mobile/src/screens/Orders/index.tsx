@@ -1,6 +1,6 @@
 import { Text, View, Image, TouchableOpacity } from "react-native";
 import { ParamListBase } from "@react-navigation/native";
-import { DrawerScreenProps } from "@react-navigation/drawer";
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 
 import { styles } from "./styles";
 
@@ -9,10 +9,10 @@ import ImageExample from "../../assets/Image_example.png";
 
 export function Orders({
     navigation,
-}: DrawerScreenProps<ParamListBase, string, "orders">) {
+}: BottomTabScreenProps<ParamListBase, string, "orders">) {
 
     function handleToggleDrawer() {
-        navigation.toggleDrawer();
+        // navigation.toggleDrawer();
     }
 
     return (

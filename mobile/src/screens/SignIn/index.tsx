@@ -66,7 +66,7 @@ export function SignIn() {
 
                 Alert.alert("Login realizado com sucesso!");
 
-                navigation.navigate("homeDrawerRoutes");
+                navigation.navigate("tabNavigatorRoutes");
             })
             .catch(() => {
                 Alert.alert("Falha no login", "Credenciais inválidas!");

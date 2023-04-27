@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Inaugural } from "../screens/Inaugural";
 import { SignIn } from "../screens/SignIn";
 import { SignUp } from "../screens/SignUp";
-import { DrawerRoutes } from "./DrawerRoutes/index";
+import { TabNavigator } from "./TabNavigator";
 import { NewDressMaker } from "../screens/NewDressMaker";
 import { SuccessScreen } from "../components/shared/SuccessScreen";
 import { ShowDressMaker } from "../screens/ShowDressmaker";
@@ -35,8 +35,8 @@ export function Routes() {
                         component={SignUp}
                     />
                     <Screen
-                        name="homeDrawerRoutes"
-                        component={DrawerRoutes}
+                        name="tabNavigatorRoutes"
+                        component={TabNavigator}
                     />
                     <Screen
                         name="newDressMaker"
