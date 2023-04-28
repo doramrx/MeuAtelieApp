@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
     },
 
     welcomeContainer: {
-        backgroundColor: THEME.COLORS.WHITE,
+        backgroundColor: THEME.COLORS.WHITE.FULL_WHITE,
         flex: 1.5,
         borderTopLeftRadius: 24,
         borderTopRightRadius: 24,
@@ -50,7 +50,7 @@ export const styles = StyleSheet.create({
         shadowColor: "#000",
     },
     buttonText: {
-        color: THEME.COLORS.WHITE,
+        color: THEME.COLORS.WHITE.FULL_WHITE,
         textAlign: "center",
         fontSize: 20,
     },
