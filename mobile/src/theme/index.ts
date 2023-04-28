@@ -1,7 +1,12 @@
 export const THEME = {
     COLORS: {
         RED: "#E7232C",
-        WHITE: "#FFF",
+
+        WHITE: {
+            FULL_WHITE: "#FFF",
+            TRANSPARENT_WHITE: "rgba(255,255,255,0.28)",
+        },
+
         BLACK: "#000",
         BLUE: "#34DDF4",
         GREEN: "#23F979",
