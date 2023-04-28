@@ -2,7 +2,6 @@ import { StyleSheet } from "react-native";
 import { THEME } from "../../../theme";
 
 export const styles = StyleSheet.create({
-    wrapper: {},
     input: {
         paddingVertical: 14,
         paddingLeft: 56,
@@ -11,8 +10,8 @@ export const styles = StyleSheet.create({
         fontSize: 18,
         borderBottomWidth: 2,
         color: THEME.COLORS.GRAY.DARK.V3,
-        backgroundColor: THEME.COLORS.GRAY.LIGH.V2,
-        borderBottomColor: THEME.COLORS.GRAY.LIGH.V1,
+        backgroundColor: THEME.COLORS.GRAY.LIGHT.V2,
+        borderBottomColor: THEME.COLORS.GRAY.LIGHT.V1,
     },
     leftIcon: {
         position: "absolute",

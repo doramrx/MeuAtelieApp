@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
 
     mainContainer: {
         flex: 2.5,
-        backgroundColor: THEME.COLORS.WHITE,
+        backgroundColor: THEME.COLORS.WHITE.FULL_WHITE,
         borderTopLeftRadius: 24,
         borderTopRightRadius: 24,
         paddingTop: 40,
@@ -41,7 +41,7 @@ export const styles = StyleSheet.create({
         shadowColor: THEME.COLORS.BLACK,
     },
     buttonText: {
-        color: THEME.COLORS.WHITE,
+        color: THEME.COLORS.WHITE.FULL_WHITE,
         fontWeight: THEME.FONT.WEIGHT.MEDIUM as any,
         textAlign: "center",
         fontSize: 20,

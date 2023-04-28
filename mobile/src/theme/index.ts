@@ -27,7 +27,7 @@ export const THEME = {
                 V1: "#8C8C8C",
                 V2: "#A6A6A6",
             },
-            LIGH: {
+            LIGHT: {
                 V1: "#CECECE",
                 V2: "#F4F4F4",
             },
