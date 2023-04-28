@@ -31,7 +31,6 @@ export function Input({
     return (
         <View
             style={[
-                styles.wrapper,
                 {
                     marginBottom: marginBottom,
                 },

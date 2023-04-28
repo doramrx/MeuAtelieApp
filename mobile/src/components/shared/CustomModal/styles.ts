@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
         borderTopRightRadius: 20,
     },
     main: {
-        backgroundColor: THEME.COLORS.WHITE,
+        backgroundColor: THEME.COLORS.WHITE.FULL_WHITE,
         borderBottomLeftRadius: 20,
         borderBottomRightRadius: 20,
         paddingBottom: 30,
@@ -45,7 +45,7 @@ export const styles = StyleSheet.create({
     },
     closeModalButton: {
         borderWidth: 1,
-        borderColor: THEME.COLORS.GRAY.LIGH.V1,
+        borderColor: THEME.COLORS.GRAY.LIGHT.V1,
     },
     closeModalText: {
         color: THEME.COLORS.GRAY.MEDIUM.V1,
@@ -54,6 +54,6 @@ export const styles = StyleSheet.create({
         textAlign: "center",
         fontWeight: THEME.FONT.WEIGHT.MEDIUM as any,
         fontSize: 16,
-        color: THEME.COLORS.WHITE
+        color: THEME.COLORS.WHITE.FULL_WHITE
     },
 });

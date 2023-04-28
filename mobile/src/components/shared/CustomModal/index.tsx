@@ -48,7 +48,7 @@ export function CustomModal({
                             <TouchableHighlight
                                 underlayColor={
                                     closeModalButtonStyle === "transparent"
-                                        ? THEME.COLORS.GRAY.LIGH.V2
+                                        ? THEME.COLORS.GRAY.LIGHT.V2
                                         : modalColor
                                 }
                                 activeOpacity={0.5}
@@ -76,7 +76,7 @@ export function CustomModal({
                                         styles.buttonText,
                                         styles.closeModalText,
                                         closeModalButtonStyle === "filled" && {
-                                            color: THEME.COLORS.WHITE,
+                                            color: THEME.COLORS.WHITE.FULL_WHITE,
                                         },
                                     ]}
                                 >
