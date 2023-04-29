@@ -11,6 +11,7 @@ import ProfileIcon from '../../assets/icons/perfil-icon-navigator.svg';
 
 import { THEME } from '../../theme';
 import { styles } from '../DrawerRoutes/styles';
+import { Profile } from '../../screens/Profile';
 
 
 const Tab = createBottomTabNavigator();
@@ -94,9 +95,10 @@ export function TabNavigator() {
           )
         }}
       />
+      */}
       <Tab.Screen 
         name="profile" 
-        component={Inaugural} 
+        component={Profile} 
         options={{
           tabBarLabel: 'Perfl',
           tabBarActiveTintColor: THEME.COLORS.PINK.V1,
@@ -110,7 +112,7 @@ export function TabNavigator() {
           />
           )
         }}
-      /> */}
+      />
     </Tab.Navigator>
   );
 }
