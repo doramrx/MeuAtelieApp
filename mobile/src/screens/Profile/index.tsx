@@ -61,7 +61,7 @@ export function Profile() {
                         style={styles.logOutButton}
                         onPress={() => {}}
                         activeOpacity={0.9}
-                        underlayColor={THEME.COLORS.GRAY.LIGH.V1}
+                        underlayColor={THEME.COLORS.GRAY.LIGHT.V1}
                     >
                         <View style={styles.logOutButtonWrapper}>
                             <LogOutIcon

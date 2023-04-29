@@ -13,7 +13,7 @@ interface Props {
 export function ListItem({ text, icon }: Props) {
     return (
         <TouchableHighlight
-            underlayColor={THEME.COLORS.GRAY.LIGH.V2}
+            underlayColor={THEME.COLORS.GRAY.LIGHT.V2}
             activeOpacity={0.9}
             style={styles.container}
             onPress={() => {}}

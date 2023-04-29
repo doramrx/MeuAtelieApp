@@ -4,7 +4,7 @@ import { THEME } from "../../../theme";
 export const styles = StyleSheet.create({
     container: {
         borderBottomWidth: 1,
-        borderBottomColor: THEME.COLORS.GRAY.LIGH.V1,
+        borderBottomColor: THEME.COLORS.GRAY.LIGHT.V1,
         paddingVertical: 24,
         paddingHorizontal: 24
     },

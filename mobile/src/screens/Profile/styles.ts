@@ -35,12 +35,12 @@ export const styles = StyleSheet.create({
     },
 
     logOutButton: {
-        backgroundColor: THEME.COLORS.GRAY.LIGH.V2,
+        backgroundColor: THEME.COLORS.GRAY.LIGHT.V2,
         paddingVertical: 14,
         width: Dimensions.get("screen").width * 0.7,
         borderRadius: 12,
         borderBottomWidth: 1,
-        borderBottomColor: THEME.COLORS.GRAY.LIGH.V1,
+        borderBottomColor: THEME.COLORS.GRAY.LIGHT.V1,
     },
 
     logOutButtonWrapper: {
