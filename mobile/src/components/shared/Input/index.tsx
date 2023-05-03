@@ -4,6 +4,7 @@ import {
     TextInputProps,
     TouchableHighlight,
     View,
+    PixelRatio
 } from "react-native";
 
 import { styles } from "./styles";
@@ -27,6 +28,8 @@ export function Input({
     function togglePasswordVisibility() {
         setIsPasswordVisible(!isPasswordVisible);
     }
+
+    const pixelDensity = PixelRatio.get();
 
     return (
         <View
@@ -55,13 +58,13 @@ export function Input({
                     >
                         {!isPasswordVisible ? (
                             <OpenedEyeIcon
-                                width={30}
-                                height={30}
+                                width={70 * 1 / pixelDensity}
+                                height={70 * 1 / pixelDensity}
                             />
                         ) : (
                             <ClosedEyeIcon
-                                width={30}
-                                height={30}
+                                width={65 * 1 / pixelDensity}
+                                height={65 * 1 / pixelDensity}
                             />
                         )}
                     </TouchableHighlight>

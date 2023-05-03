@@ -1,6 +1,8 @@
-import { StyleSheet, Platform } from "react-native";
+import { StyleSheet, Platform, PixelRatio } from "react-native";
 import Constants from "expo-constants";
 import { THEME } from "../../theme";
+
+const pixelDensity = PixelRatio.get();
 
 export const styles = StyleSheet.create({
     container: {
@@ -16,8 +18,8 @@ export const styles = StyleSheet.create({
     },
 
     logoImage: {
-        width: 150,
-        height: 150,
+        width: 400 * 1 / pixelDensity,
+        height: 400 * 1 / pixelDensity,
     },
 
     welcomeContainer: {

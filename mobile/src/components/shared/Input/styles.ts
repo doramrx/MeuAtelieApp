@@ -1,13 +1,16 @@
-import { StyleSheet } from "react-native";
+import { PixelRatio, StyleSheet } from "react-native";
 import { THEME } from "../../../theme";
+
+const pixelDensity = PixelRatio.get();
+const fontScale = PixelRatio.getFontScale();
 
 export const styles = StyleSheet.create({
     input: {
-        paddingVertical: 14,
+        paddingVertical: 32 * 1 / pixelDensity,
         paddingLeft: 56,
         paddingRight: 16,
         borderRadius: 12,
-        fontSize: 18,
+        fontSize: 18 * fontScale,
         borderBottomWidth: 2,
         color: THEME.COLORS.GRAY.DARK.V3,
         backgroundColor: THEME.COLORS.GRAY.LIGHT.V2,
@@ -16,12 +19,12 @@ export const styles = StyleSheet.create({
     leftIcon: {
         position: "absolute",
         left: 18,
-        top: 16,
+        top: 14,
         zIndex: 1,
     },
     passwordButtonWrapper: {
         position: "absolute",
         right: 18,
-        top: 14,
+        top: 13,
     },
 });

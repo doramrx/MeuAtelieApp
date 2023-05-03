@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { Text, View, Image, Alert, TouchableHighlight } from "react-native";
+import { Text, View, ScrollView, Image, Alert, TouchableHighlight, PixelRatio } from "react-native";
 import { Link, useNavigation } from "@react-navigation/native";
 
 import { database } from "../../database/database";
@@ -14,6 +14,8 @@ import Logo from "../../assets/Logo.png";
 import EmailIcon from "../../assets/icons/email-icon.svg";
 import PasswordIcon from "../../assets/icons/password-icon.svg";
 import { THEME } from "../../theme";
+
+const pixelDensity = PixelRatio.get();
 
 interface UserData {
     id: number;
@@ -66,7 +68,7 @@ export function SignIn() {
 
                 Alert.alert("Login realizado com sucesso!");
 
-                navigation.navigate("tabNavigatorRoutes");
+                navigation.navigate("tabNavigatorRoutes" as any);
             })
             .catch(() => {
                 Alert.alert("Falha no login", "Credenciais inválidas!");
@@ -92,8 +94,9 @@ export function SignIn() {
                         placeholder="Email"
                         leftIcon={
                             <EmailIcon
-                                width={26}
-                                height={26}
+                                width={70 * 1 / pixelDensity}
+                                height={70 * 1 / pixelDensity}
+                                color={THEME.COLORS.GRAY.MEDIUM.V2}
                             />
                         }
                         marginBottom={14}
@@ -105,8 +108,9 @@ export function SignIn() {
                         isPasswordInput={true}
                         leftIcon={
                             <PasswordIcon
-                                width={26}
-                                height={26}
+                                width={70 * 1 / pixelDensity}
+                                height={70 * 1 / pixelDensity}
+                                color={THEME.COLORS.GRAY.MEDIUM.V2}
                             />
                         }
                     />

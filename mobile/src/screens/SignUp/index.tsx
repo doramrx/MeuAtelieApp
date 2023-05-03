@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Text, View, Image, Alert, TouchableHighlight } from "react-native";
+import { Text, View, Image, Alert, TouchableHighlight, PixelRatio } from "react-native";
 import { Link, useNavigation } from "@react-navigation/native";
 
 import { styles } from "./styles";
@@ -11,6 +11,9 @@ import { THEME } from "../../theme";
 
 import { database } from "../../database/database";
 import { Input } from "../../components/shared/Input";
+
+const pixelDensity = PixelRatio.get();
+
 
 export function SignUp() {
     const navigation = useNavigation();
@@ -101,8 +104,9 @@ export function SignUp() {
                         placeholder="Nome"
                         leftIcon={
                             <UserIcon
-                                width={26}
-                                height={26}
+                                width={70 * 1 / pixelDensity}
+                                height={70 * 1 / pixelDensity}
+                                color={THEME.COLORS.GRAY.MEDIUM.V2}
                             />
                         }
                         marginBottom={14}
@@ -113,8 +117,9 @@ export function SignUp() {
                         placeholder="Email"
                         leftIcon={
                             <EmailIcon
-                                width={26}
-                                height={26}
+                                width={70 * 1 / pixelDensity}
+                                height={70 * 1 / pixelDensity}
+                                color={THEME.COLORS.GRAY.MEDIUM.V2}
                             />
                         }
                         marginBottom={14}
@@ -126,8 +131,9 @@ export function SignUp() {
                         isPasswordInput={true}
                         leftIcon={
                             <PasswordIcon
-                                width={26}
-                                height={26}
+                                width={70 * 1 / pixelDensity}
+                                height={70 * 1 / pixelDensity}
+                                color={THEME.COLORS.GRAY.MEDIUM.V2}
                             />
                         }
                         marginBottom={14}
@@ -139,8 +145,9 @@ export function SignUp() {
                         isPasswordInput={true}
                         leftIcon={
                             <PasswordIcon
-                                width={26}
-                                height={26}
+                                width={70 * 1 / pixelDensity}
+                                height={70 * 1 / pixelDensity}
+                                color={THEME.COLORS.GRAY.MEDIUM.V2}
                             />
                         }
                     />

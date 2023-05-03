@@ -23,7 +23,7 @@ export function Inaugural() {
             <View style={styles.welcomeContainer}>
                 <Text style={styles.title}>Bem vindo (a)</Text>
                 <Text style={styles.message}>
-                    Melhor aplicativo para você organizar o seu Ateliê!
+                    O melhor aplicativo para organizar o seu Ateliê!
                 </Text>
 
                 <TouchableHighlight
