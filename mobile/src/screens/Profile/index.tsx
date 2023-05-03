@@ -32,7 +32,7 @@ export function Profile() {
                             color={THEME.COLORS.GRAY.MEDIUM.V1}
                         />
                     }
-                    onItemPress={() => {}}
+                    onItemPress={() => { }}
                 />
                 <ListItem
                     text="Editar perfil"
@@ -43,7 +43,7 @@ export function Profile() {
                             color={THEME.COLORS.GRAY.MEDIUM.V1}
                         />
                     }
-                    onItemPress={() => {}}
+                    onItemPress={() => { }}
                 />
                 <ListItem
                     text="Editar senha"
@@ -54,23 +54,23 @@ export function Profile() {
                             color={THEME.COLORS.GRAY.MEDIUM.V1}
                         />
                     }
-                    onItemPress={() => {}}
+                    onItemPress={() => { }}
                 />
                 <View style={styles.logOutwrapper}>
                     <TouchableHighlight
                         style={styles.logOutButton}
-                        onPress={() => {}}
+                        onPress={() => { }}
                         activeOpacity={0.9}
                         underlayColor={THEME.COLORS.GRAY.LIGHT.V1}
                     >
                         <View style={styles.logOutButtonWrapper}>
                             <LogOutIcon
-                                width={30}
-                                height={30}
+                                width={22}
+                                height={22}
                                 color={THEME.COLORS.GRAY.DARK.V1}
                             />
                             <Text style={styles.buttonText}>
-                                Sair do aplicativo
+                                Sair
                             </Text>
                         </View>
                     </TouchableHighlight>

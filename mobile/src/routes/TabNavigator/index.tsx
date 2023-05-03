@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Orders } from '../../screens/Orders';
 import { ListDressMakers } from '../../screens/ListDressMakers';
+import { Customers } from '../../screens/Customers';
 import { Inaugural } from '../../screens/Inaugural';
 
 import OrdersIcon from '../../assets/icons/pedidos-icon-navigator.svg';
@@ -18,63 +19,65 @@ const Tab = createBottomTabNavigator();
 
 export function TabNavigator() {
   return (
-    <Tab.Navigator 
+    <Tab.Navigator
       initialRouteName='orders'
       screenOptions={{
         headerShown: false,
-        tabBarStyle: {height: 55,
-        paddingBottom: 3}
-    }}
-      
+        tabBarStyle: {
+          height: 55,
+          paddingBottom: 3
+        }
+      }}
+
     >
-      <Tab.Screen 
-        name="orders" 
-        component={Orders} 
+      <Tab.Screen
+        name="orders"
+        component={Orders}
         options={{
           tabBarLabel: 'Pedido',
           tabBarActiveTintColor: THEME.COLORS.PINK.V1,
           tabBarInactiveTintColor: THEME.COLORS.GRAY.MEDIUM.V2,
-          tabBarIcon: ({focused}) => (
+          tabBarIcon: ({ focused }) => (
             <OrdersIcon style={{
-                color: focused 
-                  ? THEME.COLORS.PINK.V1 
-                    : THEME.COLORS.GRAY.MEDIUM.V2
-              }}
+              color: focused
+                ? THEME.COLORS.PINK.V1
+                : THEME.COLORS.GRAY.MEDIUM.V2
+            }}
             />
           )
         }}
       />
-      {/* <Tab.Screen 
-        name="customers" 
-        component={ListDressMakers} 
+      <Tab.Screen
+        name="customers"
+        component={Customers}
         options={{
           tabBarLabel: 'Clientes',
           tabBarActiveTintColor: THEME.COLORS.PINK.V1,
           tabBarInactiveTintColor: THEME.COLORS.GRAY.MEDIUM.V2,
-          tabBarIcon: ({focused}) => (
+          tabBarIcon: ({ focused }) => (
             <CustomersIcon style={{
-              color: focused 
-                  ? THEME.COLORS.PINK.V1 
-                    : THEME.COLORS.GRAY.MEDIUM.V2
+              color: focused
+                ? THEME.COLORS.PINK.V1
+                : THEME.COLORS.GRAY.MEDIUM.V2
             }}
-          />
+            />
           )
         }}
-      /> */}
-      <Tab.Screen 
-        name="listDressMakers" 
-        component={ListDressMakers} 
+      />
+      <Tab.Screen
+        name="listDressMakers"
+        component={ListDressMakers}
         options={{
           tabBarLabel: 'Costureiras',
           tabBarActiveTintColor: THEME.COLORS.PINK.V1,
           tabBarInactiveTintColor: THEME.COLORS.GRAY.MEDIUM.V2,
-          tabBarIcon: ({focused}) => (
+          tabBarIcon: ({ focused }) => (
             <DressMakersIcon style={{
-              color: focused 
-                  ? THEME.COLORS.PINK.V1 
-                    : THEME.COLORS.GRAY.MEDIUM.V2
+              color: focused
+                ? THEME.COLORS.PINK.V1
+                : THEME.COLORS.GRAY.MEDIUM.V2
             }}
-          />
+            />
           )
         }}
       />
@@ -96,20 +99,20 @@ export function TabNavigator() {
         }}
       />
       */}
-      <Tab.Screen 
-        name="profile" 
-        component={Profile} 
+      <Tab.Screen
+        name="profile"
+        component={Profile}
         options={{
           tabBarLabel: 'Perfl',
           tabBarActiveTintColor: THEME.COLORS.PINK.V1,
           tabBarInactiveTintColor: THEME.COLORS.GRAY.MEDIUM.V2,
-          tabBarIcon: ({focused}) => (
+          tabBarIcon: ({ focused }) => (
             <ProfileIcon style={{
-              color: focused 
-                  ? THEME.COLORS.PINK.V1 
-                    : THEME.COLORS.GRAY.MEDIUM.V2
+              color: focused
+                ? THEME.COLORS.PINK.V1
+                : THEME.COLORS.GRAY.MEDIUM.V2
             }}
-          />
+            />
           )
         }}
       />

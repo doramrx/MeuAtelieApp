@@ -1,6 +1,9 @@
-import { Platform, StyleSheet } from "react-native";
+import { Platform, StyleSheet, PixelRatio } from "react-native";
 import Constants from "expo-constants";
 import { THEME } from "../../theme";
+
+const pixelDensity = PixelRatio.get();
+const fontScale = PixelRatio.getFontScale();
 
 export const styles = StyleSheet.create({
     container: {
@@ -16,8 +19,8 @@ export const styles = StyleSheet.create({
     },
 
     logoImage: {
-        width: 130,
-        height: 130,
+        width: 330 * 1 / pixelDensity,
+        height: 330 * 1 / pixelDensity,
     },
 
     mainContainer: {
@@ -29,7 +32,7 @@ export const styles = StyleSheet.create({
         paddingHorizontal: 40,
     },
     title: {
-        fontSize: 35,
+        fontSize: 35 * fontScale,
         fontWeight: THEME.FONT.WEIGHT.MEDIUM as any,
         marginBottom: 30,
     },
@@ -44,7 +47,7 @@ export const styles = StyleSheet.create({
         color: THEME.COLORS.WHITE.FULL_WHITE,
         fontWeight: THEME.FONT.WEIGHT.MEDIUM as any,
         textAlign: "center",
-        fontSize: 20,
+        fontSize: 20 * fontScale,
     },
     wrapper: {
         position: "absolute",
@@ -58,7 +61,7 @@ export const styles = StyleSheet.create({
         justifyContent: "center",
     },
     text: {
-        fontSize: 18,
+        fontSize: 18 * fontScale,
     },
     message: {
         color: THEME.COLORS.BLACK,

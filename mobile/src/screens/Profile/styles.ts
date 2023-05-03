@@ -52,6 +52,6 @@ export const styles = StyleSheet.create({
     buttonText: {
         color: THEME.COLORS.GRAY.DARK.V1,
         fontSize: 18,
-        marginLeft: 12
+        marginLeft: 15
     }
 });
