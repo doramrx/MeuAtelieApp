@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
 import { styles } from "./styles";
-
+import { THEME } from "../../../theme";
 import CustomerProfileIcon from "../../../assets/icons/user-icon.svg";
 import MoreVerticalIcon from "../../../assets/icons/more-vertical-icon.svg";
 
@@ -21,7 +21,8 @@ export function Card() {
         </View>
 
       </View>
-      <MoreVerticalIcon />
+      <MoreVerticalIcon
+        color={THEME.COLORS.GRAY.MEDIUM.V2} />
     </View>
   )
 }

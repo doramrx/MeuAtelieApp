@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
 import { styles } from "./styles";
-
+import { THEME } from "../../../theme";
 import DressMakerProfileIcon from "../../../assets/icons/user-icon.svg";
 import MoreVerticalIcon from "../../../assets/icons/more-vertical-icon.svg";
 
@@ -18,7 +18,8 @@ export function Card(props: Props) {
           {props.dressmakerName}
         </Text>
       </View>
-      <MoreVerticalIcon />
+      <MoreVerticalIcon
+        color={THEME.COLORS.GRAY.MEDIUM.V2} />
     </View>
   )
 }
