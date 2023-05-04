@@ -1,95 +1,45 @@
 import { StyleSheet, Platform, Dimensions } from "react-native";
 import Constants from "expo-constants";
+import { THEME } from "../../theme";
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:"#F5F5F5",
     marginTop: Platform.OS === "ios" ? 0 : Constants.statusBarHeight,
+    backgroundColor: THEME.COLORS.PINK.V2,
   },
-
-  navigator: {
-    display: "flex",
+  backContainer: {
+    flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingVertical: 18,
-    paddingHorizontal: 25,
-    backgroundColor: "#003249",
-    height: 65
+    paddingHorizontal: 22,
+    alignItems: "center",
   },
-
-  navigatorText: {
-    color: "#FFF",
-    fontWeight: "500",
-    fontSize: 20,
-    marginTop: 1.7,
-    marginEnd: 140
+  mainContainer: {
+    flex: 10,
+    backgroundColor: THEME.COLORS.WHITE.FULL_WHITE,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
   },
-
-  sectionBar: {
-    height: 80,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: Dimensions.get("window").width * 1,
-    paddingVertical: 15,
-    paddingHorizontal: 70,
-    backgroundColor: "#FFF"
+  title: {
+    color: THEME.COLORS.WHITE.FULL_WHITE,
+    fontWeight: THEME.FONT.WEIGHT.MEDIUM as any,
+    fontSize: 22,
   },
-
-  sectionBarText: {
-    textAlign: "center",
-    fontSize: 15, 
-    fontWeight: "500"
+  addButton: {
+    width: 40,
+    height: 40,
+    backgroundColor: "rgba(255,255,255,0.28)",
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
   },
-
-  sectionBarNumber: {
-    fontSize: 20,
-    fontWeight: "700"
+  listCounter: {
+    color: THEME.COLORS.GRAY.MEDIUM.V1,
+    fontSize: 15,
+    marginLeft: 18,
+    marginBottom: 8,
   },
-
-  listServices: {
-    height: 120,
-    display: "flex",
-    flexDirection: "row",
-    paddingVertical: 13,
-    paddingHorizontal: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: "#DBDBDB"
-  },
-
-  listServicesTextGroup: {
-    padding: 20,
-    paddingVertical: 18
-  },
-
-  listServicesText: { 
-    fontSize: 15
-  },
-
-  footer: {
-    backgroundColor: "#003249",
-    height:60,
-    width: Dimensions.get("window").width * 1,
-    position: "absolute",
-    bottom: 0
-  },
-
-  footerAddButton: {
-    backgroundColor: "#FC7482",
-    height: 65,
-    width: 65,
-    position: "absolute",
-    borderRadius: 50, 
-    marginHorizontal: Dimensions.get("window").width * 0.41,
-    bottom: 30
-  },
-
-  footerAddButtonText: {
-    color: "#FFF",
-    textAlign: "center",
-    fontSize: 45,
-    fontWeight: "300"
-  },
-
 });

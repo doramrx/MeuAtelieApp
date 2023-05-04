@@ -1,80 +1,41 @@
-import { Text, View, Image, TouchableOpacity } from "react-native";
-import { ParamListBase } from "@react-navigation/native";
-import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
+import { Text, View, TouchableOpacity } from "react-native";
 
+import { THEME } from "../../theme";
 import { styles } from "./styles";
+import AddIcon from "../../assets/icons/add-icon.svg";
 
-import FeatherIcons from "@expo/vector-icons/Feather";
-import ImageExample from "../../assets/Image_example.png";
+import { Card } from "../../components/Orders/Card";
+import { Options } from "../../components/Orders/Options";
 
-export function Orders({
-    navigation,
-}: BottomTabScreenProps<ParamListBase, string, "orders">) {
-
-    function handleToggleDrawer() {
-        // navigation.toggleDrawer();
-    }
-
+export function Orders() {
     return (
         <View style={styles.container}>
-            <View style={styles.navigator}>
-                <TouchableOpacity onPress={handleToggleDrawer}>
-                    <FeatherIcons
-                        name="menu"
-                        color="#FFFFFF"
-                        size={30}
-                    />
-                </TouchableOpacity>
-                <Text style={styles.navigatorText}>Pedidos</Text>
-                <TouchableOpacity>
-                    <FeatherIcons
-                        name="search"
-                        color="#FFFFFF"
-                        size={30}
-                    />
+            <View style={styles.backContainer}>
+                <Text style={styles.title}>Pedidos</Text>
+                <TouchableOpacity style={styles.addButton}>
+                    <AddIcon width={18} />
                 </TouchableOpacity>
             </View>
 
-            <View style={styles.sectionBar}>
-                <View>
-                    <Text
-                        style={[styles.sectionBarText, styles.sectionBarNumber]}
-                    >
-                        0
-                    </Text>
-                    <Text style={styles.sectionBarText}>Pendente</Text>
-                </View>
-
-                <View>
-                    <Text
-                        style={[styles.sectionBarText, styles.sectionBarNumber]}
-                    >
-                        0
-                    </Text>
-                    <Text style={styles.sectionBarText}>Finalizado</Text>
-                </View>
-            </View>
-
-            <View>
-                <View style={styles.listServices}>
-                    <Image source={ImageExample} />
-                    <View style={styles.listServicesTextGroup}>
-                        <Text style={styles.listServicesText}>Nome</Text>
-                        <Text style={styles.listServicesText}>
-                            Tipo serviço
-                        </Text>
-                        <Text style={styles.listServicesText}>
-                            Data entrega
-                        </Text>
-                    </View>
-                </View>
-            </View>
-
-            <View style={styles.footer}>
-                <TouchableOpacity style={styles.footerAddButton}>
-                    <Text style={styles.footerAddButtonText}>+</Text>
-                </TouchableOpacity>
+            <View style={styles.mainContainer}>
+                <Options />
+                <Text style={styles.listCounter}>
+                    2 Pedidos listados
+                </Text>
+                <Card
+                    title="Calça jeans Zara"
+                    type="RepairOrAdjust"
+                    dueDate={new Date()}
+                    marginBottom={6}
+                />
+                <Card
+                    title="Vestido longo preto"
+                    type="Tailored"
+                    dueDate={new Date()}
+                />
             </View>
         </View>
     );
 }
+
+styles.container;
