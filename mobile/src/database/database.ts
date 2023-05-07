@@ -6,6 +6,9 @@ database.transaction((transaction) => {
     console.log("DROPPING TABLE DRESSMAKERS");
     transaction.executeSql(`DROP TABLE IF EXISTS dressmakers;`);
 
+    console.log("DROPPING TABLE DRESSMAKERS");
+    transaction.executeSql(`DROP TABLE IF EXISTS customers;`);
+
     console.log("CREATING TABLE DRESSMAKERS");
     transaction.executeSql(
         `CREATE TABLE IF NOT EXISTS dressmakers 
@@ -22,15 +25,15 @@ database.transaction((transaction) => {
     transaction.executeSql(
         `INSERT INTO dressmakers (name, email, password, isAdm) VALUES 
         ('adm', 'adm@adm.com', 'adm123', 1), 
-        ('Costureira 01', 'costureira01@gmail.com', '12345', 0),
-        ('Costureira 02', 'costureira02@gmail.com', '12345', 0),
-        ('Costureira 03', 'costureira03@gmail.com', '12345', 0),
-        ('Costureira 04', 'costureira04@gmail.com', '12345', 0),
-        ('Costureira 05', 'costureira05@gmail.com', '12345', 0),
-        ('Costureira 06', 'costureira06@gmail.com', '12345', 0),
-        ('Costureira 07', 'costureira07@gmail.com', '12345', 0),
-        ('Costureira 08', 'costureira08@gmail.com', '12345', 0),
-        ('Costureira 09', 'costureira09@gmail.com', '12345', 0),
+        ('Costureira 01', 'costureira1@gmail.com', '12345', 0),
+        ('Costureira 02', 'costureira2@gmail.com', '12345', 0),
+        ('Costureira 03', 'costureira3@gmail.com', '12345', 0),
+        ('Costureira 04', 'costureira4@gmail.com', '12345', 0),
+        ('Costureira 05', 'costureira5@gmail.com', '12345', 0),
+        ('Costureira 06', 'costureira6@gmail.com', '12345', 0),
+        ('Costureira 07', 'costureira7@gmail.com', '12345', 0),
+        ('Costureira 08', 'costureira8@gmail.com', '12345', 0),
+        ('Costureira 09', 'costureira9@gmail.com', '12345', 0),
         ('Costureira 10', 'costureira10@gmail.com', '12345', 0),
         ('Costureira 11', 'costureira11@gmail.com', '12345', 0),
         ('Costureira 12', 'costureira12@gmail.com', '12345', 0),
@@ -57,30 +60,27 @@ database.transaction((transaction) => {
         ('Costureira 33', 'costureira33@gmail.com', '12345', 0),
         ('Costureira 34', 'costureira34@gmail.com', '12345', 0),
         ('Costureira 35', 'costureira35@gmail.com', '12345', 0),
-        ('Costureira 36', 'costureira36@gmail.com', '12345', 0),
-        ('Costureira 37', 'costureira37@gmail.com', '12345', 0),
-        ('Costureira 38', 'costureira38@gmail.com', '12345', 0),
-        ('Costureira 39', 'costureira39@gmail.com', '12345', 0),
-        ('Costureira 40', 'costureira40@gmail.com', '12345', 0),
-        ('Costureira 41', 'costureira41@gmail.com', '12345', 0),
-        ('Costureira 42', 'costureira42@gmail.com', '12345', 0),
-        ('Costureira 43', 'costureira43@gmail.com', '12345', 0),
-        ('Costureira 44', 'costureira44@gmail.com', '12345', 0),
-        ('Costureira 45', 'costureira45@gmail.com', '12345', 0),
-        ('Costureira 46', 'costureira46@gmail.com', '12345', 0),
-        ('Costureira 47', 'costureira47@gmail.com', '12345', 0),
-        ('Costureira 48', 'costureira48@gmail.com', '12345', 0),
-        ('Costureira 49', 'costureira49@gmail.com', '12345', 0),
-        ('Costureira 50', 'costureira50@gmail.com', '12345', 0),
-        ('Costureira 51', 'costureira51@gmail.com', '12345', 0),
-        ('Costureira 52', 'costureira52@gmail.com', '12345', 0),
-        ('Costureira 53', 'costureira53@gmail.com', '12345', 0),
-        ('Costureira 54', 'costureira54@gmail.com', '12345', 0),
-        ('Costureira 55', 'costureira55@gmail.com', '12345', 0),
-        ('Costureira 56', 'costureira56@gmail.com', '12345', 0),
-        ('Costureira 57', 'costureira57@gmail.com', '12345', 0),
-        ('Costureira 58', 'costureira58@gmail.com', '12345', 0),
-        ('Costureira 59', 'costureira59@gmail.com', '12345', 0),
-        ('Costureira 60', 'costureira60@gmail.com', '12345', 0);`
+        ('Costureira 36', 'costureira36@gmail.com', '12345', 0);`
     );
+
+    console.log("CREATING TABLE CUSTOMERS");
+    transaction.executeSql(`
+        CREATE TABLE IF NOT EXISTS customers
+        (
+            id INTEGER PRIMARY KEY,
+            name TEXT NOT NULL,
+            phone TEXT NOT NULL
+        );
+    `);
+
+    console.log("CREATING SOME CUSTOMERS");
+    transaction.executeSql(`
+            INSERT INTO customers (name, phone) VALUES 
+            ('Cliente 01', '4711112222'),
+            ('Cliente 02', '4711112222'),
+            ('Cliente 03', '4711112222'),
+            ('Cliente 04', '4711112222'),
+            ('Cliente 05', '4711112222'),
+            ('Cliente 41', '4711112222');
+    `);
 });

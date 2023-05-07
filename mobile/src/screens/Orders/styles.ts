@@ -1,11 +1,9 @@
-import { StyleSheet, Platform, Dimensions } from "react-native";
-import Constants from "expo-constants";
+import { StyleSheet } from "react-native";
 import { THEME } from "../../theme";
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: Platform.OS === "ios" ? 0 : Constants.statusBarHeight,
     backgroundColor: THEME.COLORS.PINK.V2,
   },
   backContainer: {

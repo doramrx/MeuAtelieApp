@@ -1,5 +1,13 @@
 import { useState, useContext } from "react";
-import { Text, View, ScrollView, Image, Alert, TouchableHighlight, PixelRatio } from "react-native";
+import {
+    Text,
+    View,
+    Image,
+    Alert,
+    TouchableHighlight,
+    PixelRatio,
+    StatusBar,
+} from "react-native";
 import { Link, useNavigation } from "@react-navigation/native";
 
 import { database } from "../../database/database";
@@ -25,8 +33,8 @@ interface UserData {
 export function SignIn() {
     const navigation = useNavigation();
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("adm@adm.com");
+    const [password, setPassword] = useState("adm123");
 
     const { setSetUserId, setIsAdm } = useContext(AuthContext);
 
@@ -46,6 +54,7 @@ export function SignIn() {
                     [email, password],
                     (_, resultSet) => {
                         console.log(resultSet.rows.length);
+                        console.log("teste");
 
                         if (resultSet.rows.length === 0) {
                             reject("Costureira não cadastrado!");
@@ -77,6 +86,11 @@ export function SignIn() {
 
     return (
         <View style={styles.container}>
+            <StatusBar
+                animated={true}
+                barStyle="default"
+                backgroundColor={THEME.COLORS.PINK.V2}
+            />
             <View style={styles.logoContainer}>
                 <Image
                     source={Logo}
@@ -94,8 +108,8 @@ export function SignIn() {
                         placeholder="Email"
                         leftIcon={
                             <EmailIcon
-                                width={70 * 1 / pixelDensity}
-                                height={70 * 1 / pixelDensity}
+                                width={(70 * 1) / pixelDensity}
+                                height={(70 * 1) / pixelDensity}
                                 color={THEME.COLORS.GRAY.MEDIUM.V2}
                             />
                         }
@@ -108,8 +122,8 @@ export function SignIn() {
                         isPasswordInput={true}
                         leftIcon={
                             <PasswordIcon
-                                width={70 * 1 / pixelDensity}
-                                height={70 * 1 / pixelDensity}
+                                width={(70 * 1) / pixelDensity}
+                                height={(70 * 1) / pixelDensity}
                                 color={THEME.COLORS.GRAY.MEDIUM.V2}
                             />
                         }
@@ -131,7 +145,10 @@ export function SignIn() {
                         <Text style={[styles.text, styles.message]}>
                             Não possui conta?
                         </Text>
-                        <Link to="/signUp" style={[styles.text, styles.link]}>
+                        <Link
+                            to="/signUp"
+                            style={[styles.text, styles.link]}
+                        >
                             Cadastrar
                         </Link>
                     </View>
