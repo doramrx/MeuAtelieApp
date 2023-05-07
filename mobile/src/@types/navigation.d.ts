@@ -13,7 +13,8 @@ export declare global {
             homeDrawerRoutes: undefined,
             signIn: undefined,
             signUp: undefined,
-            successScreen: undefined
+            successScreen: undefined,
+            inaugural: undefined
         }
     }
 }

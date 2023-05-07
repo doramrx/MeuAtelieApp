@@ -1,35 +1,39 @@
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 import { Text, View, Modal, TouchableHighlight } from "react-native";
 
 import { styles } from "./styles";
 import { THEME } from "../../../theme";
 
-interface Props {
+export interface GenericModalProps {
     modalTitle: string;
     modalColor: string;
     modalIcon: ReactNode;
     closeModalText: string;
     closeModalButtonStyle?: "filled" | "transparent";
     actionButtonText?: string;
+    isOpened: boolean;
+    onCloseModal: () => void;
+    onAction: () => void;
     children?: ReactNode;
 }
 
-export function CustomModal({
+export function GenericModal({
     modalTitle,
     modalIcon,
     modalColor,
     actionButtonText,
     closeModalText,
     closeModalButtonStyle = "transparent",
+    isOpened,
+    onCloseModal,
+    onAction,
     children,
-}: Props) {
-    const [isOpen, setIsOpen] = useState(true);
-
+}: GenericModalProps) {
     return (
         <Modal
             animationType="fade"
             transparent={true}
-            visible={isOpen}
+            visible={isOpened}
         >
             <View style={styles.wrapper}>
                 <View style={styles.container}>
@@ -52,9 +56,7 @@ export function CustomModal({
                                         : modalColor
                                 }
                                 activeOpacity={0.5}
-                                onPress={() => {
-                                    setIsOpen(false);
-                                }}
+                                onPress={onCloseModal}
                                 style={[
                                     styles.button,
                                     actionButtonText !== undefined && {
@@ -65,10 +67,6 @@ export function CustomModal({
                                         borderWidth: 0,
                                         backgroundColor: modalColor,
                                     },
-                                    actionButtonText === undefined && {
-                                        flex: 0,
-                                        width: 130,
-                                    },
                                 ]}
                             >
                                 <Text
@@ -76,7 +74,8 @@ export function CustomModal({
                                         styles.buttonText,
                                         styles.closeModalText,
                                         closeModalButtonStyle === "filled" && {
-                                            color: THEME.COLORS.WHITE.FULL_WHITE,
+                                            color: THEME.COLORS.WHITE
+                                                .FULL_WHITE,
                                         },
                                     ]}
                                 >
@@ -87,7 +86,7 @@ export function CustomModal({
                                 <TouchableHighlight
                                     underlayColor={modalColor}
                                     activeOpacity={0.5}
-                                    onPress={() => {}}
+                                    onPress={onAction}
                                     style={[
                                         styles.button,
                                         { backgroundColor: modalColor },

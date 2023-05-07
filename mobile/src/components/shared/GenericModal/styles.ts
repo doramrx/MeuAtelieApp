@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
         backgroundColor: "rgba(0,0,0,0.22)",
     },
     container: {
-        width: Dimensions.get("screen").width * 0.7,
+        width: Dimensions.get("screen").width * 0.85,
     },
     header: {
         alignItems: "center",
@@ -23,20 +23,20 @@ export const styles = StyleSheet.create({
         borderBottomLeftRadius: 20,
         borderBottomRightRadius: 20,
         paddingBottom: 30,
-        paddingTop: 15,
+        paddingTop: 22,
         paddingHorizontal: 20,
     },
     title: {
         textAlign: "center",
         fontWeight: THEME.FONT.WEIGHT.MEDIUM as any,
         fontSize: 22,
-        marginBottom: 16
+        marginBottom: 22
     },
     buttonsContainer: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
-        marginTop: 16,
+        marginTop: 22,
     },
     button: {
         flex: 1,

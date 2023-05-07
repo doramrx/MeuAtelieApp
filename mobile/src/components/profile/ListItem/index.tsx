@@ -10,13 +10,13 @@ interface Props {
     icon: ReactNode;
 }
 
-export function ListItem({ text, icon }: Props) {
+export function ListItem({ text, icon, onItemPress }: Props) {
     return (
         <TouchableHighlight
             underlayColor={THEME.COLORS.GRAY.LIGHT.V2}
             activeOpacity={0.9}
             style={styles.container}
-            onPress={() => {}}
+            onPress={onItemPress}
         >
             <View style={styles.contentWrapper}>
                 {icon}

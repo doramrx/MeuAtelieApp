@@ -1,4 +1,4 @@
-import { Image, Text, TouchableHighlight, View } from "react-native";
+import { Image, StatusBar, Text, TouchableHighlight, View } from "react-native";
 
 import Logo from "../../assets/Logo.png";
 
@@ -7,7 +7,6 @@ import { THEME } from "../../theme";
 import { useNavigation } from "@react-navigation/native";
 
 export function Inaugural() {
-
     const navigation = useNavigation();
 
     function navigateTo(path: "signIn" | "signUp") {
@@ -16,8 +15,16 @@ export function Inaugural() {
 
     return (
         <View style={styles.container}>
+            <StatusBar
+                animated={true}
+                barStyle="default"
+                backgroundColor={THEME.COLORS.PINK.V2}
+            />
             <View style={styles.logoContainer}>
-                <Image source={Logo} style={styles.logoImage} />
+                <Image
+                    source={Logo}
+                    style={styles.logoImage}
+                />
             </View>
 
             <View style={styles.welcomeContainer}>

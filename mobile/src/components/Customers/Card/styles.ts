@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
   },
   customerPhone: {
     fontSize: 14,
-    fontWeight: THEME.FONT.WEIGHT.REGULAR,
+    fontWeight: THEME.FONT.WEIGHT.REGULAR as any,
     color: THEME.COLORS.GRAY.DARK.V2,
     marginLeft: 15,
   },
