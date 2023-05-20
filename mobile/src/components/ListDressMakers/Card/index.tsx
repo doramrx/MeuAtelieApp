@@ -2,8 +2,8 @@ import { Text, TouchableWithoutFeedback, View } from "react-native";
 
 import { styles } from "./styles";
 import { THEME } from "../../../theme";
-import DressMakerProfileIcon from "../../../assets/icons/user-icon.svg";
-import MoreVerticalIcon from "../../../assets/icons/more-vertical-icon.svg";
+import UserIconFilled from "../../../assets/icons/user-icon-filled.svg";
+import VerticalMoreIcon from "../../../assets/icons/vertical-more-icon.svg";
 
 interface Props {
     dressmakerId: number;
@@ -16,7 +16,9 @@ export function Card(props: Props) {
     return (
         <View style={[styles.container, { marginBottom: props.marginBottom }]}>
             <View style={styles.wrapper}>
-                <DressMakerProfileIcon />
+                <UserIconFilled 
+                    color={THEME.COLORS.PINK.V1}
+                />
                 <Text style={styles.dressmakersName}>
                     {props.dressmakerName}
                 </Text>
@@ -24,7 +26,7 @@ export function Card(props: Props) {
             <TouchableWithoutFeedback
                 onPress={() => props.onOptionsClick(props.dressmakerId)}
             >
-                <MoreVerticalIcon color={THEME.COLORS.GRAY.MEDIUM.V2} />
+                <VerticalMoreIcon color={THEME.COLORS.GRAY.MEDIUM.V2} />
             </TouchableWithoutFeedback>
         </View>
     );

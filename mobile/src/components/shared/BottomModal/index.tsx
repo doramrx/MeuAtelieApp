@@ -8,9 +8,9 @@ import {
 
 import { styles } from "./styles";
 import { THEME } from "../../../theme";
-import DetailIcon from "../../../assets/icons/bottom-modal-detail-icon.svg";
-import EditIcon from "../../../assets/icons/bottom-modal-edit-icon.svg";
-import DeleteIcon from "../../../assets/icons/bottom-modal-delete-icon.svg";
+import DetailIcon from "../../../assets/icons/detail-icon-with-border.svg";
+import EditIcon from "../../../assets/icons/edit-icon-with-border.svg";
+import DeleteIcon from "../../../assets/icons/trash-icon-with-border.svg";
 
 interface Props {
     onCloseModal: () => void;

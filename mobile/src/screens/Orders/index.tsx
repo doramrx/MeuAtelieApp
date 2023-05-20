@@ -18,7 +18,10 @@ export function Orders() {
             <View style={styles.backContainer}>
                 <Text style={styles.title}>Pedidos</Text>
                 <TouchableOpacity style={styles.addButton}>
-                    <AddIcon width={18} />
+                    <AddIcon
+                        width={18}
+                        color={THEME.COLORS.WHITE.FULL_WHITE}
+                    />
                 </TouchableOpacity>
             </View>
 
