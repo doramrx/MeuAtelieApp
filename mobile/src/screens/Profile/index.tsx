@@ -16,17 +16,17 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { THEME } from "../../theme";
 import { styles } from "./styles";
 
-import UserIcon from "../../assets/icons/profile-user-icon.svg";
-import ProfileIcon from "../../assets/icons/user-with-rounded-border.svg";
-import EditIcon from "../../assets/icons/edit-with-rounded-border.svg";
-import PasswordIcon from "../../assets/icons/password-with-border.svg";
-import LogOutIcon from "../../assets/icons/log-out-icon.svg";
+import UserIcon from "../../assets/icons/user-icon-filled.svg";
+import ProfileIcon from "../../assets/icons/user-icon-with-border.svg";
+import EditIcon from "../../assets/icons/edit-icon-with-border.svg";
+import PasswordIcon from "../../assets/icons/password-icon-with-border.svg";
+import LogOutIcon from "../../assets/icons/logout-icon.svg";
 import DeleteProfileIcon from "../../assets/icons/trash-icon.svg";
-import PasswordShieldIcon from "../../assets/icons/change-password-modal-icon.svg";
-import EditModalIcon from "../../assets/icons/edit-modal-icon.svg";
-import EmailIcon from "../../assets/icons/email-icon.svg";
-import DetailsModalIcon from "../../assets/icons/details-modal-icon.svg";
-import PasswordInputIcon from "../../assets/icons/password-icon.svg";
+import PasswordShieldIcon from "../../assets/icons/shield-icon-with-border.svg";
+import EditModalIcon from "../../assets/icons/edit-icon-with-border.svg";
+import EmailIcon from "../../assets/icons/email-icon-filled.svg";
+import DetailsModalIcon from "../../assets/icons/detail-icon-with-baloon-border.svg";
+import PasswordInputIcon from "../../assets/icons/password-icon-with-border.svg";
 
 import { ListItem } from "../../components/profile/ListItem";
 import { ModalBuilder } from "../../components/shared/GenericModal/builder";

@@ -1,8 +1,8 @@
 import { Text, TouchableWithoutFeedback, View } from "react-native";
 import { styles } from "./styles";
 import { THEME } from "../../../theme";
-import CustomerProfileIcon from "../../../assets/icons/user-icon.svg";
-import MoreVerticalIcon from "../../../assets/icons/more-vertical-icon.svg";
+import UserIconFilled from "../../../assets/icons/user-icon-filled.svg";
+import VerticalMoreIcon from "../../../assets/icons/vertical-more-icon.svg";
 
 interface Props {
     customerId: number;
@@ -16,7 +16,9 @@ export function Card(props: Props) {
     return (
         <View style={[styles.container, { marginBottom: props.marginBottom }]}>
             <View style={styles.wrapper}>
-                <CustomerProfileIcon />
+                <UserIconFilled
+                    color={THEME.COLORS.PINK.V1}
+                />
                 <View>
                     <Text style={styles.customerName}>
                         {props.customerName}
@@ -31,7 +33,9 @@ export function Card(props: Props) {
                     props.onOptionsClick(props.customerId);
                 }}
             >
-                <MoreVerticalIcon color={THEME.COLORS.GRAY.MEDIUM.V2} />
+                <VerticalMoreIcon
+                    color={THEME.COLORS.GRAY.MEDIUM.V2}
+                />
             </TouchableWithoutFeedback>
         </View>
     );

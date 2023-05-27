@@ -12,9 +12,9 @@ import { Link, useNavigation } from "@react-navigation/native";
 
 import { styles } from "./styles";
 import Logo from "../../assets/Logo.png";
-import EmailIcon from "../../assets/icons/email-icon.svg";
-import PasswordIcon from "../../assets/icons/password-icon.svg";
-import UserIcon from "../../assets/icons/profile-user-icon.svg";
+import EmailIconFilled from "../../assets/icons/email-icon-filled.svg";
+import PasswordIconFilled from "../../assets/icons/password-icon-filled.svg";
+import UserIconFilled from "../../assets/icons/user-icon-filled.svg";
 import { THEME } from "../../theme";
 
 import { database } from "../../database/database";
@@ -115,7 +115,7 @@ export function SignUp() {
                         onChangeText={setUsername}
                         placeholder="Nome"
                         leftIcon={
-                            <UserIcon
+                            <UserIconFilled
                                 width={(70 * 1) / pixelDensity}
                                 height={(70 * 1) / pixelDensity}
                                 color={THEME.COLORS.GRAY.MEDIUM.V2}
@@ -128,7 +128,7 @@ export function SignUp() {
                         onChangeText={setEmail}
                         placeholder="Email"
                         leftIcon={
-                            <EmailIcon
+                            <EmailIconFilled
                                 width={(70 * 1) / pixelDensity}
                                 height={(70 * 1) / pixelDensity}
                                 color={THEME.COLORS.GRAY.MEDIUM.V2}
@@ -142,7 +142,7 @@ export function SignUp() {
                         placeholder="Senha"
                         isPasswordInput={true}
                         leftIcon={
-                            <PasswordIcon
+                            <PasswordIconFilled
                                 width={(70 * 1) / pixelDensity}
                                 height={(70 * 1) / pixelDensity}
                                 color={THEME.COLORS.GRAY.MEDIUM.V2}
@@ -156,7 +156,7 @@ export function SignUp() {
                         placeholder="Confirmar senha"
                         isPasswordInput={true}
                         leftIcon={
-                            <PasswordIcon
+                            <PasswordIconFilled
                                 width={(70 * 1) / pixelDensity}
                                 height={(70 * 1) / pixelDensity}
                                 color={THEME.COLORS.GRAY.MEDIUM.V2}

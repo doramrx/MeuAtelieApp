@@ -15,11 +15,11 @@ import { database } from "../../database/database";
 import { THEME } from "../../theme";
 import { styles } from "./styles";
 import AddIcon from "../../assets/icons/add-icon.svg";
-import RegisterIcon from "../../assets/icons/add-with-rounded-border.svg";
-import UserIcon from "../../assets/icons/profile-user-icon.svg";
-import PhoneIcon from "../../assets/icons/phone-icon.svg";
-import DetailsModalIcon from "../../assets/icons/details-modal-icon.svg";
-import EditModalIcon from "../../assets/icons/edit-modal-icon.svg";
+import AddIconWithBorder from "../../assets/icons/add-icon-with-border.svg";
+import UserIconFilled from "../../assets/icons/user-icon-filled.svg";
+import PhoneIconFilled from "../../assets/icons/phone-icon-filled.svg";
+import DetailIconWithBaloonBorder from "../../assets/icons/detail-icon-with-baloon-border.svg";
+import EditIconWithBorder from "../../assets/icons/edit-icon-with-border.svg";
 
 import { ModalBuilder } from "../../components/shared/GenericModal/builder";
 import { Card } from "../../components/Customers/Card/index";
@@ -183,7 +183,10 @@ export function Customers() {
                     onPress={handleOpenCreateCustomerModal}
                     style={styles.addButton}
                 >
-                    <AddIcon width={18} />
+                    <AddIcon
+                        width={18}
+                        color={THEME.COLORS.WHITE.FULL_WHITE}
+                    />
                 </TouchableOpacity>
             </View>
 
@@ -235,15 +238,15 @@ export function Customers() {
                                 current.map((oldCustomer) => {
                                     return customer.id === oldCustomer.id
                                         ? {
-                                            id: customer.id,
-                                            name: customer.name,
-                                            phone: customer.phone
-                                        }
+                                              id: customer.id,
+                                              name: customer.name,
+                                              phone: customer.phone,
+                                          }
                                         : {
-                                            id: oldCustomer.id,
-                                            name: oldCustomer.name,
-                                            phone: oldCustomer.phone
-                                        }
+                                              id: oldCustomer.id,
+                                              name: oldCustomer.name,
+                                              phone: oldCustomer.phone,
+                                          };
                                 })
                             );
                         }
@@ -376,7 +379,7 @@ function RegisterModal(props: {
     const modal = new ModalBuilder()
         .withTitle("Cadastro de cliente")
         .withColor(THEME.COLORS.BLUE)
-        .withIcon(<RegisterIcon color={THEME.COLORS.WHITE.FULL_WHITE} />)
+        .withIcon(<AddIconWithBorder color={THEME.COLORS.WHITE.FULL_WHITE} />)
         .withActionButtonText("Cadastrar")
         .withCloseModalText("Cancelar")
         .withIsOpened(props.isOpened)
@@ -392,7 +395,7 @@ function RegisterModal(props: {
                     onChangeText={setName}
                     placeholder="Nome"
                     leftIcon={
-                        <UserIcon
+                        <UserIconFilled
                             width={(70 * 1) / pixelDensity}
                             height={(70 * 1) / pixelDensity}
                             color={THEME.COLORS.GRAY.MEDIUM.V2}
@@ -405,7 +408,7 @@ function RegisterModal(props: {
                     onChangeText={setPhone}
                     placeholder="Telefone"
                     leftIcon={
-                        <PhoneIcon
+                        <PhoneIconFilled
                             width={(70 * 1) / pixelDensity}
                             height={(70 * 1) / pixelDensity}
                             color={THEME.COLORS.GRAY.MEDIUM.V2}
@@ -451,7 +454,7 @@ function DetailModal(props: {
     const modal = new ModalBuilder()
         .withTitle("Detalhes")
         .withIcon(
-            <DetailsModalIcon
+            <DetailIconWithBaloonBorder
                 color={THEME.COLORS.WHITE.FULL_WHITE}
                 width={60}
                 height={60}
@@ -584,7 +587,7 @@ function EditModal(props: {
         .withTitle("Edição")
         .withColor(THEME.COLORS.PINK.V2)
         .withIcon(
-            <EditModalIcon
+            <EditIconWithBorder
                 color={THEME.COLORS.WHITE.FULL_WHITE}
                 width={60}
                 height={60}
@@ -602,7 +605,7 @@ function EditModal(props: {
                     onChangeText={setName}
                     placeholder="Nome"
                     leftIcon={
-                        <UserIcon
+                        <UserIconFilled
                             width={(70 * 1) / pixelDensity}
                             height={(70 * 1) / pixelDensity}
                             color={THEME.COLORS.GRAY.MEDIUM.V2}
@@ -615,7 +618,7 @@ function EditModal(props: {
                     onChangeText={setPhone}
                     placeholder="Email"
                     leftIcon={
-                        <PhoneIcon
+                        <PhoneIconFilled
                             width={(70 * 1) / pixelDensity}
                             height={(70 * 1) / pixelDensity}
                             color={THEME.COLORS.GRAY.MEDIUM.V2}

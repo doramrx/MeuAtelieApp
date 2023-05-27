@@ -5,7 +5,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { Card } from "../../components/ListDressMakers/Card/index";
 import { BottomModal } from "../../components/shared/BottomModal";
 
-import DetailsModalIcon from "../../assets/icons/details-modal-icon.svg";
+import DetailIconWithBaloonBorder from "../../assets/icons/detail-icon-with-baloon-border.svg";
 
 import { styles } from "./styles";
 import { THEME } from "../../theme";
@@ -190,7 +190,7 @@ function DetailModal(props: {
     const modal = new ModalBuilder()
         .withTitle("Detalhes")
         .withIcon(
-            <DetailsModalIcon
+            <DetailIconWithBaloonBorder
                 color={THEME.COLORS.WHITE.FULL_WHITE}
                 width={60}
                 height={60}
