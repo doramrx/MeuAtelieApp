@@ -1,19 +1,26 @@
 import { useState } from "react";
-import { Text, View, Image, Alert, TouchableHighlight, PixelRatio } from "react-native";
+import {
+    Text,
+    View,
+    Image,
+    Alert,
+    TouchableHighlight,
+    PixelRatio,
+    StatusBar,
+} from "react-native";
 import { Link, useNavigation } from "@react-navigation/native";
 
 import { styles } from "./styles";
 import Logo from "../../assets/Logo.png";
-import EmailIcon from "../../assets/icons/email-icon.svg";
-import PasswordIcon from "../../assets/icons/password-icon.svg";
-import UserIcon from "../../assets/icons/profile-user-icon.svg";
+import EmailIconFilled from "../../assets/icons/email-icon-filled.svg";
+import PasswordIconFilled from "../../assets/icons/password-icon-filled.svg";
+import UserIconFilled from "../../assets/icons/user-icon-filled.svg";
 import { THEME } from "../../theme";
 
 import { database } from "../../database/database";
 import { Input } from "../../components/shared/Input";
 
 const pixelDensity = PixelRatio.get();
-
 
 export function SignUp() {
     const navigation = useNavigation();
@@ -87,6 +94,11 @@ export function SignUp() {
 
     return (
         <View style={styles.container}>
+            <StatusBar
+                animated={true}
+                barStyle="default"
+                backgroundColor={THEME.COLORS.PINK.V2}
+            />
             <View style={styles.logoContainer}>
                 <Image
                     source={Logo}
@@ -103,9 +115,9 @@ export function SignUp() {
                         onChangeText={setUsername}
                         placeholder="Nome"
                         leftIcon={
-                            <UserIcon
-                                width={70 * 1 / pixelDensity}
-                                height={70 * 1 / pixelDensity}
+                            <UserIconFilled
+                                width={(70 * 1) / pixelDensity}
+                                height={(70 * 1) / pixelDensity}
                                 color={THEME.COLORS.GRAY.MEDIUM.V2}
                             />
                         }
@@ -116,9 +128,9 @@ export function SignUp() {
                         onChangeText={setEmail}
                         placeholder="Email"
                         leftIcon={
-                            <EmailIcon
-                                width={70 * 1 / pixelDensity}
-                                height={70 * 1 / pixelDensity}
+                            <EmailIconFilled
+                                width={(70 * 1) / pixelDensity}
+                                height={(70 * 1) / pixelDensity}
                                 color={THEME.COLORS.GRAY.MEDIUM.V2}
                             />
                         }
@@ -130,9 +142,9 @@ export function SignUp() {
                         placeholder="Senha"
                         isPasswordInput={true}
                         leftIcon={
-                            <PasswordIcon
-                                width={70 * 1 / pixelDensity}
-                                height={70 * 1 / pixelDensity}
+                            <PasswordIconFilled
+                                width={(70 * 1) / pixelDensity}
+                                height={(70 * 1) / pixelDensity}
                                 color={THEME.COLORS.GRAY.MEDIUM.V2}
                             />
                         }
@@ -144,9 +156,9 @@ export function SignUp() {
                         placeholder="Confirmar senha"
                         isPasswordInput={true}
                         leftIcon={
-                            <PasswordIcon
-                                width={70 * 1 / pixelDensity}
-                                height={70 * 1 / pixelDensity}
+                            <PasswordIconFilled
+                                width={(70 * 1) / pixelDensity}
+                                height={(70 * 1) / pixelDensity}
                                 color={THEME.COLORS.GRAY.MEDIUM.V2}
                             />
                         }

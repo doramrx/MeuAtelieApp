@@ -1,11 +1,9 @@
-import { Dimensions, Platform, StyleSheet } from "react-native";
-import Constants from "expo-constants";
+import { Dimensions, StyleSheet } from "react-native";
 import { THEME } from "../../theme";
 
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: Platform.OS === "ios" ? 0 : Constants.statusBarHeight,
         backgroundColor: THEME.COLORS.PINK.V2,
     },
 
@@ -14,6 +12,16 @@ export const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         paddingHorizontal: 32,
+    },
+
+    trashButton: {
+        position: "absolute",
+        right: 16,
+        top: 16,
+        backgroundColor: THEME.COLORS.WHITE.TRANSPARENT_WHITE,
+        paddingHorizontal: 10,
+        paddingVertical: 10,
+        borderRadius: 10,
     },
 
     name: {
@@ -46,12 +54,12 @@ export const styles = StyleSheet.create({
     logOutButtonWrapper: {
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
     },
 
     buttonText: {
         color: THEME.COLORS.GRAY.DARK.V1,
         fontSize: 18,
-        marginLeft: 15
-    }
+        marginLeft: 15,
+    },
 });

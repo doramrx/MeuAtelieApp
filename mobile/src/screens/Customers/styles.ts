@@ -1,39 +1,37 @@
-import { StyleSheet, Platform, Dimensions } from "react-native";
-import Constants from "expo-constants";
+import { StyleSheet } from "react-native";
 import { THEME } from "../../theme";
 
 export const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: Platform.OS === "ios" ? 0 : Constants.statusBarHeight,
-    backgroundColor: THEME.COLORS.PINK.V2,
-  },
-  backContainer: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingHorizontal: 22,
-    alignItems: "center",
-  },
-  mainContainer: {
-    flex: 10,
-    backgroundColor: THEME.COLORS.WHITE.FULL_WHITE,
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-  },
-  title: {
-    color: THEME.COLORS.WHITE.FULL_WHITE,
-    fontWeight: THEME.FONT.WEIGHT.MEDIUM as any,
-    fontSize: 22,
-  },
-  addButton: {
-    width: 40,
-    height: 40,
-    backgroundColor: "rgba(255,255,255,0.28)",
-    borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
-  },
+    container: {
+        flex: 1,
+        backgroundColor: THEME.COLORS.PINK.V2,
+    },
+    backContainer: {
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        paddingHorizontal: 22,
+        alignItems: "center",
+    },
+    mainContainer: {
+        flex: 10,
+        backgroundColor: THEME.COLORS.WHITE.FULL_WHITE,
+        borderTopLeftRadius: 24,
+        borderTopRightRadius: 24,
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+    },
+    title: {
+        color: THEME.COLORS.WHITE.FULL_WHITE,
+        fontWeight: THEME.FONT.WEIGHT.MEDIUM as any,
+        fontSize: 22,
+    },
+    addButton: {
+        width: 40,
+        height: 40,
+        backgroundColor: "rgba(255,255,255,0.28)",
+        borderRadius: 10,
+        justifyContent: "center",
+        alignItems: "center",
+    },
 });

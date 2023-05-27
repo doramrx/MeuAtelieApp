@@ -1,5 +1,6 @@
 export const THEME = {
     COLORS: {
+        BLUR: "rgba(0,0,0,0.22)",
         RED: "#E7232C",
 
         WHITE: {

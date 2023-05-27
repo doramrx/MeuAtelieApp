@@ -8,8 +8,8 @@ import {
 } from "react-native";
 
 import { styles } from "./styles";
-import OpenedEyeIcon from "../../../assets/icons/opened-eye-icon.svg";
-import ClosedEyeIcon from "../../../assets/icons/closed-eye-icon.svg";
+import OpenEyeIcon from "../../../assets/icons/open-eye-icon.svg";
+import CloseEyeIcon from "../../../assets/icons/close-eye-icon.svg";
 
 interface Props extends TextInputProps {
     leftIcon?: ReactNode;
@@ -57,12 +57,12 @@ export function Input({
                         underlayColor="none"
                     >
                         {!isPasswordVisible ? (
-                            <OpenedEyeIcon
+                            <OpenEyeIcon
                                 width={70 * 1 / pixelDensity}
                                 height={70 * 1 / pixelDensity}
                             />
                         ) : (
-                            <ClosedEyeIcon
+                            <CloseEyeIcon
                                 width={65 * 1 / pixelDensity}
                                 height={65 * 1 / pixelDensity}
                             />

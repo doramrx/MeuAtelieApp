@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity } from "react-native";
+import { Text, View, TouchableOpacity, StatusBar } from "react-native";
 
 import { THEME } from "../../theme";
 import { styles } from "./styles";
@@ -10,18 +10,24 @@ import { Options } from "../../components/Orders/Options";
 export function Orders() {
     return (
         <View style={styles.container}>
+            <StatusBar
+                animated={true}
+                barStyle="default"
+                backgroundColor={THEME.COLORS.PINK.V2}
+            />
             <View style={styles.backContainer}>
                 <Text style={styles.title}>Pedidos</Text>
                 <TouchableOpacity style={styles.addButton}>
-                    <AddIcon width={18} />
+                    <AddIcon
+                        width={18}
+                        color={THEME.COLORS.WHITE.FULL_WHITE}
+                    />
                 </TouchableOpacity>
             </View>
 
             <View style={styles.mainContainer}>
                 <Options />
-                <Text style={styles.listCounter}>
-                    2 Pedidos listados
-                </Text>
+                <Text style={styles.listCounter}>2 Pedidos listados</Text>
                 <Card
                     title="Calça jeans Zara"
                     type="RepairOrAdjust"

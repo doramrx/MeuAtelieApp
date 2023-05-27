@@ -1,5 +1,4 @@
-import { Platform, StyleSheet, PixelRatio } from "react-native";
-import Constants from "expo-constants";
+import { StyleSheet, PixelRatio } from "react-native";
 import { THEME } from "../../theme";
 
 const pixelDensity = PixelRatio.get();
@@ -8,7 +7,6 @@ const fontScale = PixelRatio.getFontScale();
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: Platform.OS === "ios" ? 0 : Constants.statusBarHeight,
         backgroundColor: THEME.COLORS.PINK.V2,
     },
 
@@ -19,8 +17,8 @@ export const styles = StyleSheet.create({
     },
 
     logoImage: {
-        width: 330 * 1 / pixelDensity,
-        height: 330 * 1 / pixelDensity,
+        width: (330 * 1) / pixelDensity,
+        height: (330 * 1) / pixelDensity,
     },
 
     mainContainer: {

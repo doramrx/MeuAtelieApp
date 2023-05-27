@@ -1,87 +1,92 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Orders } from '../../screens/Orders';
-import { ListDressMakers } from '../../screens/ListDressMakers';
-import { Customers } from '../../screens/Customers';
-import { Inaugural } from '../../screens/Inaugural';
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Orders } from "../../screens/Orders";
+import { ListDressMakers } from "../../screens/ListDressMakers";
+import { Customers } from "../../screens/Customers";
 
-import OrdersIcon from '../../assets/icons/pedidos-icon-navigator.svg';
-import DressMakersIcon from '../../assets/icons/costureiras-icon-navigator.svg';
-import CustomersIcon from '../../assets/icons/clientes-icon-navigator.svg';
-import AgendaIcon from '../../assets/icons/agenda-icon-navigator.svg';
-import ProfileIcon from '../../assets/icons/perfil-icon-navigator.svg';
+import ShoppingBagIcon from "../../assets/icons/shopping-bag-icon.svg";
+import SewingMachineIcon from "../../assets/icons/sewing-machine-icon.svg";
+import UsersIcon from "../../assets/icons/users-icon.svg";
+import CalendarIcon from "../../assets/icons/calendar-icon.svg";
+import UserIcon from "../../assets/icons/user-icon.svg";
 
-import { THEME } from '../../theme';
-import { styles } from '../DrawerRoutes/styles';
-import { Profile } from '../../screens/Profile';
-
+import { THEME } from "../../theme";
+import { Profile } from "../../screens/Profile";
 
 const Tab = createBottomTabNavigator();
 
 export function TabNavigator() {
-  return (
-    <Tab.Navigator
-      initialRouteName='orders'
-      screenOptions={{
-        headerShown: false,
-        tabBarStyle: {
-          height: 55,
-          paddingBottom: 3
-        }
-      }}
-
-    >
-      <Tab.Screen
-        name="orders"
-        component={Orders}
-        options={{
-          tabBarLabel: 'Pedido',
-          tabBarActiveTintColor: THEME.COLORS.PINK.V1,
-          tabBarInactiveTintColor: THEME.COLORS.GRAY.MEDIUM.V2,
-          tabBarIcon: ({ focused }) => (
-            <OrdersIcon style={{
-              color: focused
-                ? THEME.COLORS.PINK.V1
-                : THEME.COLORS.GRAY.MEDIUM.V2
+    return (
+        <Tab.Navigator
+            initialRouteName="orders"
+            screenOptions={{
+                headerShown: false,
+                tabBarStyle: {
+                    height: 55,
+                    paddingBottom: 3,
+                },
             }}
+        >
+            <Tab.Screen
+                name="orders"
+                component={Orders}
+                options={{
+                    tabBarLabel: "Pedido",
+                    tabBarActiveTintColor: THEME.COLORS.PINK.V1,
+                    tabBarInactiveTintColor: THEME.COLORS.GRAY.MEDIUM.V2,
+                    tabBarIcon: ({ focused }) => (
+                        <ShoppingBagIcon
+                            style={
+                                {
+                                    color: focused
+                                        ? THEME.COLORS.PINK.V1
+                                        : THEME.COLORS.GRAY.MEDIUM.V2,
+                                } as any
+                            }
+                        />
+                    ),
+                }}
             />
-          )
-        }}
-      />
-      <Tab.Screen
-        name="customers"
-        component={Customers}
-        options={{
-          tabBarLabel: 'Clientes',
-          tabBarActiveTintColor: THEME.COLORS.PINK.V1,
-          tabBarInactiveTintColor: THEME.COLORS.GRAY.MEDIUM.V2,
-          tabBarIcon: ({ focused }) => (
-            <CustomersIcon style={{
-              color: focused
-                ? THEME.COLORS.PINK.V1
-                : THEME.COLORS.GRAY.MEDIUM.V2
-            }}
+            <Tab.Screen
+                name="customers"
+                component={Customers}
+                options={{
+                    tabBarLabel: "Clientes",
+                    tabBarActiveTintColor: THEME.COLORS.PINK.V1,
+                    tabBarInactiveTintColor: THEME.COLORS.GRAY.MEDIUM.V2,
+                    tabBarIcon: ({ focused }) => (
+                        <UsersIcon
+                            style={
+                                {
+                                    color: focused
+                                        ? THEME.COLORS.PINK.V1
+                                        : THEME.COLORS.GRAY.MEDIUM.V2,
+                                } as any
+                            }
+                        />
+                    ),
+                }}
             />
-          )
-        }}
-      />
-      <Tab.Screen
-        name="listDressMakers"
-        component={ListDressMakers}
-        options={{
-          tabBarLabel: 'Costureiras',
-          tabBarActiveTintColor: THEME.COLORS.PINK.V1,
-          tabBarInactiveTintColor: THEME.COLORS.GRAY.MEDIUM.V2,
-          tabBarIcon: ({ focused }) => (
-            <DressMakersIcon style={{
-              color: focused
-                ? THEME.COLORS.PINK.V1
-                : THEME.COLORS.GRAY.MEDIUM.V2
-            }}
+            <Tab.Screen
+                name="listDressMakers"
+                component={ListDressMakers}
+                options={{
+                    tabBarLabel: "Costureiras",
+                    tabBarActiveTintColor: THEME.COLORS.PINK.V1,
+                    tabBarInactiveTintColor: THEME.COLORS.GRAY.MEDIUM.V2,
+                    tabBarIcon: ({ focused }) => (
+                        <SewingMachineIcon
+                            style={
+                                {
+                                    color: focused
+                                        ? THEME.COLORS.PINK.V1
+                                        : THEME.COLORS.GRAY.MEDIUM.V2,
+                                } as any
+                            }
+                        />
+                    ),
+                }}
             />
-          )
-        }}
-      />
-      {/* <Tab.Screen 
+            {/* <Tab.Screen 
         name="agenda" 
         component={Inaugural} 
         options={{
@@ -89,7 +94,7 @@ export function TabNavigator() {
           tabBarActiveTintColor: THEME.COLORS.PINK.V1,
           tabBarInactiveTintColor: THEME.COLORS.GRAY.MEDIUM.V2,
           tabBarIcon: ({focused}) => (
-            <AgendaIcon style={{
+            <CalendarIcon style={{
               color: focused 
                   ? THEME.COLORS.PINK.V1 
                     : THEME.COLORS.GRAY.MEDIUM.V2
@@ -99,23 +104,26 @@ export function TabNavigator() {
         }}
       />
       */}
-      <Tab.Screen
-        name="profile"
-        component={Profile}
-        options={{
-          tabBarLabel: 'Perfl',
-          tabBarActiveTintColor: THEME.COLORS.PINK.V1,
-          tabBarInactiveTintColor: THEME.COLORS.GRAY.MEDIUM.V2,
-          tabBarIcon: ({ focused }) => (
-            <ProfileIcon style={{
-              color: focused
-                ? THEME.COLORS.PINK.V1
-                : THEME.COLORS.GRAY.MEDIUM.V2
-            }}
+            <Tab.Screen
+                name="profile"
+                component={Profile}
+                options={{
+                    tabBarLabel: "Perfl",
+                    tabBarActiveTintColor: THEME.COLORS.PINK.V1,
+                    tabBarInactiveTintColor: THEME.COLORS.GRAY.MEDIUM.V2,
+                    tabBarIcon: ({ focused }) => (
+                        <UserIcon
+                            style={
+                                {
+                                    color: focused
+                                        ? THEME.COLORS.PINK.V1
+                                        : THEME.COLORS.GRAY.MEDIUM.V2,
+                                } as any
+                            }
+                        />
+                    ),
+                }}
             />
-          )
-        }}
-      />
-    </Tab.Navigator>
-  );
+        </Tab.Navigator>
+    );
 }
