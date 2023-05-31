@@ -1,6 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Orders } from "../../screens/Orders";
-import { ListDressMakers } from "../../screens/ListDressMakers";
 import { Customers } from "../../screens/Customers";
 
 import ShoppingBagIcon from "../../assets/icons/shopping-bag-icon.svg";
@@ -55,26 +54,6 @@ export function TabNavigator() {
                     tabBarInactiveTintColor: THEME.COLORS.GRAY.MEDIUM.V2,
                     tabBarIcon: ({ focused }) => (
                         <UsersIcon
-                            style={
-                                {
-                                    color: focused
-                                        ? THEME.COLORS.PINK.V1
-                                        : THEME.COLORS.GRAY.MEDIUM.V2,
-                                } as any
-                            }
-                        />
-                    ),
-                }}
-            />
-            <Tab.Screen
-                name="listDressMakers"
-                component={ListDressMakers}
-                options={{
-                    tabBarLabel: "Costureiras",
-                    tabBarActiveTintColor: THEME.COLORS.PINK.V1,
-                    tabBarInactiveTintColor: THEME.COLORS.GRAY.MEDIUM.V2,
-                    tabBarIcon: ({ focused }) => (
-                        <SewingMachineIcon
                             style={
                                 {
                                     color: focused
