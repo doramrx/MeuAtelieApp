@@ -4,7 +4,8 @@ import {
     TextInputProps,
     TouchableHighlight,
     View,
-    PixelRatio
+    PixelRatio,
+    StyleSheetProperties,
 } from "react-native";
 
 import { styles } from "./styles";
@@ -13,11 +14,13 @@ import CloseEyeIcon from "../../../assets/icons/close-eye-icon.svg";
 
 interface Props extends TextInputProps {
     leftIcon?: ReactNode;
+    containerStyles?: {};
     isPasswordInput?: boolean;
     marginBottom?: number;
 }
 
 export function Input({
+    containerStyles,
     leftIcon,
     isPasswordInput = false,
     marginBottom = 0,
@@ -37,6 +40,7 @@ export function Input({
                 {
                     marginBottom: marginBottom,
                 },
+                containerStyles && containerStyles,
             ]}
         >
             {leftIcon && <View style={styles.leftIcon}>{leftIcon}</View>}
@@ -46,6 +50,10 @@ export function Input({
                     isPasswordInput && {
                         paddingRight: 56,
                     },
+                    leftIcon !== null &&
+                        leftIcon !== undefined && {
+                            paddingLeft: 56,
+                        },
                 ]}
                 secureTextEntry={isPasswordInput && isPasswordVisible}
                 {...rest}
@@ -58,13 +66,13 @@ export function Input({
                     >
                         {!isPasswordVisible ? (
                             <OpenEyeIcon
-                                width={70 * 1 / pixelDensity}
-                                height={70 * 1 / pixelDensity}
+                                width={(70 * 1) / pixelDensity}
+                                height={(70 * 1) / pixelDensity}
                             />
                         ) : (
                             <CloseEyeIcon
-                                width={65 * 1 / pixelDensity}
-                                height={65 * 1 / pixelDensity}
+                                width={(65 * 1) / pixelDensity}
+                                height={(65 * 1) / pixelDensity}
                             />
                         )}
                     </TouchableHighlight>

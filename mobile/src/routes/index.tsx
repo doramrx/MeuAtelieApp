@@ -11,6 +11,7 @@ import { SuccessScreen } from "../components/shared/SuccessScreen";
 import { ShowDressMaker } from "../screens/ShowDressmaker";
 import { EditDressMaker } from "../screens/EditDressMaker";
 import { AuthContextProvider } from "../contexts/AuthContext";
+import { TailoredClothes } from "../screens/TailoredClothes";
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
@@ -58,6 +59,10 @@ export function Routes() {
                     <Screen
                         name="customers"
                         component={Customers}
+                    />
+                    <Screen
+                        name="tailoredClothes"
+                        component={TailoredClothes}
                     />
                 </Navigator>
             </NavigationContainer>
