@@ -5,11 +5,9 @@ import { Inaugural } from "../screens/Inaugural";
 import { SignIn } from "../screens/SignIn";
 import { SignUp } from "../screens/SignUp";
 import { Customers } from "../screens/Customers";
+import { CustomerDetail } from "../screens/CustomerDetail";
 import { TabNavigator } from "./TabNavigator";
-import { NewDressMaker } from "../screens/NewDressMaker";
 import { SuccessScreen } from "../components/shared/SuccessScreen";
-import { ShowDressMaker } from "../screens/ShowDressmaker";
-import { EditDressMaker } from "../screens/EditDressMaker";
 import { AuthContextProvider } from "../contexts/AuthContext";
 import { TailoredClothes } from "../screens/TailoredClothes";
 
@@ -41,24 +39,16 @@ export function Routes() {
                         component={TabNavigator}
                     />
                     <Screen
-                        name="newDressMaker"
-                        component={NewDressMaker}
-                    />
-                    <Screen
-                        name="showDressMaker"
-                        component={ShowDressMaker}
-                    />
-                    <Screen
-                        name="editDressMaker"
-                        component={EditDressMaker}
-                    />
-                    <Screen
                         name="successScreen"
                         component={SuccessScreen}
                     />
                     <Screen
                         name="customers"
                         component={Customers}
+                    />
+                    <Screen
+                        name="customersDetail"
+                        component={CustomerDetail}
                     />
                     <Screen
                         name="tailoredClothes"

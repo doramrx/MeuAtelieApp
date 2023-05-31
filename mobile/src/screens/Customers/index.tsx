@@ -7,6 +7,7 @@ import {
     Alert,
     PixelRatio,
     StatusBar,
+    Pressable,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 
@@ -25,6 +26,9 @@ import { ModalBuilder } from "../../components/shared/GenericModal/builder";
 import { Card } from "../../components/Customers/Card/index";
 import { Input } from "../../components/shared/Input";
 import { BottomModal } from "../../components/shared/BottomModal";
+import { TouchableHighlight } from "react-native-gesture-handler";
+
+import { CustomerDetail } from "../CustomerDetail";
 
 interface Customer {
     id: number;
@@ -196,22 +200,28 @@ export function Customers() {
                     data={customers}
                     renderItem={({ item, index }) => {
                         return index < customers.length ? (
-                            <Card
-                                key={item.id}
-                                customerId={item.id}
-                                customerName={item.name}
-                                customerPhone={item.phone}
-                                onOptionsClick={openBottomModal}
-                                marginBottom={6}
-                            />
+                            <Pressable
+                                onPress={CustomerDetail}>
+                                <Card
+                                    key={item.id}
+                                    customerId={item.id}
+                                    customerName={item.name}
+                                    customerPhone={item.phone}
+                                    onOptionsClick={openBottomModal}
+                                    marginBottom={6}
+                                />
+                            </Pressable>
                         ) : (
-                            <Card
-                                key={item.id}
-                                customerId={item.id}
-                                customerName={item.name}
-                                customerPhone={item.phone}
-                                onOptionsClick={openBottomModal}
-                            />
+                            <Pressable
+                                onPress={CustomerDetail}>
+                                <Card
+                                    key={item.id}
+                                    customerId={item.id}
+                                    customerName={item.name}
+                                    customerPhone={item.phone}
+                                    onOptionsClick={openBottomModal}
+                                />
+                            </Pressable>
                         );
                     }}
                     onEndReached={() => {
@@ -238,15 +248,15 @@ export function Customers() {
                                 current.map((oldCustomer) => {
                                     return customer.id === oldCustomer.id
                                         ? {
-                                              id: customer.id,
-                                              name: customer.name,
-                                              phone: customer.phone,
-                                          }
+                                            id: customer.id,
+                                            name: customer.name,
+                                            phone: customer.phone,
+                                        }
                                         : {
-                                              id: oldCustomer.id,
-                                              name: oldCustomer.name,
-                                              phone: oldCustomer.phone,
-                                          };
+                                            id: oldCustomer.id,
+                                            name: oldCustomer.name,
+                                            phone: oldCustomer.phone,
+                                        };
                                 })
                             );
                         }
@@ -289,7 +299,7 @@ function Modal(props: {
                 isOpened={props.isOpened}
                 onCloseModal={props.onCloseModal}
                 onActionSucceeded={
-                    props.onActionSucceeded ? props.onActionSucceeded : () => {}
+                    props.onActionSucceeded ? props.onActionSucceeded : () => { }
                 }
                 refreshPageFunction={props.refreshPageFunction}
             />
@@ -310,7 +320,7 @@ function Modal(props: {
                 isOpened={props.isOpened}
                 onCloseModal={props.onCloseModal}
                 onActionSucceeded={
-                    props.onActionSucceeded ? props.onActionSucceeded : () => {}
+                    props.onActionSucceeded ? props.onActionSucceeded : () => { }
                 }
                 refreshPageFunction={props.refreshPageFunction}
             />
