@@ -7,8 +7,7 @@ const fontScale = PixelRatio.getFontScale();
 export const styles = StyleSheet.create({
     input: {
         paddingVertical: 32 * 1 / pixelDensity,
-        paddingLeft: 56,
-        paddingRight: 16,
+        paddingHorizontal: 24,
         borderRadius: 12,
         fontSize: 18 * fontScale,
         borderBottomWidth: 2,

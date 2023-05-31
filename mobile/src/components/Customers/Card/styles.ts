@@ -1,5 +1,4 @@
-import { StyleSheet, Platform, Dimensions } from "react-native";
-import Constants from "expo-constants";
+import { StyleSheet } from "react-native";
 import { THEME } from "../../../theme";
 
 export const styles = StyleSheet.create({
