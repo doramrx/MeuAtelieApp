@@ -18,7 +18,7 @@ import { Options } from "../../components/Orders/Options";
 import { ModalBuilder } from "../../components/shared/GenericModal/builder";
 import { database } from "../../database/database";
 
-interface OrderData {
+export interface OrderData {
     orderId: number;
     orderType: ServiceType;
     orderItems: Array<{
@@ -27,7 +27,7 @@ interface OrderData {
     }>;
 }
 
-type ServiceType = "Tailored" | "RepairOrAdjust";
+type ServiceType = "Tailored" | "Adjust";
 
 export function Orders() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -106,21 +106,12 @@ export function Orders() {
                             item.orderItems.forEach(orderItems => {
                                 console.log(`\ttitle: ${orderItems.title}`);
                                 console.log(`\tdueDate: ${orderItems.dueDate}`);
-                                
+
                             });
                             console.log("-----------------------------------------------");
-                        })
+                        });
 
-                        // const orders = resultSet.rows._array.map((rawOrder) => {
-                        //     return {
-                        //         id: rawOrder.id,
-                        //         title: rawOrder.title,
-                        //         dueDate: new Date(rawOrder.due_date),
-                        //         type: rawOrder.type,
-                        //     };
-                        // });
-
-                        // setOrders(orderList);
+                        setOrders(orderList);
                     }
                 );
             });
@@ -152,21 +143,21 @@ export function Orders() {
                 <Text style={styles.listCounter}>
                     {orders.length} Pedidos listados
                 </Text>
-                {orders.map(({ id, title, dueDate, type }, index, array) => {
+                {orders.map(({ orderId, orderType, orderItems }, index, array) => {
                     return array.length - 1 !== index ? (
                         <Card
-                            key={id}
-                            title={title}
-                            type={type}
-                            dueDate={dueDate}
+                            key={orderId}
+                            orderId={orderId}
+                            orderItems={orderItems}
+                            orderType={orderType}
                             marginBottom={6}
                         />
                     ) : (
                         <Card
-                            key={id}
-                            title={title}
-                            type={type}
-                            dueDate={dueDate}
+                            key={orderId}
+                            orderId={orderId}
+                            orderItems={orderItems}
+                            orderType={orderType}
                         />
                     );
                 })}
