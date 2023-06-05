@@ -32,15 +32,15 @@ export const styles = StyleSheet.create({
     color: THEME.COLORS.GRAY.DARK.V2,
     marginLeft: 15,
   },
-  orderType: {
+  orderText: {
     fontSize: 14,
-    fontWeight: THEME.FONT.WEIGHT.REGULAR,
+    fontWeight: THEME.FONT.WEIGHT.REGULAR as any,
     color: THEME.COLORS.GRAY.DARK.V2,
     marginLeft: 15,
   },
   orderDueDate: {
     fontSize: 14,
-    fontWeight: THEME.FONT.WEIGHT.REGULAR,
+    fontWeight: THEME.FONT.WEIGHT.REGULAR as any,
     color: THEME.COLORS.GRAY.DARK.V2,
     marginLeft: 15,
   },

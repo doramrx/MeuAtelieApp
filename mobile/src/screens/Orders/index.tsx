@@ -18,14 +18,16 @@ import { Options } from "../../components/Orders/Options";
 import { ModalBuilder } from "../../components/shared/GenericModal/builder";
 import { database } from "../../database/database";
 
-interface OrderData {
-    id: number;
-    title: string;
-    type: ServiceType;
-    dueDate: Date;
+export interface OrderData {
+    orderId: number;
+    orderType: ServiceType;
+    orderItems: Array<{
+        title: string;
+        dueDate: Date;
+    }>;
 }
 
-type ServiceType = "Tailored" | "RepairOrAdjust";
+type ServiceType = "Tailored" | "Adjust";
 
 export function Orders() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -43,19 +45,73 @@ export function Orders() {
         useCallback(() => {
             database.readTransaction((transaction) => {
                 transaction.executeSql(
-                    "SELECT id, title, type, dueDate FROM orders;",
+                    `SELECT 
+                        ord.id,
+                        ori.title,
+                        ord.due_date,
+                        ord.type
+                    FROM orders AS ord
+                    JOIN order_items AS ori ON ori.id_order = ord.id;`,
                     undefined,
                     (_, resultSet) => {
-                        const orders = resultSet.rows._array.map((rawOrder) => {
-                            return {
-                                id: rawOrder.id,
-                                title: rawOrder.title,
-                                dueDate: new Date(rawOrder.dueDate),
-                                type: rawOrder.type,
-                            };
+                        resultSet.rows._array.forEach((item) => {
+                            console.log(item);
                         });
 
-                        setOrders(orders);
+                        const orderList: OrderData[] = [];
+
+                        resultSet.rows._array.forEach((item) => {
+                            if (item.type === "Tailored") {
+                                orderList.push({
+                                    orderId: item.id,
+                                    orderType: item.type,
+                                    orderItems: [
+                                        {
+                                            title: item.title,
+                                            dueDate: new Date(item.due_date),
+                                        },
+                                    ],
+                                });
+                            } else {
+                                if (
+                                    orderList[orderList.length - 1].orderId ===
+                                    item.id
+                                ) {
+                                    orderList[
+                                        orderList.length - 1
+                                    ].orderItems.push({
+                                        title: item.title,
+                                        dueDate: new Date(item.due_date),
+                                    });
+                                } else {
+                                    orderList.push({
+                                        orderId: item.id,
+                                        orderType: item.type,
+                                        orderItems: [
+                                            {
+                                                title: item.title,
+                                                dueDate: new Date(
+                                                    item.due_date
+                                                ),
+                                            },
+                                        ],
+                                    });
+                                }
+                            }
+                        });
+
+                        orderList.forEach(item => {
+                            console.log(`Order id: ${item.orderId}`);
+                            console.log(`Order type: ${item.orderType}`);
+                            item.orderItems.forEach(orderItems => {
+                                console.log(`\ttitle: ${orderItems.title}`);
+                                console.log(`\tdueDate: ${orderItems.dueDate}`);
+
+                            });
+                            console.log("-----------------------------------------------");
+                        });
+
+                        setOrders(orderList);
                     }
                 );
             });
@@ -84,22 +140,24 @@ export function Orders() {
 
             <View style={styles.mainContainer}>
                 <Options />
-                <Text style={styles.listCounter}>{orders.length} Pedidos listados</Text>
-                {orders.map(({ id, title, dueDate, type }, index, array) => {
+                <Text style={styles.listCounter}>
+                    {orders.length} Pedidos listados
+                </Text>
+                {orders.map(({ orderId, orderType, orderItems }, index, array) => {
                     return array.length - 1 !== index ? (
                         <Card
-                            key={id}
-                            title={title}
-                            type={type}
-                            dueDate={dueDate}
+                            key={orderId}
+                            orderId={orderId}
+                            orderItems={orderItems}
+                            orderType={orderType}
                             marginBottom={6}
                         />
                     ) : (
                         <Card
-                            key={id}
-                            title={title}
-                            type={type}
-                            dueDate={dueDate}
+                            key={orderId}
+                            orderId={orderId}
+                            orderItems={orderItems}
+                            orderType={orderType}
                         />
                     );
                 })}

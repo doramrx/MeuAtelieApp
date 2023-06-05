@@ -5,8 +5,8 @@ import { THEME } from "../../theme";
 const fontScale = PixelRatio.getFontScale();
 const pixelDensity = PixelRatio.get();
 
+const screenWidth = Dimensions.get("screen").width;
 const sixtyPercentOfScreenWidth = Dimensions.get("screen").width * 0.6;
-
 const ninetyPercentOfScreenWidth = Dimensions.get("screen").width * 0.9;
 
 export const styles = StyleSheet.create({
@@ -49,46 +49,6 @@ export const styles = StyleSheet.create({
         overflow: "visible",
     },
 
-    formTitle: {
-        alignSelf: "flex-start",
-        fontSize: 28 * fontScale,
-        fontWeight: THEME.FONT.WEIGHT.MEDIUM as any,
-        color: THEME.COLORS.GRAY.DARK.V2,
-        marginBottom: 20,
-        marginLeft: 20,
-    },
-
-    newCustomerButton: {
-        backgroundColor: THEME.COLORS.PINK.V2,
-        alignItems: "center",
-        width: sixtyPercentOfScreenWidth,
-        paddingVertical: 14,
-        borderRadius: 12,
-        marginBottom: 10,
-    },
-
-    newCustomerText: {
-        fontSize: 18 * fontScale,
-        fontWeight: THEME.FONT.WEIGHT.MEDIUM as any,
-        color: THEME.COLORS.WHITE.FULL_WHITE,
-    },
-
-    text: {
-        fontWeight: THEME.FONT.WEIGHT.MEDIUM as any,
-        fontSize: 18 * fontScale,
-        color: THEME.COLORS.GRAY.DARK.V2,
-    },
-
-    input: {
-        marginTop: 16,
-        marginBottom: 16,
-        width: ninetyPercentOfScreenWidth,
-    },
-
-    customerList: {
-        width: ninetyPercentOfScreenWidth,
-    },
-
     nextStepButton: {
         position: "absolute",
         width: "100%",
@@ -125,8 +85,82 @@ export const styles = StyleSheet.create({
         transform: [{ rotate: "180deg" }],
     },
 
-    orderDescription: {
-        width: ninetyPercentOfScreenWidth,
+    step2Wrapper: {
+        alignItems: "center",
+        marginBottom: 40,
+        width: screenWidth,
+    },
+
+    formTitle: {
+        fontSize: 28 * fontScale,
+        fontWeight: THEME.FONT.WEIGHT.MEDIUM as any,
+        color: THEME.COLORS.GRAY.DARK.V2,
+        marginBottom: 20,
+    },
+
+    textBold: {
+        fontWeight: THEME.FONT.WEIGHT.MEDIUM as any,
+        fontSize: 20 * fontScale,
+        color: THEME.COLORS.GRAY.DARK.V2,
+    },
+
+    fieldText: {
+        fontSize: 18 * fontScale,
+        fontWeight: THEME.FONT.WEIGHT.REGULAR as any,
+        marginTop: 14,
+    },
+
+    amountInput: {
+        marginTop: 14,
+    },
+
+    pieceList: {
+        marginTop: 14,
+    },
+
+    expandableItemContainer: {
+        width: screenWidth,
+    },
+
+    expandableItem: {
+        backgroundColor: THEME.COLORS.GRAY.LIGHT.V2,
+        borderBottomWidth: 1,
+        borderBottomColor: THEME.COLORS.GRAY.LIGHT.V1,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        paddingHorizontal: 14,
+        paddingVertical: 10,
+    },
+
+    expandableItemText: {
+        fontSize: 18,
+        fontWeight: THEME.FONT.WEIGHT.MEDIUM as any,
+        color: THEME.COLORS.GRAY.MEDIUM.V1,
+    },
+
+    triangleIcon: {
+        width: 0,
+        height: 0,
+        backgroundColor: "transparent",
+        borderStyle: "solid",
+        borderTopWidth: 15,
+        borderRightWidth: 8,
+        borderBottomWidth: 0,
+        borderLeftWidth: 8,
+        borderTopColor: THEME.COLORS.GRAY.MEDIUM.V2,
+        borderRightColor: "transparent",
+        borderBottomColor: "transparent",
+        borderLeftColor: "transparent",
+    },
+
+    expandableItemContent: {
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        overflow: "hidden",
+    },
+
+    itemDescription: {
         paddingVertical: (32 * 1) / pixelDensity,
         paddingHorizontal: 24,
         borderRadius: 12,
@@ -135,97 +169,90 @@ export const styles = StyleSheet.create({
         color: THEME.COLORS.GRAY.DARK.V3,
         backgroundColor: THEME.COLORS.GRAY.LIGHT.V2,
         borderBottomColor: THEME.COLORS.GRAY.LIGHT.V1,
+        marginBottom: 14,
     },
 
-    optionalFieldsText: {
-        fontSize: 20,
-        fontWeight: THEME.FONT.WEIGHT.REGULAR as any,
-        marginTop: 14,
-        alignSelf: "flex-start",
+    expandableItemListText: {
+        alignSelf: "center",
+        fontSize: 16,
+        marginBottom: 14,
     },
 
-    step2Wrapper: {
-        alignItems: "center",
-        marginBottom: 40,
+    repairOrAdjustServiceList: {
+        paddingHorizontal: 12,
     },
 
-    photoContainer: {
-        flexDirection: "row",
-        alignSelf: "flex-start",
-        marginTop: 14,
-    },
-
-    photoCard: {
-        alignItems: "center",
-        borderWidth: 2,
-        borderStyle: "dashed",
-        borderRadius: 10,
-        borderColor: THEME.COLORS.GRAY.LIGHT.V1,
-        paddingHorizontal: 16,
-        paddingVertical: 8,
-        marginRight: 10,
-    },
-
-    photoCardText: {
-        color: THEME.COLORS.GRAY.MEDIUM.V2,
-    },
-
-    measurementsList: {
-        width: ninetyPercentOfScreenWidth,
-        marginTop: 14,
-        marginBottom: 20,
-        paddingHorizontal: 24,
-    },
-
-    measureItem: {
+    repairOrAdjustServiceHeader: {
         flexDirection: "row",
         justifyContent: "space-between",
-        alignItems: "center",
-        borderBottomWidth: 2,
-        borderBottomColor: THEME.COLORS.GRAY.LIGHT.V1,
+        marginBottom: 10,
+        paddingRight: 46,
     },
 
-    measureName: {
+    headerColumnText: {
         fontSize: 18,
-        fontWeight: THEME.FONT.WEIGHT.REGULAR as any,
-        color: THEME.COLORS.GRAY.DARK.V3,
-        paddingLeft: 6,
+        fontWeight: THEME.FONT.WEIGHT.MEDIUM as any,
+        color: THEME.COLORS.PINK.V1,
     },
 
-    measurementValueWrapper: {
-        alignItems: "center",
+    footerColumnText: {
+        fontSize: 18,
+        fontWeight: THEME.FONT.WEIGHT.MEDIUM as any,
+        color: THEME.COLORS.PINK.V1,
+    },
+
+    repairOrAdjustServiceFooter: {
         flexDirection: "row",
-        backgroundColor: THEME.COLORS.GRAY.LIGHT.V2,
-        paddingVertical: 14,
-        paddingHorizontal: 16,
+        justifyContent: "space-between",
+        paddingRight: 36,
     },
 
-    measurementValue: {
-        fontSize: 18,
-        fontWeight: THEME.FONT.WEIGHT.REGULAR as any,
-        color: THEME.COLORS.GRAY.DARK.V3,
-        marginRight: 4,
-    },
-
-    measurementUnit: {
-        fontSize: 18,
-        fontWeight: THEME.FONT.WEIGHT.REGULAR as any,
-        color: THEME.COLORS.GRAY.DARK.V3,
-    },
-
-    serviceCostWrapper: {
+    serviceItemContainer: {
         flexDirection: "row",
         alignItems: "center",
-        alignSelf: "flex-start",
+        justifyContent: "space-between",
+        paddingBottom: 5,
+        marginBottom: 10,
+        paddingHorizontal: 3,
+        borderBottomWidth: 1,
+        borderBottomColor: THEME.COLORS.GRAY.MEDIUM.V2,
     },
 
-    serviceCostlabel: {
+    serviceItemText: {
+        fontSize: 16,
+    },
+
+    serviceItemCostWrapper: {
+        flexDirection: "row",
+        alignItems: "center",
+    },
+
+    serviceItemCheckbox: {
+        width: 28,
+        height: 28,
+        marginLeft: 14,
+        borderWidth: 1,
+        borderRadius: 6,
+        borderColor: THEME.COLORS.GRAY.MEDIUM.V2,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+
+    totalServiceCostContainer: {
+        width: screenWidth,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        paddingHorizontal: 22,
+        marginTop: 14,
+    },
+
+    totalServiceCostText: {
         fontSize: 18,
-        marginRight: 10,
+        fontWeight: THEME.FONT.WEIGHT.MEDIUM as any,
     },
 
     dueDateWrapper: {
-        alignSelf: "flex-start",
+        marginTop: 14,
     },
 
     dueDateLabel: {
@@ -254,7 +281,6 @@ export const styles = StyleSheet.create({
     serviceCountForDueDateText: {
         color: THEME.COLORS.RED,
         fontSize: 15,
-        alignSelf: "flex-start",
         marginTop: 10,
     },
 
@@ -273,6 +299,7 @@ export const styles = StyleSheet.create({
         borderColor: THEME.COLORS.GRAY.LIGHT.V1,
         marginVertical: 10,
     },
+
     navigateToAgendaText: {
         color: THEME.COLORS.GRAY.MEDIUM.V2,
     },

@@ -6,15 +6,6 @@ database.transaction((transaction) => {
     console.log("DROPPING TABLE DRESSMAKERS");
     transaction.executeSql(`DROP TABLE IF EXISTS dressmakers;`);
 
-    console.log("DROPPING TABLE CUSTOMERS");
-    transaction.executeSql(`DROP TABLE IF EXISTS customers;`);
-
-    console.log("DROPPING TABLE ORDERS");
-    transaction.executeSql(`DROP TABLE IF EXISTS orders;`);
-
-    console.log("DROPPING TABLE CUSTOMER MEASURES");
-    transaction.executeSql(`DROP TABLE IF EXISTS customer_measures;`);
-
     console.log("CREATING TABLE DRESSMAKERS");
     transaction.executeSql(
         `CREATE TABLE IF NOT EXISTS dressmakers 
@@ -69,6 +60,11 @@ database.transaction((transaction) => {
         ('Costureira 36', 'costureira36@gmail.com', '12345', 0);`
     );
 
+    console.log("------------------------------------------------------------");
+
+    console.log("DROPPING TABLE CUSTOMERS");
+    transaction.executeSql(`DROP TABLE IF EXISTS customers;`);
+
     console.log("CREATING TABLE CUSTOMERS");
     transaction.executeSql(`
         CREATE TABLE IF NOT EXISTS customers
@@ -90,27 +86,106 @@ database.transaction((transaction) => {
             ('Cliente 06', '4711112222');
     `);
 
+    console.log("------------------------------------------------------------");
+
+    console.log("DROPPING TABLE ORDERS");
+    transaction.executeSql(`DROP TABLE IF EXISTS orders;`);
+
     console.log("CREATING TABLE ORDERS");
     transaction.executeSql(`
-        CREATE TABLE orders (
+        CREATE TABLE IF NOT EXISTS orders (
             id 				INTEGER PRIMARY KEY,
-            title			TEXT	NOT NULL,
-            description		TEXT,
             cost			REAL	NOT NULL,
-            dueDate			TEXT	NOT NULL,
-            type            TEXT    CHECK (type IN ('RepairOrAdjust', 'Tailored')),
-            createdAt		TEXT	NOT NULL
+            type            TEXT    CHECK (type IN ('Adjust', 'Tailored')),
+            due_date		TEXT	NOT NULL,
+            created_at		TEXT	NOT NULL,
+            id_customer		INTEGER	NOT NULL
         );
     `);
 
+    console.log("------------------------------------------------------------");
+
+    console.log("DROPPING TABLE ORDER_ITEMS");
+    transaction.executeSql("DROP TABLE IF EXISTS order_items;");
+
+    console.log("CREATING TABLE ORDER_ITEMS");
+    transaction.executeSql(`
+            CREATE TABLE IF NOT EXISTS order_items(
+                id          INTEGER PRIMARY KEY,
+                title       TEXT NOT NULL,
+                description TEXT,
+                id_order    INTEGER NOT NULL
+            );
+    `);
+
+    console.log("------------------------------------------------------------");
+
+    console.log("DROPPING TABLE CUSTOMER_MEASURES");
+    transaction.executeSql(`DROP TABLE IF EXISTS customer_measures;`);
+
     console.log("CREATING TABLE CUSTOMER_MEASURES");
     transaction.executeSql(`
-        CREATE TABLE customer_measures (
+        CREATE TABLE IF NOT EXISTS customer_measures (
             id				INTEGER PRIMARY KEY,
             measure			TEXT	NOT NULL,
             value			REAL	NOT NULL,
-            id_customer		INTEGER	NOT NULL,
-            id_order		INTEGER NOT NULL
+            id_order_item   INTEGER NOT NULL
         );
+    `);
+
+    console.log("------------------------------------------------------------");
+
+    console.log("DROPPING TABLE ADJUST_SERVICES");
+    transaction.executeSql("DROP TABLE IF EXISTS adjust_services;");
+
+    console.log("CREATING TABLE ADJUST_SERVICES");
+    transaction.executeSql(`
+        CREATE TABLE IF NOT EXISTS adjust_services (
+            id				INTEGER PRIMARY KEY,
+            description     TEXT	NOT NULL,
+            cost			REAL	NOT NULL
+        );
+    `);
+
+    console.log("CREATING SOME ADJUST_SERVICES");
+    transaction.executeSql(`
+            INSERT INTO adjust_services (description, cost) VALUES 
+            ('Ajuste de manga', 10),
+            ('Ajuste de barra', 10),
+            ('Ajuste de punho', 10),
+            ('Ajuste de comprimento', 10),
+            ('Ajuste de lateral', 10),
+            ('Ajuste de perna', 10),
+            ('Ajuste de cintura', 10),
+            ('Remendos', 10);
+    `);
+
+    console.log("------------------------------------------------------------");
+
+    console.log("DROPPING TABLE ORDERED_SERVICES");
+    transaction.executeSql("DROP TABLE IF EXISTS ordered_services;");
+
+    console.log("CREATING TABLE ORDERED_SERVICES");
+    transaction.executeSql(`
+        CREATE TABLE IF NOT EXISTS ordered_services (
+            id                  INTEGER PRIMARY KEY,
+            id_adjust_service   INTEGER NOT NULL,
+            id_order_item       INTEGER NOT NULL,
+            cost                REAL    NOT NULL
+        );
+    `);
+
+    console.log("------------------------------------------------------------");
+
+    console.log("DROPPING TABLE CLOTHING_PHOTOS");
+    transaction.executeSql("DROP TABLE IF EXISTS clothing_photos;");
+
+    console.log("CREATING TABLE CLOTHING_PHOTOS");
+    transaction.executeSql(`
+            CREATE TABLE IF NOT EXISTS clothing_photos (
+                id              INTEGER PRIMARY KEY,
+                photo           TEXT    NOT NULL,
+                id_order_item   INTEGER NOT NULL
+            );
     `);
 });

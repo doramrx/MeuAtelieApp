@@ -35,7 +35,7 @@ import { database } from "../../database/database";
 import { ModalBuilder } from "../../components/shared/GenericModal/builder";
 import { ScrollView } from "react-native-gesture-handler";
 
-type ServiceSteps = "customer" | "details";
+export type ServiceSteps = "customer" | "details";
 type CustomerMeasure = { name: string; value: string | null };
 type ServiceData = {
     title: string;
@@ -54,7 +54,6 @@ export function TailoredClothes() {
 
     function saveSelectedCustomerId(id: number) {
         setSelectedCustomerId(id);
-        console.log(id);
     }
 
     function abortNewService() {
@@ -102,74 +101,125 @@ export function TailoredClothes() {
     }
 
     function saveServiceOrder(serviceData: ServiceData) {
-        console.log(selectedCustomerId);
-        console.log(serviceData.title);
-        console.log(serviceData.description);
-        console.log(serviceData.customerMeasures);
-        console.log(serviceData.cost);
-        console.log(serviceData.dueDate);
+        // console.log(selectedCustomerId);
+        // console.log(serviceData.title);
+        // console.log(serviceData.description);
+        // console.log(serviceData.customerMeasures);
+        // console.log(serviceData.cost);
+        // console.log(serviceData.dueDate);
 
         database.transaction((transaction) => {
             transaction.executeSql(
                 `
-                INSERT INTO orders (title, description, cost, dueDate, type, createdAt) VALUES (?, ?, ?, ?, ?, ?);
+                INSERT INTO orders (cost, due_date, type, created_at, id_customer) VALUES (?, ?, ?, ?, ?);
             `,
                 [
-                    serviceData.title,
-                    serviceData.description || null,
                     serviceData.cost,
                     serviceData.dueDate.toISOString(),
                     "Tailored",
                     new Date().toISOString(),
+                    selectedCustomerId,
                 ],
                 (transaction, resultSet) => {
-                    console.log("PEDIDO REGISTRADO COM SUCESSO!");
-                    console.log(resultSet.insertId);
-
                     const insertedOrderId = resultSet.insertId;
 
+                    console.log("Order id: " + insertedOrderId);
+
                     if (insertedOrderId === undefined) {
-                        return Alert.alert("Erro", "Não foi possível cadastrar um novo serviço!");
-                    }
-
-                    if (
-                        serviceData.customerMeasures.length > 0
-                    ) {
-                        const sqlValuesStatement = serviceData.customerMeasures
-                            .map((measure) => {
-                                return `("${measure.name}", ${Number(
-                                    measure.value?.replace(",", ".")
-                                )}, ${selectedCustomerId}, ${insertedOrderId})`;
-                            })
-                            .join(",");
-
-                        console.log(sqlValuesStatement);
-
-                        transaction.executeSql(
-                            `
-                            INSERT INTO customer_measures (measure, value, id_customer, id_order) VALUES ${sqlValuesStatement};
-                        `,
-                            [],
-                            (_, resultSet) => {
-                                console.log(
-                                    "MEDIDAS DO CLIENTE REGISTRADAS COM SUCESSO!"
-                                );
-                                console.log(resultSet.rowsAffected);
-                                console.log(resultSet.insertId);
-
-                                if (resultSet.insertId === undefined) {
-                                    return Alert.alert("Erro", "Não foi possível cadastrar as medidas do cliente!");
-                                }
-
-                                Alert.alert("Sucesso", "Serviço cadastrado com sucesso!");
-
-                                navigation.navigate("orders");
-                            }
+                        return Alert.alert(
+                            "Erro",
+                            "Não foi possível cadastrar um novo serviço!"
                         );
                     }
+
+                    transaction.executeSql(
+                        `
+                        INSERT INTO order_items 
+                            (title, description, id_order) 
+                        VALUES (?, ?, ?);
+                    `,
+                        [
+                            serviceData.title,
+                            serviceData.description,
+                            insertedOrderId,
+                        ],
+                        (transaction, resultSet) => {
+                            const insertedOrderItemId = resultSet.insertId;
+
+                            console.log(
+                                `Order item id: ${insertedOrderItemId}`
+                            );
+
+                            if (insertedOrderItemId === undefined) {
+                                return Alert.alert(
+                                    "Erro",
+                                    "Não foi possível cadastrar a peça!"
+                                );
+                            }
+
+                            if (serviceData.customerMeasures.length > 0) {
+                                const sqlValueStatement =
+                                    serviceData.customerMeasures
+                                        .map((measure) => {
+                                            const value = Number(
+                                                measure.value!.replace(",", ".")
+                                            );
+                                            return `('${measure.name}', ${value}, ${insertedOrderItemId})`;
+                                        })
+                                        .join(",");
+
+                                const insertCustomerMeasuresSQLStatement = `INSERT INTO customer_measures (measure, value, id_order_item) VALUES ${sqlValueStatement};`;
+
+                                transaction.executeSql(
+                                    insertCustomerMeasuresSQLStatement,
+                                    undefined,
+                                    (_, resultSet) => {
+                                        const insertedMeasureId =
+                                            resultSet.insertId;
+
+                                        console.log(
+                                            "Last measure Id: " +
+                                                insertedMeasureId
+                                        );
+
+                                        if (insertedMeasureId === undefined) {
+                                            return Alert.alert(
+                                                "Erro",
+                                                "Não foi possível cadastrar as medidas do cliente!"
+                                            );
+                                        }
+
+                                        Alert.alert(
+                                            "Sucesso",
+                                            "Serviço cadastrado com sucesso!"
+                                        );
+
+                                        navigation.navigate("orders");
+                                    }
+                                );
+                            }
+                        }
+                    );
                 }
             );
         });
+
+        // database.transaction((transaction) => {
+        //     transaction.executeSql(
+        //         "SELECT * FROM customer_measures;",
+        //         undefined,
+        //         (_, resultSet) => {
+        //             console.log(resultSet.rows);
+        //             resultSet.rows._array.forEach((item) => {
+        //                 console.log(item);
+        //                 // console.log(item.type);
+        //                 // console.log(item.cost);
+        //                 // console.log(item.due_date);
+        //                 console.log("-------------------------------");
+        //             });
+        //         }
+        //     );
+        // });
     }
 
     return (
@@ -196,6 +246,7 @@ export function TailoredClothes() {
             <View style={styles.mainContainer}>
                 {currentStep === "customer" ? (
                     <Step1
+                        title="Roupa sob medida"
                         openModal={openModal}
                         selectedCustomer={selectedCustomerId}
                         onSelectCustomer={saveSelectedCustomerId}
@@ -425,7 +476,8 @@ function RegisterModal(props: {
     return modal;
 }
 
-function Step1(props: {
+export function Step1(props: {
+    title: string;
     openModal: () => void;
     selectedCustomer: number;
     onSelectCustomer: (id: number) => void;
@@ -457,7 +509,7 @@ function Step1(props: {
 
     return (
         <>
-            <Text style={styles.formTitle}>Roupa sob medida</Text>
+            <Text style={styles.formTitle}>{props.title}</Text>
 
             <TouchableHighlight
                 style={styles.newCustomerButton}
@@ -614,18 +666,40 @@ function Step2(props: { onFinishOrder: (serviceData: ServiceData) => void }) {
                         keyboardType="numeric"
                         value={cost}
                         onChangeText={(text) => {
+                            const typedText = text.charAt(text.length - 1);
                             const commaCountInText = (text.match(/\,/g) || [])
                                 .length;
+                            const dotCountInText = (text.match(/\./g) || [])
+                                .length;
 
-                            if (text.charAt(text.length - 1) === ".") {
+                            if (commaCountInText >= 1 && dotCountInText >= 1) {
                                 return;
                             }
 
-                            if (text.length === 1 && commaCountInText === 1) {
+                            if (
+                                (typedText === "." && dotCountInText > 1) ||
+                                (typedText === "," && commaCountInText > 1)
+                            ) {
+                                return;
+                            }
+
+                            if (
+                                text.length === 1 &&
+                                commaCountInText === 1 &&
+                                typedText === ","
+                            ) {
                                 return setCost("0,");
                             }
 
-                            if (commaCountInText <= 1) {
+                            if (
+                                text.length === 1 &&
+                                dotCountInText === 1 &&
+                                typedText === "."
+                            ) {
+                                return setCost("0.");
+                            }
+
+                            if (commaCountInText <= 1 || dotCountInText <= 1) {
                                 return setCost(text);
                             }
                         }}
@@ -718,18 +792,39 @@ function MeasureItem(props: {
                     style={styles.measurementValue}
                     value={props.value ? props.value : ""}
                     onChangeText={(text) => {
+                        const typedText = text.charAt(text.length - 1);
                         const commaCountInText = (text.match(/\,/g) || [])
                             .length;
+                        const dotCountInText = (text.match(/\./g) || []).length;
 
-                        if (text.charAt(text.length - 1) === ".") {
+                        if (commaCountInText >= 1 && dotCountInText >= 1) {
                             return;
                         }
 
-                        if (text.length === 1 && commaCountInText === 1) {
+                        if (
+                            (typedText === "." && dotCountInText > 1) ||
+                            (typedText === "," && commaCountInText > 1)
+                        ) {
+                            return;
+                        }
+
+                        if (
+                            text.length === 1 &&
+                            commaCountInText === 1 &&
+                            typedText === ","
+                        ) {
                             return props.onChangeMeasure(props.index, "0,");
                         }
 
-                        if (commaCountInText <= 1) {
+                        if (
+                            text.length === 1 &&
+                            dotCountInText === 1 &&
+                            typedText === "."
+                        ) {
+                            return props.onChangeMeasure(props.index, "0.");
+                        }
+
+                        if (commaCountInText <= 1 || dotCountInText <= 1) {
                             return props.onChangeMeasure(props.index, text);
                         }
                     }}
