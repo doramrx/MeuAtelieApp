@@ -54,7 +54,7 @@ export function RepairOrAdjustment() {
 
     function saveSelectedCustomerId(id: number) {
         setSelectedCustomerId(id);
-        console.log(id);
+        // console.log(id);
     }
 
     function openModal() {
@@ -91,9 +91,9 @@ export function RepairOrAdjustment() {
         }, 0);
 
         // pieceData.forEach((item) => {
-        //     console.log(item.title);
-        //     console.log(item.description);
-        //     console.log(item.adjustServices);
+        //     // console.log(item.title);
+        //     // console.log(item.description);
+        //     // console.log(item.adjustServices);
         // });
 
         database.transaction((transaction) => {
@@ -336,11 +336,11 @@ function Step2(props: {
         pieceDataCopy[pieceIndex].adjustServices[serviceIndex].isSelected =
             !pieceDataCopy[pieceIndex].adjustServices[serviceIndex].isSelected;
 
-        // console.log(pieceDataCopy[pieceIndex].title);
-        // console.log(pieceDataCopy[pieceIndex].description);
-        // console.log(pieceDataCopy[pieceIndex].isExpanded);
+        // // console.log(pieceDataCopy[pieceIndex].title);
+        // // console.log(pieceDataCopy[pieceIndex].description);
+        // // console.log(pieceDataCopy[pieceIndex].isExpanded);
         // pieceDataCopy[pieceIndex].adjustServices.forEach((item) => {
-        //     console.log(item);
+        //     // console.log(item);
         // });
 
         setPieceData(pieceDataCopy);
@@ -499,7 +499,7 @@ function Step2(props: {
                     <Pressable
                         style={styles.dueDatePicker}
                         onPress={() => {
-                            console.log("Open date picker");
+                            // console.log("Open date picker");
                             openDatePicker();
                         }}
                     >
@@ -544,7 +544,7 @@ function Step2(props: {
     );
 }
 
-function ExpandableItem(props: {
+export function ExpandableItem(props: {
     itemName: string;
     pieceTitle: string;
     pieceDescription: string | null;
@@ -554,9 +554,10 @@ function ExpandableItem(props: {
     onClickFunction: () => void;
     onServiceCheck: (index: number) => void;
     serviceList: AdjustServices[];
+    containerStyles?: {};
 }) {
     return (
-        <View style={styles.expandableItemContainer}>
+        <View style={[styles.expandableItemContainer, props.containerStyles]}>
             <Pressable
                 style={styles.expandableItem}
                 onPress={props.onClickFunction}
@@ -600,18 +601,29 @@ function ExpandableItem(props: {
     );
 }
 
-function RepairOrAdjustmentList(props: {
+export function RepairOrAdjustmentList({
+    serviceList,
+    isSelectable = true,
+    onServiceCheck,
+}: {
     serviceList: AdjustServices[];
-    onServiceCheck: (index: number) => void;
+    onServiceCheck?: (index: number) => void;
+    isSelectable?: boolean;
 }) {
+
     return (
         <View style={styles.repairOrAdjustServiceList}>
-            <View style={styles.repairOrAdjustServiceHeader}>
+            <View
+                style={[
+                    styles.repairOrAdjustServiceHeader,
+                    !isSelectable && { paddingRight: 0 },
+                ]}
+            >
                 <Text style={styles.headerColumnText}>Ajustes</Text>
                 <Text style={styles.headerColumnText}>Valor</Text>
             </View>
             <View>
-                {props.serviceList.map((service, index) => {
+                {serviceList.map((service, index) => {
                     return (
                         <RepairOrAdjustmentServiceItem
                             key={index}
@@ -619,17 +631,23 @@ function RepairOrAdjustmentList(props: {
                             cost={service.cost}
                             isChecked={service.isSelected}
                             onCheck={() => {
-                                props.onServiceCheck(index);
+                                onServiceCheck && onServiceCheck(index);
                             }}
+                            isSelectable={isSelectable}
                         />
                     );
                 })}
             </View>
-            <View style={styles.repairOrAdjustServiceFooter}>
+            <View
+                style={[
+                    styles.repairOrAdjustServiceFooter,
+                    !isSelectable && { paddingRight: 0 },
+                ]}
+            >
                 <Text style={styles.footerColumnText}>Total</Text>
                 <Text style={styles.footerColumnText}>
                     R${" "}
-                    {props.serviceList
+                    {serviceList
                         .reduce((accumulator, adjust) => {
                             return adjust.isSelected
                                 ? accumulator + adjust.cost
@@ -643,11 +661,12 @@ function RepairOrAdjustmentList(props: {
     );
 }
 
-function RepairOrAdjustmentServiceItem(props: {
+export function RepairOrAdjustmentServiceItem(props: {
     name: string;
     cost: number;
     isChecked: boolean;
     onCheck: () => void;
+    isSelectable?: boolean;
 }) {
     return (
         <View style={styles.serviceItemContainer}>
@@ -656,24 +675,26 @@ function RepairOrAdjustmentServiceItem(props: {
                 <Text style={styles.serviceItemText}>
                     R$ {props.cost.toFixed(2).padEnd(4, "0").replace(".", ",")}
                 </Text>
-                <Pressable
-                    onPress={props.onCheck}
-                    style={[
-                        styles.serviceItemCheckbox,
-                        props.isChecked && {
-                            backgroundColor: THEME.COLORS.PINK.V1,
-                            borderWidth: 0,
-                        },
-                    ]}
-                >
-                    {props.isChecked && (
-                        <CheckIcon
-                            width={14}
-                            height={14}
-                            color={THEME.COLORS.WHITE.FULL_WHITE}
-                        />
-                    )}
-                </Pressable>
+                {props.isSelectable && (
+                    <Pressable
+                        onPress={props.onCheck}
+                        style={[
+                            styles.serviceItemCheckbox,
+                            props.isChecked && {
+                                backgroundColor: THEME.COLORS.PINK.V1,
+                                borderWidth: 0,
+                            },
+                        ]}
+                    >
+                        {props.isChecked && (
+                            <CheckIcon
+                                width={14}
+                                height={14}
+                                color={THEME.COLORS.WHITE.FULL_WHITE}
+                            />
+                        )}
+                    </Pressable>
+                )}
             </View>
         </View>
     );

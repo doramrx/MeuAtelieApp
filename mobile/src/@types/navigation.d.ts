@@ -1,3 +1,5 @@
+import { ServiceType } from "../screens/Orders";
+
 export declare global {
     namespace ReactNavigation {
         interface RootParamList {
@@ -17,6 +19,10 @@ export declare global {
             inaugural: undefined;
             tailoredClothes: undefined;
             repairOrAdjustment: undefined;
+            orderDetail: {
+                orderId: number;
+                orderType: ServiceType
+            };
         }
     }
 }

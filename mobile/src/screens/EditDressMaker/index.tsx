@@ -53,7 +53,7 @@ export function EditDressMaker({ route, navigation }: Props) {
                     "SELECT * FROM dressmakers WHERE email = ? AND NOT id = ?;",
                     [email, routeParams.id],
                     (transaction, resultSet) => {
-                        console.log(resultSet.rows.length);
+                        // console.log(resultSet.rows.length);
 
                         if (resultSet.rows.length !== 0) {
                             return reject("Email em uso!");
@@ -63,7 +63,7 @@ export function EditDressMaker({ route, navigation }: Props) {
                             "SELECT * FROM dressmakers WHERE id = ?;",
                             [routeParams.id],
                             (transaction, resultSet) => {
-                                console.log(resultSet.rows);
+                                // console.log(resultSet.rows);
                                 
                                 const currentPassword = resultSet.rows.item(0).password;
 

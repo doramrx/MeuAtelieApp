@@ -93,7 +93,7 @@ export function Profile() {
                                 `DELETE FROM dressmakers WHERE id = ?;`,
                                 [userId],
                                 (_, resultSet) => {
-                                    console.log(resultSet);
+                                    // console.log(resultSet);
 
                                     if (resultSet.rowsAffected !== 1) {
                                         Alert.alert(
@@ -280,7 +280,7 @@ function EditModal(props: {
     const [email, setEmail] = useState("");
 
     function editDressMakers() {
-        console.log("Teste");
+        // console.log("Teste");
 
         database.transaction((transaction) => {
             transaction.executeSql(
@@ -427,7 +427,7 @@ function EditPasswordModal(props: {
                 [props.userId],
                 (_, resultSet) => {
                     const password = resultSet.rows.item(0).password;
-                    console.log(password);
+                    // console.log(password);
                     if (currentPassword.trim() !== password) {
                         return Alert.alert(
                             "Erro ao alterar a senha",

@@ -2,6 +2,9 @@ import * as SQLite from "expo-sqlite";
 
 export const database = SQLite.openDatabase("database.db");
 
+// database.closeAsync();
+// database.deleteAsync();
+
 database.transaction((transaction) => {
     console.log("DROPPING TABLE DRESSMAKERS");
     transaction.executeSql(`DROP TABLE IF EXISTS dressmakers;`);

@@ -53,8 +53,8 @@ export function SignIn() {
                     "SELECT id, isAdm FROM dressmakers WHERE email = ? AND password = ?;",
                     [email, password],
                     (_, resultSet) => {
-                        console.log(resultSet.rows.length);
-                        console.log("teste");
+                        // console.log(resultSet.rows.length);
+                        // console.log("teste");
 
                         if (resultSet.rows.length === 0) {
                             reject("Costureira não cadastrado!");
@@ -71,7 +71,7 @@ export function SignIn() {
 
         signInUserPromise
             .then((user) => {
-                console.log(`dressmakerId: `, user.id, " isAdm: ", user.isAdm);
+                // console.log(`dressmakerId: `, user.id, " isAdm: ", user.isAdm);
                 setSetUserId(user.id);
                 setIsAdm(user.isAdm);
 
