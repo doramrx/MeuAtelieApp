@@ -27,7 +27,7 @@ export interface OrderData {
     }>;
 }
 
-type ServiceType = "Tailored" | "Adjust";
+export type ServiceType = "Tailored" | "Adjust";
 
 export function Orders() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -73,13 +73,29 @@ export function Orders() {
                                     ],
                                 });
                             } else {
-                                if (
-                                    orderList[orderList.length - 1].orderId ===
-                                    item.id
-                                ) {
-                                    orderList[
-                                        orderList.length - 1
-                                    ].orderItems.push({
+                                if (orderList.length === 0) {
+                                    orderList.push({
+                                        orderId: item.id,
+                                        orderType: item.type,
+                                        orderItems: [
+                                            {
+                                                title: item.title,
+                                                dueDate: new Date(
+                                                    item.due_date
+                                                ),
+                                            },
+                                        ],
+                                    });
+
+                                    return;
+                                }
+
+                                const lastIndex = orderList.length - 1;
+                                const previousOrderId =
+                                    orderList[orderList.length - 1].orderId;
+
+                                if (previousOrderId === item.id) {
+                                    orderList[lastIndex].orderItems.push({
                                         title: item.title,
                                         dueDate: new Date(item.due_date),
                                     });
@@ -100,15 +116,16 @@ export function Orders() {
                             }
                         });
 
-                        orderList.forEach(item => {
-                            console.log(`Order id: ${item.orderId}`);
-                            console.log(`Order type: ${item.orderType}`);
-                            item.orderItems.forEach(orderItems => {
-                                console.log(`\ttitle: ${orderItems.title}`);
-                                console.log(`\tdueDate: ${orderItems.dueDate}`);
-
+                        orderList.forEach((item) => {
+                            // console.log(`Order id: ${item.orderId}`);
+                            // console.log(`Order type: ${item.orderType}`);
+                            item.orderItems.forEach((orderItems) => {
+                                // console.log(`\ttitle: ${orderItems.title}`);
+                                // console.log(`\tdueDate: ${orderItems.dueDate}`);
                             });
-                            console.log("-----------------------------------------------");
+                            console.log(
+                                "-----------------------------------------------"
+                            );
                         });
 
                         setOrders(orderList);
@@ -143,32 +160,32 @@ export function Orders() {
                 <Text style={styles.listCounter}>
                     {orders.length} Pedidos listados
                 </Text>
-                {orders.map(({ orderId, orderType, orderItems }, index, array) => {
-                    return array.length - 1 !== index ? (
-                        <Card
-                            key={orderId}
-                            orderId={orderId}
-                            orderItems={orderItems}
-                            orderType={orderType}
-                            marginBottom={6}
-                        />
-                    ) : (
-                        <Card
-                            key={orderId}
-                            orderId={orderId}
-                            orderItems={orderItems}
-                            orderType={orderType}
-                        />
-                    );
-                })}
+                {orders.map(
+                    ({ orderId, orderType, orderItems }, index, array) => {
+                        return array.length - 1 !== index ? (
+                            <Card
+                                key={orderId}
+                                orderId={orderId}
+                                orderItems={orderItems}
+                                orderType={orderType}
+                                marginBottom={6}
+                            />
+                        ) : (
+                            <Card
+                                key={orderId}
+                                orderId={orderId}
+                                orderItems={orderItems}
+                                orderType={orderType}
+                            />
+                        );
+                    }
+                )}
             </View>
 
-            {
-                <ServiceTypeModal
-                    isOpen={isModalOpen}
-                    onCloseModal={closeModal}
-                />
-            }
+            <ServiceTypeModal
+                isOpen={isModalOpen}
+                onCloseModal={closeModal}
+            />
         </View>
     );
 }

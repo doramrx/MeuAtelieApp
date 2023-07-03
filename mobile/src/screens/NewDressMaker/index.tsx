@@ -65,7 +65,7 @@ export function NewDressMaker({
 
         registerDressmakerPromise
             .then((userId) => {
-                console.log(`userId: ${userId}`);
+                // console.log(`userId: ${userId}`);
                 navigation.navigate("successScreen", {
                     headerMessage: "Cadastro de costureira",
                     successMessage: "Costureira cadastrada com sucesso!",

@@ -149,7 +149,7 @@ export function Customers() {
                         const rawResultSet = resultSet.rows._array;
 
                         if (rawResultSet.length === 0) {
-                            console.log("Não existem mais registros");
+                            // console.log("Não existem mais registros");
                             haveMoreRecordsRef.current = false;
                             return;
                         }
@@ -232,8 +232,8 @@ export function Customers() {
                         if (activeModalType === "register") {
                             setCustomers([...customers, customer]);
                         } else if (activeModalType === "edit") {
-                            console.log(activeModalType);
-                            console.log(customer);
+                            // console.log(activeModalType);
+                            // console.log(customer);
                             setCustomers((current) =>
                                 current.map((oldCustomer) => {
                                     return customer.id === oldCustomer.id

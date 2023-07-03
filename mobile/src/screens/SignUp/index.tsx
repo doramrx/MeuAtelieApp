@@ -54,7 +54,7 @@ export function SignUp() {
                     "SELECT * FROM dressmakers WHERE email = ?;",
                     [email],
                     (transaction, resultSet) => {
-                        console.log(resultSet.rows.length);
+                        // console.log(resultSet.rows.length);
 
                         if (resultSet.rows.length !== 0) {
                             return reject("Costureira já cadastrado!");
@@ -80,7 +80,7 @@ export function SignUp() {
 
         registerUserPromise
             .then((userId) => {
-                console.log(`userId: ${userId}`);
+                // console.log(`userId: ${userId}`);
                 Alert.alert(
                     "Cadastro realizado com sucesso!",
                     "Usuário cadastrado com sucesso!"

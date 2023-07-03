@@ -1,5 +1,11 @@
 import { ReactNode } from "react";
-import { Text, View, Modal, TouchableHighlight } from "react-native";
+import {
+    Text,
+    View,
+    Modal,
+    TouchableHighlight,
+    ScrollView,
+} from "react-native";
 
 import { styles } from "./styles";
 import { THEME } from "../../../theme";
@@ -46,8 +52,13 @@ export function GenericModal({
                     <View style={styles.main}>
                         <Text style={styles.title}>{modalTitle}</Text>
 
-                        {children}
-
+                        <ScrollView
+                            style={{
+                                maxHeight: 380,
+                            }}
+                        >
+                            {children}
+                        </ScrollView>
                         <View style={styles.buttonsContainer}>
                             <TouchableHighlight
                                 underlayColor={

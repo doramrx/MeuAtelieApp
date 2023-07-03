@@ -26,7 +26,6 @@ import ArrowIcon from "../../assets/icons/arrow-icon.svg";
 import UserIconFilled from "../../assets/icons/user-icon-filled.svg";
 import PhoneIconFilled from "../../assets/icons/phone-icon-filled.svg";
 import AddIconWithBorder from "../../assets/icons/add-icon-with-border.svg";
-import PhotoIcon from "../../assets/icons/photo-icon.svg";
 import CalendarIconFilled from "../../assets/icons/calendar-icon-filled.svg";
 
 import { Input } from "../../components/shared/Input";
@@ -34,9 +33,14 @@ import { Card, CustomerProps } from "../../components/Customers/Card";
 import { database } from "../../database/database";
 import { ModalBuilder } from "../../components/shared/GenericModal/builder";
 import { ScrollView } from "react-native-gesture-handler";
+import { PhotoCard } from "../../components/Orders/PhotoCard";
+import {
+    CustomerMeasure,
+    MeasureList,
+} from "../../components/Orders/MeasureList";
 
 export type ServiceSteps = "customer" | "details";
-type CustomerMeasure = { name: string; value: string | null };
+
 type ServiceData = {
     title: string;
     description: string;
@@ -101,12 +105,12 @@ export function TailoredClothes() {
     }
 
     function saveServiceOrder(serviceData: ServiceData) {
-        // console.log(selectedCustomerId);
-        // console.log(serviceData.title);
-        // console.log(serviceData.description);
-        // console.log(serviceData.customerMeasures);
-        // console.log(serviceData.cost);
-        // console.log(serviceData.dueDate);
+        // // console.log(selectedCustomerId);
+        // // console.log(serviceData.title);
+        // // console.log(serviceData.description);
+        // // console.log(serviceData.customerMeasures);
+        // // console.log(serviceData.cost);
+        // // console.log(serviceData.dueDate);
 
         database.transaction((transaction) => {
             transaction.executeSql(
@@ -123,7 +127,7 @@ export function TailoredClothes() {
                 (transaction, resultSet) => {
                     const insertedOrderId = resultSet.insertId;
 
-                    console.log("Order id: " + insertedOrderId);
+                    // // console.log("Order id: " + insertedOrderId);
 
                     if (insertedOrderId === undefined) {
                         return Alert.alert(
@@ -146,9 +150,9 @@ export function TailoredClothes() {
                         (transaction, resultSet) => {
                             const insertedOrderItemId = resultSet.insertId;
 
-                            console.log(
-                                `Order item id: ${insertedOrderItemId}`
-                            );
+                            // // console.log(
+                            //     `Order item id: ${insertedOrderItemId}`
+                            // );
 
                             if (insertedOrderItemId === undefined) {
                                 return Alert.alert(
@@ -177,10 +181,10 @@ export function TailoredClothes() {
                                         const insertedMeasureId =
                                             resultSet.insertId;
 
-                                        console.log(
-                                            "Last measure Id: " +
-                                                insertedMeasureId
-                                        );
+                                        // // console.log(
+                                        //     "Last measure Id: " +
+                                        //         insertedMeasureId
+                                        // );
 
                                         if (insertedMeasureId === undefined) {
                                             return Alert.alert(
@@ -209,13 +213,13 @@ export function TailoredClothes() {
         //         "SELECT * FROM customer_measures;",
         //         undefined,
         //         (_, resultSet) => {
-        //             console.log(resultSet.rows);
+        //             // console.log(resultSet.rows);
         //             resultSet.rows._array.forEach((item) => {
-        //                 console.log(item);
-        //                 // console.log(item.type);
-        //                 // console.log(item.cost);
-        //                 // console.log(item.due_date);
-        //                 console.log("-------------------------------");
+        //                 // console.log(item);
+        //                 // // console.log(item.type);
+        //                 // // console.log(item.cost);
+        //                 // // console.log(item.due_date);
+        //                 // console.log("-------------------------------");
         //             });
         //         }
         //     );
@@ -641,20 +645,11 @@ function Step2(props: { onFinishOrder: (serviceData: ServiceData) => void }) {
                     Adicionar medidas do cliente (opcional)
                 </Text>
 
-                <View style={styles.measurementsList}>
-                    {measurementList.map(({ name, value }, index) => {
-                        return (
-                            <MeasureItem
-                                key={index}
-                                index={index}
-                                name={name}
-                                value={value}
-                                measurementUnit="cm"
-                                onChangeMeasure={updateMeasureItem}
-                            />
-                        );
-                    })}
-                </View>
+                <MeasureList
+                    containerStyles={{ marginTop: 20 }}
+                    data={measurementList}
+                    updateMeasureItemFn={updateMeasureItem}
+                />
 
                 <View style={styles.serviceCostWrapper}>
                     <Text style={styles.serviceCostlabel}>
@@ -713,7 +708,6 @@ function Step2(props: { onFinishOrder: (serviceData: ServiceData) => void }) {
                     <Pressable
                         style={styles.dueDatePicker}
                         onPress={() => {
-                            console.log("Open date picker");
                             openDatePicker();
                         }}
                     >
@@ -755,84 +749,5 @@ function Step2(props: { onFinishOrder: (serviceData: ServiceData) => void }) {
                 </TouchableHighlight>
             </View>
         </ScrollView>
-    );
-}
-
-function PhotoCard(props: { total: number; index: number }) {
-    return (
-        <TouchableOpacity style={styles.photoCard}>
-            <PhotoIcon
-                color={THEME.COLORS.GRAY.LIGHT.V1}
-                width={35}
-                height={35}
-            />
-            <Text style={styles.photoCardText}>
-                {props.index}/{props.total}
-            </Text>
-        </TouchableOpacity>
-    );
-}
-
-function MeasureItem(props: {
-    index: number;
-    name: string;
-    value: string | null;
-    measurementUnit: string;
-    onChangeMeasure: (index: number, newValue: string) => void;
-}) {
-    return (
-        <View style={styles.measureItem}>
-            <Text style={styles.measureName}>{props.name}:</Text>
-            <View style={styles.measurementValueWrapper}>
-                <TextInput
-                    placeholder="0,00"
-                    placeholderTextColor={THEME.COLORS.GRAY.MEDIUM.V1}
-                    keyboardType="numeric"
-                    maxLength={5}
-                    style={styles.measurementValue}
-                    value={props.value ? props.value : ""}
-                    onChangeText={(text) => {
-                        const typedText = text.charAt(text.length - 1);
-                        const commaCountInText = (text.match(/\,/g) || [])
-                            .length;
-                        const dotCountInText = (text.match(/\./g) || []).length;
-
-                        if (commaCountInText >= 1 && dotCountInText >= 1) {
-                            return;
-                        }
-
-                        if (
-                            (typedText === "." && dotCountInText > 1) ||
-                            (typedText === "," && commaCountInText > 1)
-                        ) {
-                            return;
-                        }
-
-                        if (
-                            text.length === 1 &&
-                            commaCountInText === 1 &&
-                            typedText === ","
-                        ) {
-                            return props.onChangeMeasure(props.index, "0,");
-                        }
-
-                        if (
-                            text.length === 1 &&
-                            dotCountInText === 1 &&
-                            typedText === "."
-                        ) {
-                            return props.onChangeMeasure(props.index, "0.");
-                        }
-
-                        if (commaCountInText <= 1 || dotCountInText <= 1) {
-                            return props.onChangeMeasure(props.index, text);
-                        }
-                    }}
-                />
-                <Text style={styles.measurementUnit}>
-                    {props.measurementUnit}
-                </Text>
-            </View>
-        </View>
     );
 }

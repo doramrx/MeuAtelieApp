@@ -78,7 +78,7 @@ export function ListDressMakers() {
                         const rawResultSet = resultSet.rows._array;
 
                         if (rawResultSet.length === 0) {
-                            console.log("Não existem mais registros");
+                            // console.log("Não existem mais registros");
                             haveMoreRecordsRef.current = false;
                             return;
                         }
