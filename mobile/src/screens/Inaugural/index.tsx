@@ -1,10 +1,11 @@
-import { Image, StatusBar, Text, TouchableHighlight, View } from "react-native";
-
-import Logo from "../../assets/Logo.png";
+import { Image, Text, TouchableHighlight } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 import { styles } from "./styles";
 import { THEME } from "../../theme";
-import { useNavigation } from "@react-navigation/native";
+import Logo from "../../assets/Logo.png";
+
+import { Screen } from "../../components/shared/Screen";
 
 export function Inaugural() {
     const navigation = useNavigation();
@@ -14,20 +15,15 @@ export function Inaugural() {
     }
 
     return (
-        <View style={styles.container}>
-            <StatusBar
-                animated={true}
-                barStyle="default"
-                backgroundColor={THEME.COLORS.PINK.V2}
-            />
-            <View style={styles.logoContainer}>
+        <Screen.Root>
+            <Screen.Header additionalStyles={styles.logoContainer}>
                 <Image
                     source={Logo}
                     style={styles.logoImage}
                 />
-            </View>
+            </Screen.Header>
 
-            <View style={styles.welcomeContainer}>
+            <Screen.Content additionalStyles={styles.welcomeContainer}>
                 <Text style={styles.title}>Bem vindo (a)</Text>
                 <Text style={styles.message}>
                     O melhor aplicativo para organizar o seu Ateliê!
@@ -54,7 +50,7 @@ export function Inaugural() {
                 >
                     <Text style={styles.buttonText}>Cadastrar</Text>
                 </TouchableHighlight>
-            </View>
-        </View>
+            </Screen.Content>
+        </Screen.Root>
     );
 }
