@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     height: (400 * 1) / pixelDensity,
   },
 
-  welcomeContainer: {
+  mainContainer: {
     flex: 1.5,
     paddingTop: 40,
     paddingHorizontal: 40,

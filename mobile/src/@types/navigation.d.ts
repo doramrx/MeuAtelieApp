@@ -23,6 +23,7 @@ export declare global {
                 orderId: number;
                 orderType: ServiceType
             };
+            tabNavigatorRoutes: undefined;
         }
     }
 }

@@ -23,7 +23,7 @@ export function Inaugural() {
         />
       </Screen.Header>
 
-      <Screen.Content additionalStyles={styles.welcomeContainer}>
+      <Screen.Content additionalStyles={styles.mainContainer}>
         <Text style={styles.title}>Bem vindo (a)</Text>
         <Text style={styles.message}>
           O melhor aplicativo para organizar o seu Ateliê!
