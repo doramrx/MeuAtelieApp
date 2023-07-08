@@ -24,11 +24,13 @@ export const styles = StyleSheet.create({
     paddingTop: 40,
     paddingHorizontal: 40,
   },
+
   title: {
     fontSize: 35 * fontScale,
     fontWeight: THEME.FONT.WEIGHT.MEDIUM,
     marginBottom: 30,
   },
+
   forgotPassword: {
     marginTop: 14,
     color: THEME.COLORS.PINK.V2,
@@ -37,6 +39,7 @@ export const styles = StyleSheet.create({
     textDecorationLine: "underline",
     textAlign: "center",
   },
+
   button: {
     backgroundColor: THEME.COLORS.PINK.V2,
     paddingVertical: 10,
@@ -44,18 +47,21 @@ export const styles = StyleSheet.create({
     elevation: 4,
     shadowColor: THEME.COLORS.BLACK,
   },
+
   buttonText: {
     color: THEME.COLORS.WHITE.FULL_WHITE,
     fontWeight: THEME.FONT.WEIGHT.MEDIUM,
     textAlign: "center",
     fontSize: 20 * fontScale,
   },
+
   wrapper: {
     position: "absolute",
     left: 40,
     bottom: 55,
     width: "100%",
   },
+
   signUpMessageWrapper: {
     flexDirection: "row",
     alignItems: "center",
@@ -64,10 +70,12 @@ export const styles = StyleSheet.create({
   text: {
     fontSize: 18 * fontScale,
   },
+
   message: {
     color: THEME.COLORS.BLACK,
     fontWeight: THEME.FONT.WEIGHT.REGULAR,
   },
+
   link: {
     fontWeight: THEME.FONT.WEIGHT.MEDIUM,
     color: THEME.COLORS.PINK.V1,
