@@ -106,9 +106,13 @@ export function Profile() {
     }, [closeModal])
   );
 
-  if (!userId) {
-    return navigation.navigate("inaugural");
-  }
+  useFocusEffect(
+    useCallback(() => {
+      if (!userId) {
+        navigation.navigate("inaugural");
+      }
+    }, [])
+  );
 
   return (
     <Screen.Root>
@@ -173,7 +177,7 @@ export function Profile() {
         </View>
       </Screen.Content>
 
-      {isModalOpen && <Modal userId={userId} />}
+      {isModalOpen && <Modal userId={userId as number} />}
     </Screen.Root>
   );
 }
