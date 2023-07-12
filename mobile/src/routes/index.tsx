@@ -8,7 +8,6 @@ import { TabNavigator } from "./TabNavigator";
 import { Inaugural } from "../screens/Inaugural";
 import { SignIn } from "../screens/SignIn";
 import { SignUp } from "../screens/SignUp";
-import { Customers } from "../screens/Customers";
 import { TailoredClothes } from "../screens/TailoredClothes";
 import { RepairOrAdjustment } from "../screens/RepairOrAdjustment";
 import { OrderDetail } from "../screens/OrderDetail";
@@ -19,11 +18,7 @@ export function Routes() {
   return (
     <AuthContextProvider>
       <NavigationContainer>
-        <Navigator
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
+        <Navigator screenOptions={{ headerShown: false }}>
           <Screen
             name="inaugural"
             component={Inaugural}
@@ -39,10 +34,6 @@ export function Routes() {
           <Screen
             name="tabNavigatorRoutes"
             component={TabNavigator}
-          />
-          <Screen
-            name="customers"
-            component={Customers}
           />
           <Screen
             name="tailoredClothes"

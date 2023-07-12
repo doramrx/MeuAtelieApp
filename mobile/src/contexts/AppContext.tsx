@@ -5,18 +5,28 @@ interface ContextData {
   closeModal: () => void;
   isModalOpen: boolean;
   modalType: ModalTypeVariations | null;
+
+  openBottomModal: () => void;
+  closeBottomModal: () => void;
+  isBottomModalOpen: boolean;
 }
 
 interface ProviderProps {
   children: ReactNode;
 }
 
-type ModalTypeVariations = "Detail" | "Edit" | "Update" | "EditPassword";
+type ModalTypeVariations =
+  | "Create"
+  | "Detail"
+  | "Edit"
+  | "Update"
+  | "EditPassword";
 
 export const AppContext = createContext({} as ContextData);
 
 export function AppContextProvider({ children }: ProviderProps) {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isBottomModalVisible, setIsBottomModalVisible] = useState(false);
   const [modalType, setModalType] = useState<ModalTypeVariations | null>(null);
 
   function openModal(type: ModalTypeVariations) {
@@ -29,6 +39,14 @@ export function AppContextProvider({ children }: ProviderProps) {
     setIsModalVisible(false);
   }
 
+  function openBottomModal() {
+    setIsBottomModalVisible(true);
+  }
+
+  function closeBottomModal() {
+    setIsBottomModalVisible(false);
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -36,6 +54,9 @@ export function AppContextProvider({ children }: ProviderProps) {
         closeModal,
         isModalOpen: isModalVisible,
         modalType,
+        openBottomModal,
+        closeBottomModal,
+        isBottomModalOpen: isBottomModalVisible,
       }}
     >
       {children}
