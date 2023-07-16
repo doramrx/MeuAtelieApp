@@ -7,7 +7,7 @@ import UsersIcon from "../../assets/icons/users-icon.svg";
 import UserIcon from "../../assets/icons/user-icon.svg";
 
 import { Profile } from "../../screens/Profile";
-import { Orders } from "../../screens/Orders";
+import { Orders } from "../../screens/Order/OrderList";
 import { Customers } from "../../screens/Customers";
 
 export function TabNavigator() {

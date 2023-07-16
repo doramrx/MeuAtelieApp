@@ -7,8 +7,8 @@ export declare global {
       signIn: undefined;
       signUp: undefined;
       orders: undefined;
-      tailoredClothes: undefined;
-      repairOrAdjustment: undefined;
+      tailoredClothService: undefined;
+      adjustService: undefined;
       orderDetail: {
         orderId: number;
         orderType: ServiceType;
