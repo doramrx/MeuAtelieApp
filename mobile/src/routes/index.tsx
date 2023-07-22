@@ -51,10 +51,15 @@ export function Routes() {
             );
           }}
         </Screen>
-        <Screen
-          name="orderDetail"
-          component={OrderDetail}
-        />
+        <Screen name="orderDetail">
+          {() => {
+            return (
+              <OrderContextProvider>
+                <OrderDetail />
+              </OrderContextProvider>
+            );
+          }}
+        </Screen>
       </Navigator>
     </NavigationContainer>
   );

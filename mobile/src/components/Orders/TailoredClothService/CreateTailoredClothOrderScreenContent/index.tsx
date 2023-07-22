@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import {
   Alert,
   Pressable,
@@ -8,7 +8,7 @@ import {
   TouchableHighlight,
   View,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 
 import { database } from "../../../../database/database";
@@ -29,16 +29,7 @@ export function CreateTailoredClothOrderScreenContent() {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [measurementList, setMeasurementList] = useState<CustomerMeasure[]>([
-    { name: "Abdômen", value: null },
-    { name: "Busto", value: null },
-    { name: "Cintura", value: null },
-    { name: "Comprimento", value: null },
-    { name: "Manga", value: null },
-    { name: "Ombro", value: null },
-    { name: "Punho", value: null },
-    { name: "Quadril", value: null },
-  ]);
+  const [measurementList, setMeasurementList] = useState<CustomerMeasure[]>([]);
   const [cost, setCost] = useState("");
   const [dueDate, setDueDate] = useState(new Date());
 
@@ -58,7 +49,7 @@ export function CreateTailoredClothOrderScreenContent() {
       prevState.map((measure, measureIndex) => {
         return measureIndex === index
           ? {
-              name: measure.name,
+              ...measure,
               value: newValue.length === 0 ? null : newValue,
             }
           : measure;
@@ -80,7 +71,7 @@ export function CreateTailoredClothOrderScreenContent() {
         (transaction, resultSet) => {
           const insertedOrderId = resultSet.insertId;
 
-          // // console.log("Order id: " + insertedOrderId);
+          console.log("Order id: " + insertedOrderId);
 
           if (insertedOrderId === undefined) {
             return Alert.alert(
@@ -90,11 +81,9 @@ export function CreateTailoredClothOrderScreenContent() {
           }
 
           transaction.executeSql(
-            `
-                        INSERT INTO order_items
-                            (title, description, id_order)
-                        VALUES (?, ?, ?);
-                    `,
+            `INSERT INTO order_items
+                (title, description, id_order)
+              VALUES (?, ?, ?);`,
             [title, description, insertedOrderId],
             (transaction, resultSet) => {
               const insertedOrderItemId = resultSet.insertId;
@@ -114,11 +103,14 @@ export function CreateTailoredClothOrderScreenContent() {
                 const sqlValueStatement = filledMeasurementList
                   .map((measure) => {
                     const value = Number(measure.value!.replace(",", "."));
-                    return `('${measure.name}', ${value}, ${insertedOrderItemId})`;
+                    return `('${measure.id}', ${insertedOrderItemId}, ${value})`;
                   })
                   .join(",");
 
-                const insertCustomerMeasuresSQLStatement = `INSERT INTO customer_measures (measure, value, id_order_item) VALUES ${sqlValueStatement};`;
+                const insertCustomerMeasuresSQLStatement = `
+                  INSERT INTO order_customer_measures 
+                    (id_customer_measure, id_order_item, value) 
+                  VALUES ${sqlValueStatement};`;
 
                 transaction.executeSql(
                   insertCustomerMeasuresSQLStatement,
@@ -132,18 +124,44 @@ export function CreateTailoredClothOrderScreenContent() {
                         "Não foi possível cadastrar as medidas do cliente!"
                       );
                     }
-
-                    Alert.alert("Sucesso", "Serviço cadastrado com sucesso!");
-                    navigation.navigate("orders");
                   }
                 );
               }
+              Alert.alert("Sucesso", "Serviço cadastrado com sucesso!");
+              navigation.navigate("orders");
             }
           );
         }
       );
     });
   }
+
+  function fetchCustomerMeasures() {
+    database.transaction((transaction) => {
+      transaction.executeSql(
+        "SELECT id, measure FROM customer_measures;",
+        undefined,
+        (_, resultSet) => {
+          const fetchedCustomerMeasures: CustomerMeasure[] =
+            resultSet.rows._array.map((row) => {
+              return {
+                id: row.id,
+                name: row.measure,
+                value: null,
+              };
+            });
+
+          setMeasurementList(fetchedCustomerMeasures);
+        }
+      );
+    });
+  }
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchCustomerMeasures();
+    }, [])
+  );
 
   return (
     <ScrollView>

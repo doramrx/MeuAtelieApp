@@ -14,14 +14,14 @@ import { ServiceType } from "../../../screens/Order/OrderList";
 export function ServiceTypeModal() {
   const navigation = useNavigation();
 
-  const { closeModal } = useAppContext();
+  const { closeModal, modalType } = useAppContext();
 
   function navigateToService(service: ServiceType) {
     closeModal();
     navigation.navigate(service);
   }
 
-  return (
+  return modalType === "ServiceSelection" ? (
     <ModalTemplate.Root>
       <ModalTemplate.Header
         icon={SewingMachineIcon}
@@ -63,5 +63,5 @@ export function ServiceTypeModal() {
         </ModalTemplate.Actions>
       </ModalTemplate.Container>
     </ModalTemplate.Root>
-  );
+  ) : null;
 }

@@ -9,23 +9,20 @@ const sixtyPercentOfScreenWidth = Dimensions.get("screen").width * 0.6;
 const ninetyPercentOfScreenWidth = Dimensions.get("screen").width * 0.9;
 
 export const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: THEME.COLORS.PINK.V2,
-  },
-  backContainer: {
-    flex: 1,
+  upperContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 22,
     alignItems: "center",
   },
+
   title: {
     color: THEME.COLORS.WHITE.FULL_WHITE,
-    fontWeight: THEME.FONT.WEIGHT.MEDIUM as any,
+    fontWeight: THEME.FONT.WEIGHT.MEDIUM,
     fontSize: 22,
   },
-  addButton: {
+
+  headerButton: {
     width: 40,
     height: 40,
     backgroundColor: "rgba(255,255,255,0.28)",
@@ -33,18 +30,17 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+
   mainContainer: {
-    flex: 10,
-    backgroundColor: THEME.COLORS.WHITE.FULL_WHITE,
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
     paddingBottom: 18,
     overflow: "hidden",
   },
-  mainContainerWrapper: {
+
+  contentWrapper: {
     paddingVertical: 10,
     paddingHorizontal: 25,
   },
+
   infoTitle: {
     marginTop: 20,
     marginBottom: 20,

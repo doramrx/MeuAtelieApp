@@ -6,11 +6,15 @@ interface OrderData {
   currentStep: number;
   nextStep: () => void;
   previousStep: () => void;
+  mode: OrderMode | null;
+  changeMode: () => void;
 }
 
 interface ProviderProps {
   children: ReactNode;
 }
+
+type OrderMode = "edit" | "detail";
 
 export const OrderContext = createContext({} as OrderData);
 
@@ -19,6 +23,7 @@ export function OrderContextProvider({ children }: ProviderProps) {
     null
   );
   const [currentStep, setCurrentStep] = useState(1);
+  const [mode, setMode] = useState<OrderMode | null>("detail");
 
   function selectCustomer(id: number) {
     setSelectedCustomerId(id);
@@ -32,6 +37,14 @@ export function OrderContextProvider({ children }: ProviderProps) {
     setCurrentStep(1);
   }
 
+  function changeMode() {
+    if (mode === "detail") {
+      setMode("edit");
+    } else {
+      setMode("detail");
+    }
+  }
+
   return (
     <OrderContext.Provider
       value={{
@@ -40,6 +53,8 @@ export function OrderContextProvider({ children }: ProviderProps) {
         currentStep,
         nextStep,
         previousStep,
+        mode,
+        changeMode,
       }}
     >
       {children}

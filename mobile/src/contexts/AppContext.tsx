@@ -21,7 +21,8 @@ type ModalTypeVariations =
   | "Edit"
   | "Update"
   | "EditPassword"
-  | "ServiceSelection";
+  | "ServiceSelection"
+  | "MeasureList";
 
 export const AppContext = createContext({} as ContextData);
 

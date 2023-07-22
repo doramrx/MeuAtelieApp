@@ -32,8 +32,6 @@ export function Orders() {
   const [orders, setOrders] = useState<OrderData[]>([]);
 
   function handleOpenModal() {
-    console.log("Opening modal");
-
     openModal("ServiceSelection");
   }
 
@@ -41,12 +39,12 @@ export function Orders() {
     database.readTransaction((transaction) => {
       transaction.executeSql(
         `SELECT 
-                      ord.id,
-                      ori.title,
-                      ord.due_date,
-                      ord.type
-                  FROM orders AS ord
-                  JOIN order_items AS ori ON ori.id_order = ord.id;`,
+          ord.id,
+          ori.title,
+          ord.due_date,
+          ord.type
+        FROM orders AS ord
+        JOIN order_items AS ori ON ori.id_order = ord.id;`,
         undefined,
         (_, resultSet) => {
           resultSet.rows._array.forEach((item) => {
@@ -94,7 +92,7 @@ export function Orders() {
               } else {
                 orderList.push({
                   orderId: item.id,
-                  orderType: item.type,
+                  orderType: "adjustService",
                   orderItems: [
                     {
                       title: item.title,
@@ -139,6 +137,7 @@ export function Orders() {
         <Text style={styles.listCounter}>{orders.length} Pedidos listados</Text>
 
         {orders.map(({ orderId, orderType, orderItems }, index, array) => {
+          console.log(orderType);
           return array.length - 1 !== index ? (
             <Card
               key={orderId}
