@@ -16,6 +16,7 @@ export function ModalRoot({ children }: Props) {
     <Modal
       animationType="fade"
       transparent={true}
+      statusBarTranslucent={true}
       visible={isModalOpen}
     >
       <View style={styles.modalBackgroundContainer}>
