@@ -19,8 +19,8 @@ import { styles } from "./styles";
 import CalendarIcon from "../../../../assets/icons/calendar-icon-filled.svg";
 
 import { Input } from "../../../shared/Input";
-import { pieceData } from "../ExpandablePiece";
-import { ExpandablePieceList } from "../ExpandablePieceList";
+import { ExpandablePieceList, pieceData } from "../ExpandablePieceList";
+import { AdjustItemData } from "../AdjustList";
 
 interface Service {
   id: number;
@@ -111,14 +111,48 @@ export function CreateAdjustOrderScreenContent() {
     });
   }
 
-  function finishOrder() {
-    const totalCost = pieceItems.reduce((total, item) => {
-      const subtotal = item.adjustList.reduce((subtotal, service) => {
-        return subtotal + service.cost;
-      }, 0);
+  function setTitle(title: string, index: number) {
+    setPieceItems &&
+      setPieceItems((prevPieces) => {
+        const piecesCopy = [...prevPieces];
+        piecesCopy[index].title = title;
+        return piecesCopy;
+      });
+  }
 
-      return total + subtotal;
+  function setDescription(description: string, index: number) {
+    setPieceItems &&
+      setPieceItems((prevPieces) => {
+        const piecesCopy = [...prevPieces];
+        piecesCopy[index].description = description;
+        return piecesCopy;
+      });
+  }
+
+  function setAdjusts(adjusts: AdjustItemData[], index: number) {
+    setPieceItems &&
+      setPieceItems((prevPieces) => {
+        const piecesCopy = [...prevPieces];
+        piecesCopy[index].adjustList = adjusts;
+        return piecesCopy;
+      });
+  }
+
+  function finishOrder() {
+    const totalCost = pieceItems.reduce((accumulator, item) => {
+      const selectedServicesTotalCost = item.adjustList.reduce(
+        (totalCost, adjustService) => {
+          return adjustService.isChecked
+            ? totalCost + adjustService.cost
+            : totalCost;
+        },
+        0
+      );
+
+      return accumulator + selectedServicesTotalCost;
     }, 0);
+
+    // console.log(`total cost: ${totalCost}`);
 
     database.transaction((transaction) => {
       transaction.executeSql(
@@ -148,7 +182,7 @@ export function CreateAdjustOrderScreenContent() {
               (transaction, resultSet) => {
                 const insertedOrderItemId = resultSet.insertId;
 
-                console.log(`Order item id: ${insertedOrderItemId}`);
+                // console.log(`Order item id: ${insertedOrderItemId}`);
 
                 if (insertedOrderItemId === undefined) {
                   return Alert.alert(
@@ -158,6 +192,7 @@ export function CreateAdjustOrderScreenContent() {
                 }
 
                 const selectedAdjustServicesValueStatement = item.adjustList
+                  .filter((adjustService) => adjustService.isChecked)
                   .map((adjustService) => {
                     return `(${adjustService.id}, ${insertedOrderItemId}, ${adjustService.cost})`;
                   })
@@ -215,7 +250,10 @@ export function CreateAdjustOrderScreenContent() {
         <View style={styles.padBetweenComponents}>
           <ExpandablePieceList
             pieces={pieceItems}
-            setPieces={setPieceItems}
+            setTitle={setTitle}
+            setDescription={setDescription}
+            setAdjusts={setAdjusts}
+            mode="Create"
           />
         </View>
 

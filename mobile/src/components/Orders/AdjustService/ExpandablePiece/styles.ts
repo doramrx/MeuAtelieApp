@@ -6,6 +6,7 @@ const fontScale = PixelRatio.getFontScale();
 const pixelDensity = PixelRatio.get();
 
 const screenWidth = Dimensions.get("screen").width;
+const sixtyPercentOfScreenWidth = Dimensions.get("screen").width * 0.6;
 
 export const styles = StyleSheet.create({
   container: {
@@ -45,8 +46,7 @@ export const styles = StyleSheet.create({
   },
 
   contentWrapper: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    padding: 20,
     overflow: "hidden",
   },
 
@@ -76,5 +76,27 @@ export const styles = StyleSheet.create({
     alignSelf: "center",
     fontSize: 16,
     marginBottom: 14,
+  },
+
+  button: {
+    width: sixtyPercentOfScreenWidth,
+    alignItems: "center",
+    alignSelf: "center",
+    paddingVertical: 10,
+    borderRadius: 12,
+    backgroundColor: THEME.COLORS.GRAY.LIGHT.V2,
+    marginVertical: 20,
+  },
+
+  buttonWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+
+  buttonText: {
+    color: THEME.COLORS.GRAY.MEDIUM.V1,
+    fontWeight: THEME.FONT.WEIGHT.MEDIUM,
+    marginLeft: 10,
+    fontSize: 18,
   },
 });

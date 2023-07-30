@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { Text, View } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 
@@ -95,7 +95,7 @@ export function TailoredClothOrderDetail({ orderId }: Props) {
   );
 
   return orderData ? (
-    <Fragment>
+    <View style={{ paddingHorizontal: 25 }}>
       {mode === "detail" ? (
         <DetailMode orderData={orderData} />
       ) : (
@@ -105,7 +105,7 @@ export function TailoredClothOrderDetail({ orderId }: Props) {
           getOrderData={setOrderData}
         />
       )}
-    </Fragment>
+    </View>
   ) : (
     <View>
       <Text>Loading data...</Text>

@@ -38,7 +38,6 @@ export const styles = StyleSheet.create({
 
   contentWrapper: {
     paddingVertical: 10,
-    paddingHorizontal: 25,
   },
 
   infoTitle: {

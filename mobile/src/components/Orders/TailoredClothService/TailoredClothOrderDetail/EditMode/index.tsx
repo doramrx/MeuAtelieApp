@@ -165,7 +165,7 @@ export function EditMode({
                 );
               }
 
-              console.log(">>>> AQUI <<<<");
+              // console.log(">>>> AQUI <<<<");
 
               const measuresToNotDelete = measures
                 .filter((measure) => measure.orderMeasureId !== null)
@@ -178,9 +178,9 @@ export function EditMode({
                   [],
                   (_, resultSet) => {
                     if (resultSet.rowsAffected > 0) {
-                      console.log("Registros deletados com sucesso!");
+                      // console.log("Registros deletados com sucesso!");
                     } else {
-                      console.log("Nenhuma medida foi deletada!");
+                      // console.log("Nenhuma medida foi deletada!");
                     }
                   }
                 );
@@ -208,9 +208,9 @@ export function EditMode({
                   undefined,
                   (_, resultSet) => {
                     if (resultSet.rowsAffected >= 1) {
-                      console.log("Medida(s) atualizada(s)!");
+                      // console.log("Medida(s) atualizada(s)!");
                     } else {
-                      console.log("Nenhuma medida foi atualizada!");
+                      // console.log("Nenhuma medida foi atualizada!");
                     }
                   }
                 );
@@ -220,7 +220,7 @@ export function EditMode({
                 (measure) => measure.orderMeasureId === null
               );
 
-              console.log(measuresToCreate);
+              // console.log(measuresToCreate);
 
               if (measuresToCreate.length > 0) {
                 const measurementSQLValues = measuresToCreate.map((measure) => {
@@ -229,7 +229,7 @@ export function EditMode({
                   )})`;
                 });
 
-                console.log(measurementSQLValues);
+                // console.log(measurementSQLValues);
 
                 transaction.executeSql(
                   `INSERT INTO order_customer_measures (id_customer_measure, id_order_item, value) 
@@ -237,9 +237,9 @@ export function EditMode({
                   undefined,
                   (_, resultSet) => {
                     if (resultSet.insertId && resultSet.insertId > 0) {
-                      console.log("Registros inseridos com sucesso!");
+                      // console.log("Registros inseridos com sucesso!");
                     } else {
-                      console.log("Nenhuma medida foi inserida!");
+                      // console.log("Nenhuma medida foi inserida!");
                     }
                   }
                 );

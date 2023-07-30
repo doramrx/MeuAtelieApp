@@ -71,7 +71,7 @@ export function CreateTailoredClothOrderScreenContent() {
         (transaction, resultSet) => {
           const insertedOrderId = resultSet.insertId;
 
-          console.log("Order id: " + insertedOrderId);
+          // console.log("Order id: " + insertedOrderId);
 
           if (insertedOrderId === undefined) {
             return Alert.alert(

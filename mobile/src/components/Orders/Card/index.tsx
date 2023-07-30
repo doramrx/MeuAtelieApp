@@ -17,7 +17,7 @@ export function Card({ orderId, orderItems, orderType, marginBottom }: Props) {
   const navigation = useNavigation();
 
   function navigateToDetailScreen() {
-    console.log(orderId);
+    // console.log(orderId);
     navigation.navigate("orderDetail", {
       orderId: orderId,
       orderType: orderType,

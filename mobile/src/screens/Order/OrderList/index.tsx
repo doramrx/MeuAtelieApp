@@ -48,7 +48,7 @@ export function Orders() {
         undefined,
         (_, resultSet) => {
           resultSet.rows._array.forEach((item) => {
-            console.log(item);
+            // console.log(item);
           });
 
           const orderList: OrderData[] = [];
@@ -137,7 +137,7 @@ export function Orders() {
         <Text style={styles.listCounter}>{orders.length} Pedidos listados</Text>
 
         {orders.map(({ orderId, orderType, orderItems }, index, array) => {
-          console.log(orderType);
+          // console.log(orderType);
           return array.length - 1 !== index ? (
             <Card
               key={orderId}
