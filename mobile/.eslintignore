@@ -1,0 +1,6 @@
+.expo
+assets
+node_modules
+src/assets
+.gitignore
+.tools-versions
