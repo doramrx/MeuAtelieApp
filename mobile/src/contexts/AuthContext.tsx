@@ -1,38 +1,33 @@
 import {
-    createContext,
-    ReactNode,
-    SetStateAction,
-    Dispatch,
-    useState,
+  createContext,
+  ReactNode,
+  SetStateAction,
+  Dispatch,
+  useState,
 } from "react";
 
 interface AuthContextData {
-    userId: number | null;
-    setSetUserId: Dispatch<SetStateAction<number | null>>;
-    isAdm: boolean;
-    setIsAdm: Dispatch<SetStateAction<boolean>>;
+  userId: number | null;
+  setSetUserId: Dispatch<SetStateAction<number | null>>;
 }
 
 interface AuthContextProviderProps {
-    children: ReactNode;
+  children: ReactNode;
 }
 
 export const AuthContext = createContext({} as AuthContextData);
 
 export function AuthContextProvider({ children }: AuthContextProviderProps) {
-    const [userId, setSetUserId] = useState<number | null>(null);
-    const [isAdm, setIsAdm] = useState(false);
+  const [userId, setSetUserId] = useState<number | null>(null);
 
-    return (
-        <AuthContext.Provider
-            value={{
-                userId,
-                setSetUserId,
-                isAdm,
-                setIsAdm,
-            }}
-        >
-            {children}
-        </AuthContext.Provider>
-    );
+  return (
+    <AuthContext.Provider
+      value={{
+        userId,
+        setSetUserId,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 }
