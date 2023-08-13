@@ -6,9 +6,9 @@ import ShoppingBagIcon from "../../assets/icons/shopping-bag-icon.svg";
 import UsersIcon from "../../assets/icons/users-icon.svg";
 import UserIcon from "../../assets/icons/user-icon.svg";
 
-import { Profile } from "../../screens/Profile";
-import { Orders } from "../../screens/Order/OrderList";
-import { Customers } from "../../screens/Customers";
+import { Profile } from "../../views/Profile";
+import { Orders } from "../../views/Order/OrderList";
+import { Customers } from "../../views/Customers";
 
 export function TabNavigator() {
   const Tab = createBottomTabNavigator();

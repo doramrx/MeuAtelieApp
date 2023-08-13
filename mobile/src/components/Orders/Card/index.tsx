@@ -7,7 +7,7 @@ import MeasuringTapeIcon from "../../../assets/icons/measuring-tape-icon.svg";
 import NeedleAndThreadIcon from "../../../assets/icons/needle-and-thread-icon.svg";
 import VerticalMoreIcon from "../../../assets/icons/vertical-more-icon.svg";
 
-import { OrderData } from "../../../screens/Order/OrderList";
+import { OrderData } from "../../../views/Order/OrderList";
 
 interface Props extends OrderData {
   marginBottom?: number;

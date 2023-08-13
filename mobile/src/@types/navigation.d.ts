@@ -1,4 +1,4 @@
-import { ServiceType } from "../screens/Orders";
+import { ServiceType } from "../views/Orders";
 
 export declare global {
   namespace ReactNavigation {
