@@ -18,7 +18,6 @@ import { Screen } from "../../components/shared/Screen";
 
 interface UserData {
   id: number;
-  isAdm: boolean;
 }
 
 export function SignIn() {
@@ -27,7 +26,7 @@ export function SignIn() {
   const [email, setEmail] = useState("adm@adm.com");
   const [password, setPassword] = useState("adm123");
 
-  const { setSetUserId, setIsAdm } = useContext(AuthContext);
+  const { setSetUserId } = useContext(AuthContext);
 
   function authenticateUser() {
     if (!email.trim() || !password.trim()) {
@@ -41,7 +40,7 @@ export function SignIn() {
     const signInUserPromise = new Promise<UserData>((resolve, reject) => {
       database.transaction((transaction) => {
         transaction.executeSql(
-          "SELECT id, isAdm FROM dressmakers WHERE email = ? AND password = ?;",
+          "SELECT id FROM dressmakers WHERE email = ? AND password = ?;",
           [email, password],
           (_, resultSet) => {
             if (resultSet.rows.length === 0) {
@@ -49,7 +48,6 @@ export function SignIn() {
             } else {
               resolve({
                 id: resultSet.rows.item(0).id,
-                isAdm: resultSet.rows.item(0).isAdm === 1,
               });
             }
           }
@@ -60,7 +58,6 @@ export function SignIn() {
     signInUserPromise
       .then((user) => {
         setSetUserId(user.id);
-        setIsAdm(user.isAdm);
 
         Alert.alert("Login realizado com sucesso!");
 

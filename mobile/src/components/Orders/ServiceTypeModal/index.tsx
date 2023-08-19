@@ -9,7 +9,7 @@ import SewingMachineIcon from "../../../assets/icons/sewing-machine-icon.svg";
 
 import { ModalTemplate } from "../../shared/ModalTemplate";
 import { useAppContext } from "../../../hooks/useAppContext";
-import { ServiceType } from "../../../screens/Order/OrderList";
+import { ServiceType } from "../../../views/Order/OrderList";
 
 export function ServiceTypeModal() {
   const navigation = useNavigation();
