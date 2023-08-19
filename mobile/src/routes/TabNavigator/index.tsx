@@ -6,7 +6,7 @@ import ShoppingBagIcon from "../../assets/icons/shopping-bag-icon.svg";
 import UsersIcon from "../../assets/icons/users-icon.svg";
 import UserIcon from "../../assets/icons/user-icon.svg";
 
-import { Profile } from "../../views/Profile";
+import { ProfileView } from "../../views/Profile";
 import { Orders } from "../../views/Order/OrderList";
 import { Customers } from "../../views/Customers";
 
@@ -66,7 +66,7 @@ export function TabNavigator() {
       />
       <Tab.Screen
         name="profile"
-        component={Profile}
+        component={ProfileView}
         options={{
           tabBarLabel: "Perfil",
           tabBarActiveTintColor: THEME.COLORS.PINK.V1,

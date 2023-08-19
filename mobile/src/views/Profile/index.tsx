@@ -1,17 +1,9 @@
-import { useCallback, useContext, useState } from "react";
+import { Text, TouchableHighlight, TouchableOpacity, View } from "react-native";
+
 import {
-  Text,
-  View,
-  TouchableHighlight,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
-
-import { database } from "../../database/database";
-
-import { AuthContext } from "../../contexts/AuthContext";
-import { useAppContext } from "../../hooks/useAppContext";
+  ProfileViewControllerData,
+  useProfileViewController,
+} from "../../view-controllers/useProfileViewController";
 
 import { THEME } from "../../theme";
 import { styles } from "./styles";
@@ -22,113 +14,39 @@ import PasswordIcon from "../../assets/icons/password-icon-with-border.svg";
 import LogOutIcon from "../../assets/icons/logout-icon.svg";
 import DeleteProfileIcon from "../../assets/icons/trash-icon.svg";
 
-import { Button } from "../../components/Profile/Button";
 import { Screen } from "../../components/shared/Screen";
+import { Button } from "../../components/Profile/Button";
 import { Modal } from "../../components/Profile/Modal";
 
-export function Profile() {
-  const navigation = useNavigation();
+interface Props {
+  controller?: () => ProfileViewControllerData;
+}
 
-  const [name, setName] = useState("");
-
-  const { userId, setSetUserId } = useContext(AuthContext);
-  const { openModal, isModalOpen, closeModal } = useAppContext();
-
-  function handleOpenDetails() {
-    openModal("Detail");
-  }
-
-  function handleOpenEdit() {
-    openModal("Edit");
-  }
-
-  function handleOpenEditPassword() {
-    openModal("EditPassword");
-  }
-
-  function handleLogOut() {
-    setSetUserId(null);
-    navigation.navigate("inaugural");
-  }
-
-  function handleDeleteAccount() {
-    Alert.alert(
-      "Confirmar exclusão",
-      "Deseja realmente excluir a sua conta? Todos os serviços realizados também serão excluídos no processo.",
-      [
-        {
-          text: "Cancelar",
-          style: "cancel",
-        },
-        {
-          text: "Sim",
-          onPress: () => {
-            database.transaction((transaction) => {
-              transaction.executeSql(
-                "DELETE FROM dressmakers WHERE id = ?;",
-                [userId],
-                (_, resultSet) => {
-                  // console.log(resultSet);
-
-                  if (resultSet.rowsAffected !== 1) {
-                    Alert.alert(
-                      "Erro ao deletar o perfil",
-                      "Não foi possível deletar o perfil! Tente novamente."
-                    );
-                  } else {
-                    Alert.alert(
-                      "Sucesso",
-                      "O seu perfil foi deletado com sucesso!"
-                    );
-                    navigation.navigate("signIn");
-                  }
-                }
-              );
-            });
-          },
-          style: "default",
-        },
-      ]
-    );
-  }
-
-  useFocusEffect(
-    useCallback(() => {
-      database.transaction((transaction) => {
-        transaction.executeSql(
-          "SELECT name FROM dressmakers WHERE id = ?;",
-          [userId],
-          (_, resultSet) => {
-            setName(resultSet.rows.item(0).name);
-          }
-        );
-      });
-    }, [closeModal])
-  );
-
-  useFocusEffect(
-    useCallback(() => {
-      if (!userId) {
-        navigation.navigate("inaugural");
-      }
-    }, [])
-  );
+export function ProfileView({ controller }: Props) {
+  const viewController = controller ? controller() : useProfileViewController();
 
   return (
     <Screen.Root>
       <Screen.Header additionalStyles={styles.upperContainer}>
         <UserIcon
+          testID="user-icon"
           width={45}
           height={45}
           color={THEME.COLORS.WHITE.FULL_WHITE}
         />
 
-        <Text style={styles.name}>{name}</Text>
+        <Text
+          testID="dressmaker-name"
+          style={styles.name}
+        >
+          {viewController.dressmakerName}
+        </Text>
 
         <TouchableOpacity
+          testID="delete-account-button"
           style={styles.trashButton}
           activeOpacity={0.6}
-          onPress={handleDeleteAccount}
+          onPress={viewController.onDeleteAccount}
         >
           <DeleteProfileIcon
             color={THEME.COLORS.WHITE.FULL_WHITE}
@@ -140,27 +58,31 @@ export function Profile() {
 
       <Screen.Content additionalStyles={styles.mainContainer}>
         <Button
+          buttonTestId="view-profile-button"
           text="Visualizar perfil"
           icon={ProfileIcon}
-          onItemPress={handleOpenDetails}
+          onItemPress={viewController.onOpenDetailModal}
         />
 
         <Button
+          buttonTestId="edit-profile-button"
           text="Editar perfil"
           icon={EditIcon}
-          onItemPress={handleOpenEdit}
+          onItemPress={viewController.onOpenEditModal}
         />
 
         <Button
+          buttonTestId="edit-password-profile-button"
           text="Editar senha"
           icon={PasswordIcon}
-          onItemPress={handleOpenEditPassword}
+          onItemPress={viewController.onOpenEditPasswordModal}
         />
 
         <View style={styles.logOutwrapper}>
           <TouchableHighlight
+            testID="logout-button"
             style={styles.logOutButton}
-            onPress={handleLogOut}
+            onPress={viewController.onLogOut}
             activeOpacity={0.9}
             underlayColor={THEME.COLORS.GRAY.LIGHT.V1}
           >
@@ -177,7 +99,7 @@ export function Profile() {
         </View>
       </Screen.Content>
 
-      {isModalOpen && <Modal userId={userId as number} />}
+      {viewController.isModalOpen && <Modal userId={viewController.userId} />}
     </Screen.Root>
   );
 }

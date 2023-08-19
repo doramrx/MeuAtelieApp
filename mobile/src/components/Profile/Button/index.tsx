@@ -5,14 +5,16 @@ import { styles } from "./styles";
 import { THEME } from "../../../theme";
 
 interface Props {
+  buttonTestId?: string;
   onItemPress: () => void;
   text: string;
   icon: ElementType;
 }
 
-export function Button({ text, icon: Icon, onItemPress }: Props) {
+export function Button({ text, icon: Icon, onItemPress, buttonTestId }: Props) {
   return (
     <TouchableHighlight
+      testID={buttonTestId}
       underlayColor={THEME.COLORS.GRAY.LIGHT.V2}
       activeOpacity={0.9}
       style={styles.container}
