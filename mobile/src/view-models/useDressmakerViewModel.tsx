@@ -8,6 +8,7 @@ interface DressmakerViewModelData {
   dressmaker: Dressmaker | null;
   getDressmakerById: (id: number) => Promise<void>;
   deleteDressmaker: (id: number) => Promise<boolean>;
+  getDressmakerId: (email: string, password: string) => Promise<number>;
 }
 
 export function useDressmakerViewModel(): DressmakerViewModelData {
@@ -37,9 +38,23 @@ export function useDressmakerViewModel(): DressmakerViewModelData {
     }
   }
 
+  async function getDressmakerId(email: string, password: string) {
+    try {
+      console.log("[ViewModel] - Getting dressmaker id...");
+      const dressmakerId = await model.getDressmakerIdByEmailAndPassword(
+        email,
+        password
+      );
+      return Promise.resolve(dressmakerId as number);
+    } catch {
+      return Promise.reject(null);
+    }
+  }
+
   return {
     dressmaker,
     getDressmakerById,
     deleteDressmaker,
+    getDressmakerId,
   };
 }
