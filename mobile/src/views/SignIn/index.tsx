@@ -1,10 +1,10 @@
-import { useState, useContext } from "react";
-import { Text, View, Image, Alert, TouchableHighlight } from "react-native";
-import { Link, useNavigation } from "@react-navigation/native";
+import { Text, View, Image, TouchableHighlight } from "react-native";
+import { Link } from "@react-navigation/native";
 
-import { database } from "../../database/database";
-
-import { AuthContext } from "../../contexts/AuthContext";
+import {
+  SignInViewControllerData,
+  useSignInViewController,
+} from "../../view-controllers/useSignInViewController";
 
 import { styles } from "./styles";
 import { THEME } from "../../theme";
@@ -16,57 +16,12 @@ import PasswordIconFilled from "../../assets/icons/password-icon-filled.svg";
 import { Input } from "../../components/shared/Input";
 import { Screen } from "../../components/shared/Screen";
 
-interface UserData {
-  id: number;
+interface Props {
+  controller?: () => SignInViewControllerData;
 }
 
-export function SignIn() {
-  const navigation = useNavigation();
-
-  const [email, setEmail] = useState("adm@adm.com");
-  const [password, setPassword] = useState("adm123");
-
-  const { setSetUserId } = useContext(AuthContext);
-
-  function authenticateUser() {
-    if (!email.trim() || !password.trim()) {
-      Alert.alert(
-        "Erro ao realizar o login",
-        "Preencha todos os campos para realizar o login."
-      );
-      return;
-    }
-
-    const signInUserPromise = new Promise<UserData>((resolve, reject) => {
-      database.transaction((transaction) => {
-        transaction.executeSql(
-          "SELECT id FROM dressmakers WHERE email = ? AND password = ?;",
-          [email, password],
-          (_, resultSet) => {
-            if (resultSet.rows.length === 0) {
-              reject("Costureira não cadastrado!");
-            } else {
-              resolve({
-                id: resultSet.rows.item(0).id,
-              });
-            }
-          }
-        );
-      });
-    });
-
-    signInUserPromise
-      .then((user) => {
-        setSetUserId(user.id);
-
-        Alert.alert("Login realizado com sucesso!");
-
-        navigation.navigate("tabNavigatorRoutes");
-      })
-      .catch(() => {
-        Alert.alert("Falha no login", "Credenciais inválidas!");
-      });
-  }
+export function SignIn({ controller }: Props) {
+  const viewController = controller ? controller() : useSignInViewController();
 
   return (
     <Screen.Root>
@@ -81,16 +36,16 @@ export function SignIn() {
         <Text style={styles.title}>Entrar</Text>
 
         <Input
-          value={email}
-          onChangeText={setEmail}
+          value={viewController.email}
+          onChangeText={viewController.onUpdateEmail}
           placeholder="Email"
           icon={EmailIconFilled}
           containerStyles={{ marginBottom: 14 }}
         />
 
         <Input
-          value={password}
-          onChangeText={setPassword}
+          value={viewController.password}
+          onChangeText={viewController.onUpdatePassword}
           placeholder="Senha"
           isPasswordInput={true}
           icon={PasswordIconFilled}
@@ -103,7 +58,7 @@ export function SignIn() {
             style={styles.button}
             underlayColor={THEME.COLORS.PINK.V2_UNDERLAY}
             activeOpacity={0.98}
-            onPress={authenticateUser}
+            onPress={viewController.onLogIn}
           >
             <Text style={styles.buttonText}>Entrar</Text>
           </TouchableHighlight>

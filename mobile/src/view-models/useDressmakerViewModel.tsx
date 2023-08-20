@@ -8,6 +8,12 @@ interface DressmakerViewModelData {
   dressmaker: Dressmaker | null;
   getDressmakerById: (id: number) => Promise<void>;
   deleteDressmaker: (id: number) => Promise<boolean>;
+  getDressmakerId: (email: string, password: string) => Promise<number>;
+  createDressmaker: (
+    name: string,
+    email: string,
+    password: string
+  ) => Promise<number>;
 }
 
 export function useDressmakerViewModel(): DressmakerViewModelData {
@@ -29,17 +35,32 @@ export function useDressmakerViewModel(): DressmakerViewModelData {
   }
 
   async function deleteDressmaker(id: number) {
+    return Promise.resolve(model.deleteDressmaker(id));
+  }
+
+  async function createDressmaker(
+    name: string,
+    email: string,
+    password: string
+  ): Promise<number> {
     try {
-      await model.deleteDressmaker(id);
-      return true;
+      const dressmakerAlreadyExists = await model.checkIfExists(email);
+
+      if (dressmakerAlreadyExists) {
+        return Promise.reject("Email já cadastrado!");
+      }
+
+      return await model.createDressmaker(name, email, password);
     } catch {
-      return false;
+      return Promise.reject("Não foi possível concluir o cadastro");
     }
   }
 
   return {
     dressmaker,
+    createDressmaker,
     getDressmakerById,
     deleteDressmaker,
+    getDressmakerId: model.getDressmakerIdByEmailAndPassword,
   };
 }
