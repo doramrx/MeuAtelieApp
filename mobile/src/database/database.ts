@@ -131,6 +131,7 @@ if (database) {
             type            TEXT    CHECK (type IN ('Adjust', 'Tailored')),
             due_date		    TEXT	NOT NULL,
             created_at		  TEXT	NOT NULL,
+            delivered_at    TEXT,
             id_customer		  INTEGER	NOT NULL
         );
     `);

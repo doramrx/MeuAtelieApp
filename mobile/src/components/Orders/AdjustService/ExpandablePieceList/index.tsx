@@ -61,7 +61,7 @@ export function ExpandablePieceList({
         return (
           <ExpandablePiece.Root key={pieceIndex}>
             <ExpandablePiece.Item
-              itemName={`Peça (${pieceIndex})`}
+              itemName={`Peça (${pieceIndex + 1})`}
               onExpand={() => {
                 handleTogglePiece(pieceIndex);
                 getExpandedPiece && getExpandedPiece(pieceIndex);

@@ -318,7 +318,7 @@ export function CreateAdjustOrderScreenContent() {
           style={[styles.finishButton, styles.button]}
         >
           <Text style={[styles.buttonText, styles.finishText]}>
-            Finalizar o pedido
+            Registrar pedido
           </Text>
         </TouchableHighlight>
       </View>
