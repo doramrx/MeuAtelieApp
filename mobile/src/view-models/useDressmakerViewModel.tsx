@@ -9,6 +9,11 @@ interface DressmakerViewModelData {
   getDressmakerById: (id: number) => Promise<void>;
   deleteDressmaker: (id: number) => Promise<boolean>;
   getDressmakerId: (email: string, password: string) => Promise<number>;
+  createDressmaker: (
+    name: string,
+    email: string,
+    password: string
+  ) => Promise<number>;
 }
 
 export function useDressmakerViewModel(): DressmakerViewModelData {
@@ -30,31 +35,32 @@ export function useDressmakerViewModel(): DressmakerViewModelData {
   }
 
   async function deleteDressmaker(id: number) {
-    try {
-      await model.deleteDressmaker(id);
-      return true;
-    } catch {
-      return false;
-    }
+    return Promise.resolve(model.deleteDressmaker(id));
   }
 
-  async function getDressmakerId(email: string, password: string) {
+  async function createDressmaker(
+    name: string,
+    email: string,
+    password: string
+  ): Promise<number> {
     try {
-      console.log("[ViewModel] - Getting dressmaker id...");
-      const dressmakerId = await model.getDressmakerIdByEmailAndPassword(
-        email,
-        password
-      );
-      return Promise.resolve(dressmakerId as number);
+      const dressmakerAlreadyExists = await model.checkIfExists(email);
+
+      if (dressmakerAlreadyExists) {
+        return Promise.reject("Email já cadastrado!");
+      }
+
+      return await model.createDressmaker(name, email, password);
     } catch {
-      return Promise.reject(null);
+      return Promise.reject("Não foi possível concluir o cadastro");
     }
   }
 
   return {
     dressmaker,
+    createDressmaker,
     getDressmakerById,
     deleteDressmaker,
-    getDressmakerId,
+    getDressmakerId: model.getDressmakerIdByEmailAndPassword,
   };
 }
