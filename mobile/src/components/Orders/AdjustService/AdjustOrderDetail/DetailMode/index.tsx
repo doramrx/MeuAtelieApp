@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { Text, TouchableHighlight, View } from "react-native";
+import { Alert, Text, TouchableHighlight, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import { styles } from "./styles";
@@ -8,16 +8,46 @@ import { THEME } from "../../../../../theme";
 import { AdjustOrderData } from "..";
 import { ClientInfo } from "../../../OrderDetail/ClientInfo";
 import { ExpandablePieceList } from "../../ExpandablePieceList";
+import { database } from "../../../../../database/database";
 
 interface Props {
+  orderId: number;
   orderData: AdjustOrderData;
 }
 
-export function DetailMode({ orderData }: Props) {
+export function DetailMode({ orderId, orderData }: Props) {
   const navigation = useNavigation();
 
   function handleGoBack() {
     navigation.goBack();
+  }
+
+  function finishOrder() {
+    database?.transaction((transaction) => {
+      transaction.executeSql(
+        "UPDATE orders SET delivered_at = ? WHERE id = ?;",
+        [new Date().toISOString(), orderId],
+        (_, resultSet) => {
+          if (resultSet.rowsAffected === 1) {
+            Alert.alert("Sucesso", "Pedido finalizado com sucesso!");
+
+            // Linking.openURL(
+            //   "whatsapp://send?text=te_amo_princesinha_<3&phone=47999944713"
+            // )
+            //   .then((something) => {
+            //     console.log(something);
+            //   })
+            //   .catch((error) => {
+            //     console.log(error);
+            //   });
+
+            navigation.navigate("orders");
+          } else {
+            Alert.alert("Erro", "Houve um erro ao finalizar o pedido!");
+          }
+        }
+      );
+    });
   }
 
   return (
@@ -65,6 +95,14 @@ export function DetailMode({ orderData }: Props) {
             {orderData.order.dueDate.toLocaleDateString("pt-BR")}
           </Text>
         </View>
+        {orderData.order.deliveredAt && (
+          <View style={styles.infoContainer}>
+            <Text style={styles.infoLabel}>Finalizado em:</Text>
+            <Text style={styles.infoText}>
+              {orderData.order.deliveredAt.toLocaleDateString("pt-BR")}
+            </Text>
+          </View>
+        )}
 
         <View style={styles.infoContainer}>
           <Text style={styles.infoLabel}>Valor:</Text>
@@ -74,17 +112,17 @@ export function DetailMode({ orderData }: Props) {
         </View>
       </View>
 
-      <TouchableHighlight
-        underlayColor={THEME.COLORS.PINK.V2_UNDERLAY}
-        onPress={() => {
-          // Todo
-        }}
-        style={[styles.pinkButton, styles.button]}
-      >
-        <Text style={[styles.buttonText, styles.whiteButtonText]}>
-          Mudar status
-        </Text>
-      </TouchableHighlight>
+      {!orderData.order.deliveredAt && (
+        <TouchableHighlight
+          underlayColor={THEME.COLORS.PINK.V2_UNDERLAY}
+          onPress={finishOrder}
+          style={[styles.pinkButton, styles.button]}
+        >
+          <Text style={[styles.buttonText, styles.whiteButtonText]}>
+            Finalizar pedido
+          </Text>
+        </TouchableHighlight>
+      )}
 
       <TouchableHighlight
         underlayColor={THEME.COLORS.GRAY.LIGHT.V2}

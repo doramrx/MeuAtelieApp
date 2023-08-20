@@ -34,6 +34,7 @@ export interface AdjustOrderData {
     cost: number;
     dueDate: Date;
     hiredAt: Date;
+    deliveredAt: Date | null;
     items: AdjustOrderItemData[];
   };
 }
@@ -48,13 +49,14 @@ export function AdjustOrderDetail({ orderId }: Props) {
   const [orderData, setOrderData] = useState<AdjustOrderData>();
 
   function fetchOrder() {
-    database.transaction((transaction) => {
+    database?.transaction((transaction) => {
       transaction.executeSql(
         `
         SELECT
           (ord.cost) order_cost,
           (ord.due_date) order_due_date,
           (ord.created_at) order_hired_at,
+          (ord.delivered_at) order_delivered_at,
           (ord_it.id) order_item_id,
           (ord_it.title) order_item_title,
           (ord_it.description) order_item_description,
@@ -87,6 +89,9 @@ export function AdjustOrderDetail({ orderId }: Props) {
               cost: resultSet.rows.item(0).order_cost,
               dueDate: new Date(resultSet.rows.item(0).order_due_date),
               hiredAt: new Date(resultSet.rows.item(0).order_hired_at),
+              deliveredAt: resultSet.rows.item(0).order_delivered_at
+                ? new Date(resultSet.rows.item(0).order_delivered_at)
+                : null,
               items: [
                 {
                   id: resultSet.rows.item(0).order_item_id,
@@ -179,7 +184,10 @@ export function AdjustOrderDetail({ orderId }: Props) {
   return orderData ? (
     <Fragment>
       {mode === "detail" ? (
-        <DetailMode orderData={orderData} />
+        <DetailMode
+          orderId={orderId}
+          orderData={orderData}
+        />
       ) : (
         <EditMode
           orderId={orderId}

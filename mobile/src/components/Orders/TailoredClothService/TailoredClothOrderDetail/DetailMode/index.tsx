@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { Text, TouchableHighlight, View } from "react-native";
+import { Alert, Text, TouchableHighlight, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import { THEME } from "../../../../../theme";
@@ -8,6 +8,8 @@ import { styles } from "./styles";
 import { MeasureList } from "../../../MeasureList";
 import { ClientInfo } from "../../../OrderDetail/ClientInfo";
 import { PhotoCard } from "../../../PhotoCard";
+import { database } from "../../../../../database/database";
+import { Linking } from "react-native";
 
 export interface CustomerMeasureData {
   orderMeasureId: number | null;
@@ -27,20 +29,50 @@ export interface OrderData {
     description: string;
     hiredAt: Date;
     dueDate: Date;
+    deliveredAt: Date | null;
     cost: number;
     measures: CustomerMeasureData[];
   };
 }
 
 interface Props {
+  orderId: number;
   orderData: OrderData | null;
 }
 
-export function DetailMode({ orderData }: Props) {
+export function DetailMode({ orderId, orderData }: Props) {
   const navigation = useNavigation();
 
   function handleNavigateBack() {
     navigation.goBack();
+  }
+
+  function finishOrder() {
+    database?.transaction((transaction) => {
+      transaction.executeSql(
+        "UPDATE orders SET delivered_at = ? WHERE id = ?;",
+        [new Date().toISOString(), orderId],
+        (_, resultSet) => {
+          if (resultSet.rowsAffected === 1) {
+            Alert.alert("Sucesso", "Pedido finalizado com sucesso!");
+
+            // Linking.openURL(
+            //   "whatsapp://send?text=te_amo_princesinha_<3&phone=47999944713"
+            // )
+            //   .then((something) => {
+            //     console.log(something);
+            //   })
+            //   .catch((error) => {
+            //     console.log(error);
+            //   });
+
+            navigation.navigate("orders");
+          } else {
+            Alert.alert("Erro", "Houve um erro ao finalizar o pedido!");
+          }
+        }
+      );
+    });
   }
 
   if (!orderData) {
@@ -88,6 +120,14 @@ export function DetailMode({ orderData }: Props) {
           {orderData.orderItem.dueDate.toLocaleDateString("pt-BR")}
         </Text>
       </View>
+      {orderData.orderItem.deliveredAt && (
+        <View style={styles.infoContainer}>
+          <Text style={styles.infoLabel}>Finalizado em:</Text>
+          <Text style={styles.infoText}>
+            {orderData.orderItem.deliveredAt.toLocaleDateString("pt-BR")}
+          </Text>
+        </View>
+      )}
 
       <View style={styles.infoContainer}>
         <Text style={styles.infoLabel}>Valor:</Text>
@@ -121,17 +161,17 @@ export function DetailMode({ orderData }: Props) {
         />
       )}
 
-      <TouchableHighlight
-        underlayColor={THEME.COLORS.PINK.V2_UNDERLAY}
-        onPress={() => {
-          // Todo
-        }}
-        style={[styles.pinkButton, styles.button]}
-      >
-        <Text style={[styles.buttonText, styles.whiteButtonText]}>
-          Mudar status
-        </Text>
-      </TouchableHighlight>
+      {!orderData.orderItem.deliveredAt && (
+        <TouchableHighlight
+          underlayColor={THEME.COLORS.PINK.V2_UNDERLAY}
+          onPress={finishOrder}
+          style={[styles.pinkButton, styles.button]}
+        >
+          <Text style={[styles.buttonText, styles.whiteButtonText]}>
+            Finalizar pedido
+          </Text>
+        </TouchableHighlight>
+      )}
 
       <TouchableHighlight
         underlayColor={THEME.COLORS.GRAY.LIGHT.V2}

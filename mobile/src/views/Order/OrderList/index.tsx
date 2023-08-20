@@ -36,7 +36,7 @@ export function Orders() {
   }
 
   function fetchOrders() {
-    database.readTransaction((transaction) => {
+    database?.readTransaction((transaction) => {
       transaction.executeSql(
         `SELECT 
           ord.id,

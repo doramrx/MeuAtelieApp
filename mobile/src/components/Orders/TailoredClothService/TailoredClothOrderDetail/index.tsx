@@ -27,6 +27,7 @@ export function TailoredClothOrderDetail({ orderId }: Props) {
             (ord.cost) order_cost,
             (ord.due_date) order_due_date,
             (ord.created_at) order_hired_at,
+            (ord.delivered_at) order_delivered_at,
             (csm.id) customer_id,
             (csm.name) customer_name,
             (csm.phone) customer_phone,
@@ -75,9 +76,12 @@ export function TailoredClothOrderDetail({ orderId }: Props) {
                   cost: resultSet.rows.item(0).order_cost,
                   hiredAt: new Date(resultSet.rows.item(0).order_hired_at),
                   dueDate: new Date(resultSet.rows.item(0).order_due_date),
+                  deliveredAt: resultSet.rows.item(0).order_delivered_at ? new Date(resultSet.rows.item(0).order_delivered_at) : null,
                   measures: fetchedMeasures,
                 },
               });
+
+              console.log(orderData);
             }
           }
         );
@@ -97,7 +101,7 @@ export function TailoredClothOrderDetail({ orderId }: Props) {
   return orderData ? (
     <View style={{ paddingHorizontal: 25 }}>
       {mode === "detail" ? (
-        <DetailMode orderData={orderData} />
+        <DetailMode orderId={orderId} orderData={orderData} />
       ) : (
         <EditMode
           orderId={orderId}

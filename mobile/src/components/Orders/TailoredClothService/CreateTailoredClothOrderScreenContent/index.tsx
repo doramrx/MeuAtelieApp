@@ -290,7 +290,7 @@ export function CreateTailoredClothOrderScreenContent() {
           style={[styles.finishOrderButton, styles.button]}
         >
           <Text style={[styles.buttonText, styles.finishOrderText]}>
-            Finalizar o pedido
+            Registrar pedido
           </Text>
         </TouchableHighlight>
       </View>
