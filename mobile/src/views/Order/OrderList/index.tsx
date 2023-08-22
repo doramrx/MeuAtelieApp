@@ -4,8 +4,6 @@ import { useFocusEffect } from "@react-navigation/native";
 
 import { database } from "../../../database/database";
 
-import { useAppContext } from "../../../hooks/useAppContext";
-
 import { THEME } from "../../../theme";
 import { styles } from "./styles";
 import AddIcon from "../../../assets/icons/add-icon.svg";
@@ -14,35 +12,31 @@ import { Screen } from "../../../components/shared/Screen";
 import { Card } from "../../../components/Orders/Card";
 import { Options } from "../../../components/Orders/Options";
 import { ServiceTypeModal } from "../../../components/Orders/ServiceTypeModal";
+import { useOrderListViewController } from "../../../view-controllers/useOrderListViewController";
+import { OrderType } from "../../../entities/Order";
 
 export interface OrderData {
   orderId: number;
-  orderType: ServiceType;
+  orderType: OrderType;
   orderItems: Array<{
     title: string;
     dueDate: Date;
   }>;
 }
 
-export type ServiceType = "tailoredClothService" | "adjustService";
-
 export function Orders() {
-  const { openModal, isModalOpen } = useAppContext();
+  const viewController = useOrderListViewController();
 
   const [orders, setOrders] = useState<OrderData[]>([]);
-
-  function handleOpenModal() {
-    openModal("ServiceSelection");
-  }
 
   function fetchOrders() {
     database?.readTransaction((transaction) => {
       transaction.executeSql(
         `SELECT 
-          ord.id,
-          ori.title,
-          ord.due_date,
-          ord.type
+        ord.id,
+        ori.title,
+        ord.due_date,
+        ord.type
         FROM orders AS ord
         JOIN order_items AS ori ON ori.id_order = ord.id;`,
         undefined,
@@ -122,7 +116,7 @@ export function Orders() {
         <Text style={styles.title}>Pedidos</Text>
         <TouchableOpacity
           style={styles.addButton}
-          onPress={handleOpenModal}
+          onPress={viewController.onOpenServiceSelectionModal}
         >
           <AddIcon
             width={18}
@@ -137,7 +131,6 @@ export function Orders() {
         <Text style={styles.listCounter}>{orders.length} Pedidos listados</Text>
 
         {orders.map(({ orderId, orderType, orderItems }, index, array) => {
-          // console.log(orderType);
           return array.length - 1 !== index ? (
             <Card
               key={orderId}
@@ -157,7 +150,7 @@ export function Orders() {
         })}
       </Screen.Content>
 
-      {isModalOpen && <ServiceTypeModal />}
+      {viewController.isModalOpen && <ServiceTypeModal />}
     </Screen.Root>
   );
 }
