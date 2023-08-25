@@ -1,5 +1,4 @@
 import { ScrollView, Text, TouchableOpacity } from "react-native";
-import { useNavigation, useRoute } from "@react-navigation/native";
 
 import { styles } from "./styles";
 import { THEME } from "../../../theme";
@@ -8,37 +7,34 @@ import PenIcon from "../../../assets/icons/pen-icon.svg";
 import XIcon from "../../../assets/icons/x-icon.svg";
 
 import { Screen } from "../../../components/shared/Screen";
-import { useOrderContext } from "../../../hooks/useOrderContext";
 import { TailoredClothOrderDetail } from "../../../components/Orders/TailoredClothService/TailoredClothOrderDetail";
 import { AdjustOrderDetail } from "../../../components/Orders/AdjustService/AdjustOrderDetail";
-import { OrderType } from "../../../entities/Order";
+import {
+  OrderDetailViewControllerData,
+  useOrderDetailViewController,
+} from "../../../view-controllers/Order/useOrderDetailViewController";
 
-interface RouteParamsData {
-  orderId: number;
-  orderType: OrderType;
+interface Props {
+  controller?: () => OrderDetailViewControllerData;
 }
 
-export function OrderDetail() {
-  const navigation = useNavigation();
-  const routeParams = useRoute().params as RouteParamsData;
-  const { mode, changeMode } = useOrderContext();
-
-  if (!routeParams) {
-    navigation.goBack();
-  }
+export function OrderDetail({ controller }: Props) {
+  const viewController = controller
+    ? controller()
+    : useOrderDetailViewController();
 
   return (
     <Screen.Root>
       <Screen.Header additionalStyles={styles.upperContainer}>
         <Text style={styles.title}>
-          {mode === "detail" ? "Detalhes" : "Editar pedido"}
+          {viewController.mode === "detail" ? "Detalhes" : "Editar pedido"}
         </Text>
 
         <TouchableOpacity
           style={styles.headerButton}
-          onPress={changeMode}
+          onPress={viewController.onChangeMode}
         >
-          {mode === "detail" ? (
+          {viewController.mode === "detail" ? (
             <PenIcon
               width={18}
               color={THEME.COLORS.WHITE.FULL_WHITE}
@@ -54,10 +50,10 @@ export function OrderDetail() {
 
       <Screen.Content additionalStyles={styles.mainContainer}>
         <ScrollView style={styles.contentWrapper}>
-          {routeParams.orderType === "tailoredClothService" ? (
-            <TailoredClothOrderDetail orderId={routeParams.orderId} />
+          {viewController.orderType === "tailoredClothService" ? (
+            <TailoredClothOrderDetail orderId={viewController.orderId} />
           ) : (
-            <AdjustOrderDetail orderId={routeParams.orderId} />
+            <AdjustOrderDetail orderId={viewController.orderId} />
           )}
         </ScrollView>
       </Screen.Content>

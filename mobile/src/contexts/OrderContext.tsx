@@ -14,7 +14,7 @@ interface ProviderProps {
   children: ReactNode;
 }
 
-type OrderMode = "edit" | "detail";
+export type OrderMode = "edit" | "detail";
 
 export const OrderContext = createContext({} as OrderData);
 
