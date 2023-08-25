@@ -1,6 +1,6 @@
-import { Order } from "../entities/Order";
-import { useAppContext } from "../hooks/useAppContext";
-import { useOrderViewModel } from "../view-models/useOrderViewModel";
+import { Order } from "../../entities/Order";
+import { useAppContext } from "../../hooks/useAppContext";
+import { useOrderViewModel } from "../../view-models/useOrderViewModel";
 
 export interface OrderListViewControllerData {
   orders: Order[];

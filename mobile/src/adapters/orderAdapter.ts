@@ -25,8 +25,6 @@ export function useOrderAdapter(): AdapterFunctions {
     const orders: Order[] = [];
 
     for (const rawOrderData of rawData) {
-      console.log(rawOrderData);
-
       if (rawOrderData.type === "Tailored") {
         orders.push(mapToOrderEntity(rawOrderData));
       } else {

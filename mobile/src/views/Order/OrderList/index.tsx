@@ -11,7 +11,7 @@ import { ServiceTypeModal } from "../../../components/Orders/ServiceTypeModal";
 import {
   OrderListViewControllerData,
   useOrderListViewController,
-} from "../../../view-controllers/useOrderListViewController";
+} from "../../../view-controllers/Order/useOrderListViewController";
 import { OrderType } from "../../../entities/Order";
 
 export interface OrderData {
