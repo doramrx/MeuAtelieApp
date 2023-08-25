@@ -1,8 +1,4 @@
-import { useCallback, useState } from "react";
 import { Text, TouchableOpacity } from "react-native";
-import { useFocusEffect } from "@react-navigation/native";
-
-import { database } from "../../../database/database";
 
 import { THEME } from "../../../theme";
 import { styles } from "./styles";
@@ -12,7 +8,10 @@ import { Screen } from "../../../components/shared/Screen";
 import { Card } from "../../../components/Orders/Card";
 import { Options } from "../../../components/Orders/Options";
 import { ServiceTypeModal } from "../../../components/Orders/ServiceTypeModal";
-import { useOrderListViewController } from "../../../view-controllers/useOrderListViewController";
+import {
+  OrderListViewControllerData,
+  useOrderListViewController,
+} from "../../../view-controllers/useOrderListViewController";
 import { OrderType } from "../../../entities/Order";
 
 export interface OrderData {
@@ -24,91 +23,14 @@ export interface OrderData {
   }>;
 }
 
-export function Orders() {
-  const viewController = useOrderListViewController();
+interface Props {
+  controller?: () => OrderListViewControllerData;
+}
 
-  const [orders, setOrders] = useState<OrderData[]>([]);
-
-  function fetchOrders() {
-    database?.readTransaction((transaction) => {
-      transaction.executeSql(
-        `SELECT 
-        ord.id,
-        ori.title,
-        ord.due_date,
-        ord.type
-        FROM orders AS ord
-        JOIN order_items AS ori ON ori.id_order = ord.id;`,
-        undefined,
-        (_, resultSet) => {
-          resultSet.rows._array.forEach((item) => {
-            // console.log(item);
-          });
-
-          const orderList: OrderData[] = [];
-
-          resultSet.rows._array.forEach((item) => {
-            if (item.type === "Tailored") {
-              orderList.push({
-                orderId: item.id,
-                orderType: "tailoredClothService",
-                orderItems: [
-                  {
-                    title: item.title,
-                    dueDate: new Date(item.due_date),
-                  },
-                ],
-              });
-            } else {
-              if (orderList.length === 0) {
-                orderList.push({
-                  orderId: item.id,
-                  orderType: "adjustService",
-                  orderItems: [
-                    {
-                      title: item.title,
-                      dueDate: new Date(item.due_date),
-                    },
-                  ],
-                });
-
-                return;
-              }
-
-              const lastIndex = orderList.length - 1;
-              const previousOrderId = orderList[orderList.length - 1].orderId;
-
-              if (previousOrderId === item.id) {
-                orderList[lastIndex].orderItems.push({
-                  title: item.title,
-                  dueDate: new Date(item.due_date),
-                });
-              } else {
-                orderList.push({
-                  orderId: item.id,
-                  orderType: "adjustService",
-                  orderItems: [
-                    {
-                      title: item.title,
-                      dueDate: new Date(item.due_date),
-                    },
-                  ],
-                });
-              }
-            }
-          });
-
-          setOrders(orderList);
-        }
-      );
-    });
-  }
-
-  useFocusEffect(
-    useCallback(() => {
-      fetchOrders();
-    }, [])
-  );
+export function Orders({ controller }: Props) {
+  const viewController = controller
+    ? controller()
+    : useOrderListViewController();
 
   return (
     <Screen.Root>
@@ -128,23 +50,21 @@ export function Orders() {
       <Screen.Content additionalStyles={styles.mainContainer}>
         <Options />
 
-        <Text style={styles.listCounter}>{orders.length} Pedidos listados</Text>
+        <Text style={styles.listCounter}>
+          {viewController.orders.length} Pedidos listados
+        </Text>
 
-        {orders.map(({ orderId, orderType, orderItems }, index, array) => {
-          return array.length - 1 !== index ? (
+        {viewController.orders.map((order, index) => {
+          return viewController.orders.length - 1 !== index ? (
             <Card
-              key={orderId}
-              orderId={orderId}
-              orderItems={orderItems}
-              orderType={orderType}
+              key={order.id}
+              orderData={order}
               marginBottom={6}
             />
           ) : (
             <Card
-              key={orderId}
-              orderId={orderId}
-              orderItems={orderItems}
-              orderType={orderType}
+              key={order.id}
+              orderData={order}
             />
           );
         })}

@@ -6,21 +6,20 @@ import { THEME } from "../../../theme";
 import MeasuringTapeIcon from "../../../assets/icons/measuring-tape-icon.svg";
 import NeedleAndThreadIcon from "../../../assets/icons/needle-and-thread-icon.svg";
 import VerticalMoreIcon from "../../../assets/icons/vertical-more-icon.svg";
+import { Order } from "../../../entities/Order";
 
-import { OrderData } from "../../../views/Order/OrderList";
-
-interface Props extends OrderData {
+interface Props {
+  orderData: Order;
   marginBottom?: number;
 }
 
-export function Card({ orderId, orderItems, orderType, marginBottom }: Props) {
+export function Card({ orderData, marginBottom }: Props) {
   const navigation = useNavigation();
 
   function navigateToDetailScreen() {
-    // console.log(orderId);
     navigation.navigate("orderDetail", {
-      orderId: orderId,
-      orderType: orderType,
+      orderId: orderData.id,
+      orderType: orderData.type,
     });
   }
 
@@ -31,27 +30,27 @@ export function Card({ orderId, orderItems, orderType, marginBottom }: Props) {
     >
       <View style={styles.wrapper}>
         <View style={styles.iconContainer}>
-          {orderType === "adjustService" ? (
+          {orderData.type === "adjustService" ? (
             <NeedleAndThreadIcon color={THEME.COLORS.WHITE.FULL_WHITE} />
           ) : (
             <MeasuringTapeIcon color={THEME.COLORS.WHITE.FULL_WHITE} />
           )}
         </View>
 
-        {orderType === "tailoredClothService" ? (
+        {orderData.type === "tailoredClothService" ? (
           <View>
-            <Text style={styles.orderTitle}>{orderItems[0].title}</Text>
+            <Text style={styles.orderTitle}>
+              {orderData.items.length > 0 ? orderData.items[0].title : ""}
+            </Text>
 
             <Text style={styles.orderText}>Tipo Serviço: Roupa sob medida</Text>
 
             <Text style={styles.orderDueDate}>
-              {`${String(orderItems[0].dueDate.getDate()).padStart(
-                2,
-                "0"
-              )}/${String(orderItems[0].dueDate.getMonth() + 1).padStart(
-                2,
-                "0"
-              )}/${orderItems[0].dueDate.getFullYear()}`}
+              {orderData.dueDate.toLocaleDateString("pt-BR", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+              })}
             </Text>
           </View>
         ) : (
@@ -59,17 +58,15 @@ export function Card({ orderId, orderItems, orderType, marginBottom }: Props) {
             <Text style={styles.orderTitle}>Ajuste de roupa</Text>
 
             <Text style={styles.orderText}>
-              Quantidade de peças: {orderItems.length}
+              Quantidade de peças: {orderData.items.length}
             </Text>
 
             <Text style={styles.orderDueDate}>
-              {`${String(orderItems[0].dueDate.getDate()).padStart(
-                2,
-                "0"
-              )}/${String(orderItems[0].dueDate.getMonth() + 1).padStart(
-                2,
-                "0"
-              )}/${orderItems[0].dueDate.getFullYear()}`}
+              {orderData.dueDate.toLocaleDateString("pt-BR", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+              })}
             </Text>
           </View>
         )}

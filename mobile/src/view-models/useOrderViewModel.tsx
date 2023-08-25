@@ -20,7 +20,7 @@ export function useOrderViewModel(): OrderViewModelData {
       const rawOrderData = await model.getOrders();
 
       if (rawOrderData.length > 0) {
-        const orders = adapter.mapToEntityList(rawOrderData);
+        const orders = adapter.mapToOrderEntityList(rawOrderData);
 
         setOrders(orders);
       }
@@ -33,9 +33,9 @@ export function useOrderViewModel(): OrderViewModelData {
     useCallback(() => {
       getOrders();
     }, [])
-  )
+  );
 
   return {
-    orders
+    orders,
   };
 }

@@ -7,15 +7,15 @@ import { THEME } from "../../../theme";
 import PenIcon from "../../../assets/icons/pen-icon.svg";
 import XIcon from "../../../assets/icons/x-icon.svg";
 
-import { ServiceType } from "../OrderList";
 import { Screen } from "../../../components/shared/Screen";
 import { useOrderContext } from "../../../hooks/useOrderContext";
 import { TailoredClothOrderDetail } from "../../../components/Orders/TailoredClothService/TailoredClothOrderDetail";
 import { AdjustOrderDetail } from "../../../components/Orders/AdjustService/AdjustOrderDetail";
+import { OrderType } from "../../../entities/Order";
 
 interface RouteParamsData {
   orderId: number;
-  orderType: ServiceType;
+  orderType: OrderType;
 }
 
 export function OrderDetail() {
