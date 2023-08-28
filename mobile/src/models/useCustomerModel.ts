@@ -40,7 +40,6 @@ export function useCustomerModel(): CustomerModelData {
             "DELETE FROM customers WHERE id = ?;",
             [id],
             (_, resultSet) => {
-              console.log(resultSet);
               resultSet.rowsAffected === 1 ? resolve(id) : reject(null);
             }
           );
