@@ -22,7 +22,7 @@ export function useCustomerViewModel(): CustomerViewModelData {
   const model = useCustomerModel();
   const adapter = useCustomerAdapter();
 
-  async function getCustomers(): Promise<void> {
+  async function fetchCustomers(): Promise<void> {
     console.log("[ViewModel] Fetching customers...");
     try {
       const offset = (page - 1) * PAGINATION_LIMIT;
@@ -89,7 +89,7 @@ export function useCustomerViewModel(): CustomerViewModelData {
 
   useFocusEffect(
     useCallback(() => {
-      getCustomers();
+      fetchCustomers();
     }, [page])
   );
 
