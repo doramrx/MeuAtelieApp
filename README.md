@@ -48,11 +48,11 @@ Caso deseje emular o aplicativo por um dispositivo físico, conecte-o no computa
 # :camera: Prints
 
 <p align="center">
- <img width="180" src="https://github.com/doramrx/MeuAtelieApp/blob/main/.github/tela1.png"/>
- <img width="180" src="https://github.com/doramrx/MeuAtelieApp/blob/main/.github/tela2.png"/>
- <img width="180" src="https://github.com/doramrx/MeuAtelieApp/blob/main/.github/tela3.png"/>
- <img width="180" src="https://github.com/doramrx/MeuAtelieApp/blob/main/.github/tela4.png"/>
- <img width="180" src="https://github.com/doramrx/MeuAtelieApp/blob/main/.github/tela5.png"/>
+ <img width="150" src="https://github.com/doramrx/MeuAtelieApp/blob/main/.github/tela1.png"/>
+ <img width="150" src="https://github.com/doramrx/MeuAtelieApp/blob/main/.github/tela2.png"/>
+ <img width="150" src="https://github.com/doramrx/MeuAtelieApp/blob/main/.github/tela3.png"/>
+ <img width="150" src="https://github.com/doramrx/MeuAtelieApp/blob/main/.github/tela4.png"/>
+ <img width="150" src="https://github.com/doramrx/MeuAtelieApp/blob/main/.github/tela5.png"/>
 </p>
 
 <a name="Licenca"></a>
