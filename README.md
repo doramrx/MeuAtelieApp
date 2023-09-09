@@ -47,6 +47,14 @@ Caso deseje emular o aplicativo por um dispositivo físico, conecte-o no computa
 <a name="Prints"></a>
 # :camera: Prints
 
+<p align="center">
+ <img src="https://github.com/doramrx/MeuAtelieApp/blob/main/.github/tela1.png"/>
+ <img src="https://github.com/doramrx/MeuAtelieApp/blob/main/.github/tela2.png"/>
+ <img src="https://github.com/doramrx/MeuAtelieApp/blob/main/.github/tela3.png"/>
+ <img src="https://github.com/doramrx/MeuAtelieApp/blob/main/.github/tela4.png"/>
+ <img src="https://github.com/doramrx/MeuAtelieApp/blob/main/.github/tela5.png"/>
+</p>
+
 <a name="Licenca"></a>
 # :page_facing_up: Licença
 **_Este projeto está sob as diretrizes [BSD 2-Clause](https://github.com/doramrx/MeuAtelieApp/blob/main/LICENSE)_**
