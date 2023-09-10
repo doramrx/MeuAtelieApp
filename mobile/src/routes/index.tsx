@@ -6,8 +6,8 @@ import { TabNavigator } from "./TabNavigator";
 import { Inaugural } from "../views/Inaugural";
 import { SignIn } from "../views/SignIn";
 import { SignUp } from "../views/SignUp";
-import { TailoredClothService } from "../views/Order/CreateOrder/TailoredClothService";
-import { AdjustService } from "../views/Order/CreateOrder/AdjustService";
+import { TailoredCloth } from "../views/Order/CreateOrder/TailoredCloth";
+import { AdjustOrder } from "../views/Order/CreateOrder/Adjust";
 import { OrderDetail } from "../views/Order/OrderDetail";
 import { OrderContextProvider } from "../contexts/OrderContext";
 import { AuthContextProvider } from "../contexts/AuthContext";
@@ -39,7 +39,7 @@ export function Routes() {
             {() => {
               return (
                 <OrderContextProvider>
-                  <TailoredClothService />
+                  <TailoredCloth />
                 </OrderContextProvider>
               );
             }}
@@ -48,7 +48,7 @@ export function Routes() {
             {() => {
               return (
                 <OrderContextProvider>
-                  <AdjustService />
+                  <AdjustOrder />
                 </OrderContextProvider>
               );
             }}

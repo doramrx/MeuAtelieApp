@@ -7,25 +7,20 @@ import { THEME } from "../../../../../theme";
 import CalendarIcon from "../../../../../assets/icons/calendar-icon-filled.svg";
 
 import { AdjustOrderData } from "..";
-import { ExpandablePieceList } from "../../ExpandablePieceList";
+import { ExpandablePieceList } from "../../ExpandableAdjustItemList";
 import { useOrderContext } from "../../../../../hooks/useOrderContext";
 import { ClientInfo } from "../../../OrderDetail/ClientInfo";
 import { AdjustItemData } from "../../AdjustList";
 import { useAppContext } from "../../../../../hooks/useAppContext";
 import { AdjustListModal } from "../../AdjustListModal";
 import { database } from "../../../../../database/database";
+import { AdjustOrderDetailData } from "../../../../../view-controllers/Order/useAdjustOrderDetailViewController";
 
 interface Props {
-  orderId: number;
-  orderData: AdjustOrderData;
-  getOrderData: (orderData: AdjustOrderData) => void;
+  controller: AdjustOrderDetailData;
 }
 
-export function EditMode({
-  orderId,
-  orderData: _orderData,
-  getOrderData,
-}: Props) {
+export function EditMode({ controller }: Props) {
   const { isModalOpen } = useAppContext();
   const { changeMode } = useOrderContext();
 

@@ -3,18 +3,18 @@ interface Customer {
   phone: string;
 }
 
-interface Measure {
+export interface Measure {
   id: number;
   name: string;
 }
 
-interface CustomerMeasure {
-  orderItemId: number;
+export interface CustomerMeasure {
+  orderItemId?: number;
   measure: Measure;
   value: number;
 }
 
-interface TailoredClothOrder {
+export interface TailoredClothOrder {
   id: number;
   title: string;
   description?: string;
@@ -26,7 +26,7 @@ interface TailoredClothOrder {
   customer: Customer;
 }
 
-interface AdjustOrder {
+export interface AdjustOrder {
   customer: Customer;
   cost: number;
   dueDate: Date;
@@ -35,17 +35,24 @@ interface AdjustOrder {
   orderItems: AdjustOrderItem[];
 }
 
-interface AdjustOrderItem {
-  id: number;
+export interface AdjustOrderItem {
+  id: number | null;
   title: string;
   description?: string;
-  adjusts: CustomerAdjust[];
+  adjusts: AdjustCheckBox[];
 }
 
-interface Adjust {
+export interface Adjust {
   id: number;
   description: string;
   cost: number;
+}
+
+export interface AdjustCheckBox {
+  id: number;
+  description: string;
+  cost: number;
+  checked: boolean | null;
 }
 
 interface CustomerAdjust {

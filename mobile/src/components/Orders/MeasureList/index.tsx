@@ -2,16 +2,11 @@ import { View, ViewStyle } from "react-native";
 
 import { styles } from "./styles";
 import { MeasureItem } from "../MeasureItem";
-
-export interface CustomerMeasure {
-  id: number;
-  name: string;
-  value: string;
-}
+import { CustomerMeasure } from "../../../entities/Order";
 
 interface Props {
   data: CustomerMeasure[];
-  updateMeasureItemFn?: (index: number, newValue: string) => void;
+  onUpdateMeasure?: (index: number, value: number) => void;
   containerStyles?: ViewStyle;
   editable?: boolean;
 }
@@ -20,19 +15,18 @@ export function MeasureList({
   data,
   containerStyles,
   editable,
-  updateMeasureItemFn,
+  onUpdateMeasure,
 }: Props) {
   return (
     <View style={[styles.measureList, containerStyles]}>
-      {data.map(({ id, name, value }, index) => {
+      {data.map(({ measure, value }) => {
         return (
           <MeasureItem
-            key={id}
-            index={index}
-            name={name}
-            value={value}
+            key={measure.id}
+            measure={measure}
+            value={value.toString()}
             measurementUnit="cm"
-            onChangeMeasure={updateMeasureItemFn}
+            onUpdateMeasure={onUpdateMeasure}
             editable={editable}
           />
         );

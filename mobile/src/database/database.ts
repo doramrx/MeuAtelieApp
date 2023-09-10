@@ -5,10 +5,9 @@ const ENV_NAME = process.env.NODE_ENV;
 export const database =
   ENV_NAME && ENV_NAME === "test" ? null : SQLite.openDatabase("database.db");
 
-// database.closeAsync();
-// database.deleteAsync();
-
 if (database) {
+  // database.closeAsync();
+  // database.deleteAsync();
   database.transaction(
     (transaction) => {
       console.log("DROPPING TABLE DRESSMAKERS");

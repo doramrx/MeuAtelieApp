@@ -15,7 +15,7 @@ interface ProviderProps {
   children: ReactNode;
 }
 
-type ModalTypeVariations =
+export type ModalTypeVariations =
   | "Create"
   | "Detail"
   | "Edit"

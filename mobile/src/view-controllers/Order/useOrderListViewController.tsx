@@ -11,7 +11,7 @@ export interface OrderListViewControllerData {
 export function useOrderListViewController(): OrderListViewControllerData {
   const { openModal, isModalOpen } = useAppContext();
 
-  const viewModel = useOrderViewModel();
+  const viewModel = useOrderViewModel({});
 
   function onOpenServiceSelectionModal() {
     openModal("ServiceSelection");

@@ -7,7 +7,7 @@ import PenIcon from "../../../assets/icons/pen-icon.svg";
 import XIcon from "../../../assets/icons/x-icon.svg";
 
 import { Screen } from "../../../components/shared/Screen";
-import { TailoredClothOrderDetail } from "../../../components/Orders/TailoredClothService/TailoredClothOrderDetail";
+import { TailoredClothOrderDetail } from "../../../components/Orders/TailoredCloth/OrderDetail";
 import { AdjustOrderDetail } from "../../../components/Orders/AdjustService/AdjustOrderDetail";
 import {
   OrderDetailViewControllerData,

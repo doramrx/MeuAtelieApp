@@ -45,18 +45,14 @@ export function Customers({ controller }: Props) {
             return index < viewController.customers.length ? (
               <Card
                 key={item.id}
-                customerId={item.id}
-                customerName={item.name}
-                customerPhone={item.phone}
+                customer={item}
                 onOptionsClick={viewController.onOpenBottomModal}
                 containerStyle={{ marginBottom: 6 }}
               />
             ) : (
               <Card
                 key={item.id}
-                customerId={item.id}
-                customerName={item.name}
-                customerPhone={item.phone}
+                customer={item}
                 onOptionsClick={viewController.onOpenBottomModal}
               />
             );

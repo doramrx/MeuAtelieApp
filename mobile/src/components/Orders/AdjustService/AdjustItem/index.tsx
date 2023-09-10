@@ -3,40 +3,32 @@ import { Pressable, Text, View } from "react-native";
 import { styles } from "./styles";
 import { THEME } from "../../../../theme";
 import CheckIcon from "../../../../assets/icons/check-icon.svg";
+import { AdjustCheckBox } from "../../../../entities/Order";
 
 interface Props {
-  description: string;
-  cost: number;
+  adjust: AdjustCheckBox;
   onSelect?: () => void;
-  hasCheckbox?: boolean;
-  isChecked?: boolean;
 }
 
-export function AdjustItem({
-  description,
-  cost,
-  onSelect,
-  hasCheckbox = false,
-  isChecked = false,
-}: Props) {
+export function AdjustItem({ adjust, onSelect }: Props) {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>{description}</Text>
+      <Text style={styles.text}>{adjust.description}</Text>
 
       <View style={styles.wrapper}>
         <Text style={styles.text}>
-          R$ {cost.toFixed(2).padEnd(4, "0").replace(".", ",")}
+          R$ {adjust.cost.toFixed(2).padEnd(4, "0").replace(".", ",")}
         </Text>
 
-        {hasCheckbox && (
+        {adjust.checked !== null && (
           <Pressable
             onPress={onSelect}
             style={[
               styles.checkBoxButton,
-              isChecked && styles.checkedBoxButton,
+              adjust.checked && styles.checkedBoxButton,
             ]}
           >
-            {isChecked && (
+            {adjust.checked && (
               <CheckIcon
                 width={14}
                 height={14}

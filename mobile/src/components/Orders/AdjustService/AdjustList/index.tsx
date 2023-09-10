@@ -2,21 +2,28 @@ import { Text, View } from "react-native";
 
 import { styles } from "./styles";
 import { AdjustItem } from "../AdjustItem";
-
-export interface AdjustItemData {
-  id: number;
-  description: string;
-  cost: number;
-  isChecked?: boolean;
-}
+import { AdjustCheckBox } from "../../../../entities/Order";
 
 interface Props {
-  items: AdjustItemData[];
+  adjusts: AdjustCheckBox[];
   onSelectItem?: (index: number) => void;
   isEditable?: boolean;
 }
 
-export function AdjustList({ items, onSelectItem, isEditable = true }: Props) {
+export function AdjustList({
+  adjusts,
+  onSelectItem,
+  isEditable = true,
+}: Props) {
+  function onGetTotal() {
+    const total = adjusts.reduce(
+      (subtotal, adjust) =>
+        adjust.checked ? subtotal + adjust.cost : subtotal,
+      0
+    );
+    return total.toFixed(2).replace(".", ",");
+  }
+
   return (
     <View style={styles.container}>
       <View style={[styles.header, !isEditable && styles.withoutPadding]}>
@@ -25,14 +32,11 @@ export function AdjustList({ items, onSelectItem, isEditable = true }: Props) {
       </View>
 
       <View>
-        {items.map(({ id, description, cost, isChecked }, index) => {
+        {adjusts.map((adjust, index) => {
           return (
             <AdjustItem
-              key={id}
-              description={description}
-              cost={cost}
-              isChecked={isChecked}
-              hasCheckbox={isEditable}
+              key={adjust.id}
+              adjust={adjust}
               onSelect={() => onSelectItem && onSelectItem(index)}
             />
           );
@@ -41,15 +45,7 @@ export function AdjustList({ items, onSelectItem, isEditable = true }: Props) {
 
       <View style={[styles.footer, !isEditable && styles.withoutPadding]}>
         <Text style={styles.text}>Total</Text>
-        <Text style={styles.text}>
-          R${" "}
-          {items
-            .reduce((subtotal, adjust) => {
-              return adjust.isChecked ? subtotal + adjust.cost : subtotal;
-            }, 0)
-            .toFixed(2)
-            .replace(".", ",")}
-        </Text>
+        <Text style={styles.text}>R$ {onGetTotal()}</Text>
       </View>
     </View>
   );

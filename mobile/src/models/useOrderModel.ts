@@ -1,10 +1,12 @@
 import { database } from "../database/database";
 
+type RawOrderType = "Tailored" | "Adjust";
+
 export interface OrderRawData {
   id: number;
   title: string;
   due_date: string;
-  type: string;
+  type: RawOrderType;
 }
 
 interface OrderModelData {
@@ -13,6 +15,12 @@ interface OrderModelData {
    * @returns raw order list
    */
   getOrders: () => Promise<OrderRawData[]>;
+  /**
+   * @function finishOrder
+   * @param id order id
+   * @returns void
+   */
+  finishOrder: (id: number) => Promise<void>;
 }
 
 export function useOrderModel(): OrderModelData {
@@ -45,7 +53,31 @@ export function useOrderModel(): OrderModelData {
     });
   }
 
+  function finishOrder(id: number): Promise<void> {
+    return new Promise((resolve, reject) => {
+      database?.transaction(
+        (transaction) => {
+          transaction.executeSql(
+            "UPDATE orders SET delivered_at = ? WHERE id = ?;",
+            [new Date().toISOString(), id],
+            (_, resultSet) => {
+              resultSet.rowsAffected === 1 ? resolve() : reject();
+            }
+          );
+        },
+        (error) => {
+          console.log(error);
+          reject(null);
+        },
+        () => {
+          console.log("[Model] Order finished successfully!");
+        }
+      );
+    });
+  }
+
   return {
     getOrders,
+    finishOrder,
   };
 }
