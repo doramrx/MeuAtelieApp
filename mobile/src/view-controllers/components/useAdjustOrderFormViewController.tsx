@@ -32,7 +32,9 @@ export function useAdjustOrderFormViewController(): AdjustOrderFormData {
 
   const adjustServicesViewModel = useAdjustServiceViewModel();
   const adjustOrderItemViewModel = useAdjustOrderItemViewModel();
-  const adjustOrderViewModel = useAdjustOrderViewModel({});
+  const adjustOrderViewModel = useAdjustOrderViewModel({
+    shouldFetchData: false,
+  });
 
   const [itemAmount, setItemAmount] = useState<string>("");
   const [dueDate, setDueDate] = useState(new Date());
@@ -99,6 +101,6 @@ export function useAdjustOrderFormViewController(): AdjustOrderFormData {
     onUpdateItemAdjust: adjustOrderItemViewModel.updateItemAdjust,
     onGetTotal,
     onInitItems,
-    onCreateOrder
+    onCreateOrder,
   };
 }

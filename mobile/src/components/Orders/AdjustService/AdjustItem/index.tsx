@@ -8,9 +8,10 @@ import { AdjustCheckBox } from "../../../../entities/Order";
 interface Props {
   adjust: AdjustCheckBox;
   onSelect?: () => void;
+  hasCheckBox?: boolean;
 }
 
-export function AdjustItem({ adjust, onSelect }: Props) {
+export function AdjustItem({ adjust, onSelect, hasCheckBox = true }: Props) {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>{adjust.description}</Text>
@@ -20,7 +21,7 @@ export function AdjustItem({ adjust, onSelect }: Props) {
           R$ {adjust.cost.toFixed(2).padEnd(4, "0").replace(".", ",")}
         </Text>
 
-        {adjust.checked !== null && (
+        {hasCheckBox && (
           <Pressable
             onPress={onSelect}
             style={[

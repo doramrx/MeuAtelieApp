@@ -38,6 +38,7 @@ export function AdjustList({
               key={adjust.id}
               adjust={adjust}
               onSelect={() => onSelectItem && onSelectItem(index)}
+              hasCheckBox={isEditable}
             />
           );
         })}

@@ -19,33 +19,27 @@ export function useAdjustServiceViewModel(
   const adapter = useAdjustAdapter();
   const model = useAdjustServiceModel();
 
-  const [adjusts, setAdjusts] = useState<Adjust[]>(
-    viewModelArgs ? viewModelArgs.adjusts : []
-  );
+  const [adjusts, setAdjusts] = useState<Adjust[]>([]);
 
   async function fetchAdjusts(): Promise<void> {
     try {
       let rawAdjusts;
-      const hasPreloadedAdjusts = adjusts.length > 0;
+      const hasExistentAdjusts =
+        !!viewModelArgs && viewModelArgs.adjusts.length > 0;
 
-      if (hasPreloadedAdjusts) {
+      if (hasExistentAdjusts) {
         rawAdjusts = await model.getAdjustsExclusive(
-          adjusts.map((adjust) => adjust.id)
+          viewModelArgs.adjusts.map((adjust) => adjust.id)
         );
       } else {
         rawAdjusts = await model.getAdjusts();
       }
 
       if (rawAdjusts.length > 0) {
-        const adaptedAdjusts = adapter.mapToEntityList(rawAdjusts);
-
-        if (hasPreloadedAdjusts) {
-          setAdjusts((prevAdjusts) => [...prevAdjusts, ...adaptedAdjusts]);
-        } else {
-          setAdjusts(adaptedAdjusts);
-        }
+        setAdjusts(adapter.mapToEntityList(rawAdjusts));
       }
     } catch {
+      console.log("[ViewModel] rejecting on useAdjustServiceViewModel");
       return Promise.reject();
     }
   }
@@ -54,7 +48,7 @@ export function useAdjustServiceViewModel(
     useCallback(() => {
       console.log("[ViewModel] - useFocusEffect - fetching adjust services...");
       fetchAdjusts();
-    }, [])
+    }, [viewModelArgs?.adjusts])
   );
 
   return {

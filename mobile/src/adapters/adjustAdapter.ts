@@ -3,6 +3,7 @@ import { Adjust, AdjustCheckBox } from "../entities/Order";
 
 interface AdapterFunctions {
   mapToEntityList: (rawData: AdjustRawData[]) => Adjust[];
+  mapFromAdjustToAdjustCheckBoxEntity: (rawData: Adjust) => AdjustCheckBox;
   mapToAdjustCheckboxEntityList: (rawData: AdjustRawData[]) => AdjustCheckBox[];
 }
 
@@ -34,8 +35,18 @@ export function useAdjustAdapter(): AdapterFunctions {
     return rawData.map(mapToAdjustCheckboxEntity);
   }
 
+  function mapFromAdjustToAdjustCheckBoxEntity(adjust: Adjust): AdjustCheckBox {
+    return {
+      id: adjust.id,
+      description: adjust.description,
+      cost: adjust.cost,
+      checked: false,
+    };
+  }
+
   return {
     mapToEntityList,
     mapToAdjustCheckboxEntityList,
+    mapFromAdjustToAdjustCheckBoxEntity,
   };
 }

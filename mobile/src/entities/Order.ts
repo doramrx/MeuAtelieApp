@@ -55,7 +55,7 @@ export interface AdjustCheckBox {
   checked: boolean | null;
 }
 
-interface CustomerAdjust {
+export interface CustomerAdjust {
   orderItemId: number;
   practicedPrice: number;
   adjust: {

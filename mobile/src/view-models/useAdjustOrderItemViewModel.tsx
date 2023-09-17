@@ -1,6 +1,7 @@
-import { useState } from "react";
-import { Adjust, AdjustOrderItem } from "../entities/Order";
+import { useCallback, useState } from "react";
+import { Adjust, AdjustCheckBox, AdjustOrderItem } from "../entities/Order";
 import { useAdjustAdapter } from "../adapters/adjustAdapter";
+import { useFocusEffect } from "@react-navigation/native";
 
 interface AdjustOrderItemData {
   items: AdjustOrderItem[];
@@ -9,6 +10,11 @@ interface AdjustOrderItemData {
   updateItemDescription: (orderItemIndex: number, description: string) => void;
   updateItemAdjust: (itemIndex: number, adjustIndex: number) => void;
   getTotalCost: () => number;
+  updateOrderItemAdjusts: (
+    itemIndex: number,
+    adjusts: AdjustCheckBox[]
+  ) => void;
+  setAdjustOrderItems: (items: AdjustOrderItem[]) => void;
 }
 
 interface ViewModelArgs {
@@ -19,9 +25,7 @@ export function useAdjustOrderItemViewModel(
   viewModelArgs?: ViewModelArgs
 ): AdjustOrderItemData {
   const adapter = useAdjustAdapter();
-  const [items, setItems] = useState<AdjustOrderItem[]>(
-    viewModelArgs ? viewModelArgs.adjustOrderItems : []
-  );
+  const [items, setItems] = useState<AdjustOrderItem[]>([]);
 
   function initItems(amount: number, adjusts: Adjust[]) {
     const isInitialized = items.length > 0;
@@ -124,6 +128,31 @@ export function useAdjustOrderItemViewModel(
     }, 0);
   }
 
+  function updateOrderItemAdjusts(
+    itemIndex: number,
+    adjusts: AdjustCheckBox[]
+  ) {
+    setItems((prevItems) => {
+      const itemsCopy = [...prevItems];
+      itemsCopy[itemIndex].adjusts = adjusts;
+      return itemsCopy;
+    });
+  }
+
+  function setAdjustOrderItems(items: AdjustOrderItem[]) {
+    setItems([...items]);
+  }
+
+  useFocusEffect(
+    useCallback(() => {
+      if (!viewModelArgs) {
+        return;
+      }
+
+      setItems([...viewModelArgs.adjustOrderItems]);
+    }, [])
+  );
+
   return {
     items,
     initItems,
@@ -131,5 +160,7 @@ export function useAdjustOrderItemViewModel(
     updateItemDescription,
     updateItemAdjust,
     getTotalCost,
+    updateOrderItemAdjusts,
+    setAdjustOrderItems,
   };
 }

@@ -1,15 +1,23 @@
-/* eslint-disable indent */
-import { useNavigation } from "@react-navigation/native";
-import { useOrderContext } from "../../hooks/useOrderContext";
-import { OrderMode } from "../../contexts/OrderContext";
-import { useAdjustOrderViewModel } from "../../view-models/useAdjustOrderViewModel";
-import { AdjustOrder, AdjustOrderItem } from "../../entities/Order";
-import { useOrderViewModel } from "../../view-models/useOrderViewModel";
+import { useCallback, useRef, useState } from "react";
 import { Alert, Linking } from "react-native";
-import { useAdjustOrderItemViewModel } from "../../view-models/useAdjustOrderItemViewModel";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+/* eslint-disable indent */
+import {
+  AdjustCheckBox,
+  AdjustOrder,
+  AdjustOrderItem,
+} from "../../entities/Order";
+
+import { useOrderContext } from "../../hooks/useOrderContext";
 import { useAppContext } from "../../hooks/useAppContext";
-import { useState } from "react";
+
+import { OrderMode } from "../../contexts/OrderContext";
+
 import { useDatePicker } from "../../utils/useDatePicker";
+
+import { useAdjustOrderViewModel } from "../../view-models/useAdjustOrderViewModel";
+import { useOrderViewModel } from "../../view-models/useOrderViewModel";
+import { useAdjustOrderItemViewModel } from "../../view-models/useAdjustOrderItemViewModel";
 
 export interface AdjustOrderDetailData {
   mode: OrderMode | null;
@@ -26,6 +34,10 @@ export interface AdjustOrderDetailData {
     description: string
   ) => void;
   onUpdateItemAdjust: (itemIndex: number, adjustIndex: number) => void;
+  onUpdateSelectedItem: (index: number) => void;
+  onGetAdjusts: () => AdjustCheckBox[];
+  onUpdateOrderItemAdjusts: (adjusts: AdjustCheckBox[]) => void;
+  onSaveModifications: () => void;
 }
 
 interface ControllerArgs {
@@ -36,14 +48,17 @@ export function useAdjustOrderDetailViewController({
   orderId,
 }: ControllerArgs): AdjustOrderDetailData {
   const navigation = useNavigation();
+  const selectedItemRef = useRef<number>(0);
+  const wasFormUpdated = useRef<boolean>(false);
 
   const { mode, changeMode } = useOrderContext();
   const { isModalOpen } = useAppContext();
 
-  const adjustOrderViewModel = useAdjustOrderViewModel({ orderId });
-  const adjustOrderItemViewModel = useAdjustOrderItemViewModel({
-    adjustOrderItems: adjustOrderViewModel.adjustOrder?.orderItems || [],
+  const adjustOrderViewModel = useAdjustOrderViewModel({
+    orderId,
+    shouldFetchData: true,
   });
+  const adjustOrderItemViewModel = useAdjustOrderItemViewModel();
   const orderViewModel = useOrderViewModel({ shouldFetchData: false });
 
   const [dueDate, setDueDate] = useState(new Date());
@@ -105,6 +120,81 @@ export function useAdjustOrderDetailViewController({
     }
   }
 
+  function onUpdateSelectedItem(index: number) {
+    selectedItemRef.current = index;
+  }
+
+  function onGetAdjusts(): AdjustCheckBox[] {
+    return adjustOrderViewModel.adjustOrder?.orderItems[selectedItemRef.current]
+      .adjusts as AdjustCheckBox[];
+  }
+
+  function onUpdateOrderItemAdjusts(adjusts: AdjustCheckBox[]) {
+    adjustOrderItemViewModel.updateOrderItemAdjusts(
+      selectedItemRef.current,
+      adjusts
+    );
+  }
+
+  function onSaveModifications() {
+    // Todo
+  }
+
+  function onChangeMode() {
+    if (wasFormUpdated.current) {
+      console.log(
+        "[ViewController] Form was changed by user! Updating the form data..."
+      );
+      adjustOrderItemViewModel.setAdjustOrderItems(
+        adjustOrderViewModel.adjustOrder?.orderItems as AdjustOrderItem[]
+      );
+      wasFormUpdated.current = false;
+    }
+    console.log("[ViewController] Changing the mode...");
+
+    changeMode();
+  }
+
+  function onUpdateItemTitle(orderItemIndex: number, title: string) {
+    adjustOrderItemViewModel.updateItemTitle(orderItemIndex, title);
+
+    console.log(adjustOrderItemViewModel.items[orderItemIndex].title);
+    console.log(
+      adjustOrderViewModel.adjustOrder?.orderItems[orderItemIndex].title
+    );
+
+    if (!wasFormUpdated.current) {
+      wasFormUpdated.current = true;
+    }
+  }
+
+  function onUpdateItemDescription(
+    orderItemIndex: number,
+    description: string
+  ) {
+    adjustOrderItemViewModel.updateItemDescription;
+    if (!wasFormUpdated.current) {
+      wasFormUpdated.current = true;
+    }
+  }
+
+  function onUpdateItemAdjust(itemIndex: number, adjustIndex: number) {
+    adjustOrderItemViewModel.updateItemAdjust(itemIndex, adjustIndex);
+    if (!wasFormUpdated.current) {
+      wasFormUpdated.current = true;
+    }
+  }
+
+  useFocusEffect(
+    useCallback(() => {
+      if (adjustOrderViewModel.adjustOrder) {
+        adjustOrderItemViewModel.setAdjustOrderItems([
+          ...adjustOrderViewModel.adjustOrder.orderItems,
+        ]);
+      }
+    }, [adjustOrderViewModel.adjustOrder?.orderItems])
+  );
+
   return {
     mode,
     adjustOrder: adjustOrderViewModel.adjustOrder as AdjustOrder,
@@ -112,10 +202,14 @@ export function useAdjustOrderDetailViewController({
     isModalOpen,
     onGoBack: navigation.goBack,
     onFinishOrder,
-    onChangeMode: changeMode,
+    onChangeMode,
     onOpenDatePicker: openDatePicker,
-    onUpdateItemTitle: adjustOrderItemViewModel.updateItemTitle,
-    onUpdateItemDescription: adjustOrderItemViewModel.updateItemDescription,
-    onUpdateItemAdjust: adjustOrderItemViewModel.updateItemAdjust,
+    onUpdateItemTitle,
+    onUpdateItemDescription,
+    onUpdateItemAdjust,
+    onUpdateSelectedItem,
+    onGetAdjusts,
+    onUpdateOrderItemAdjusts,
+    onSaveModifications,
   };
 }
