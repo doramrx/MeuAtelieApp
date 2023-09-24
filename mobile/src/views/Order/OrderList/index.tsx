@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity } from "react-native";
+import { FlatList, Text, TouchableOpacity, View } from "react-native";
 
 import { THEME } from "../../../theme";
 import { styles } from "./styles";
@@ -50,24 +50,23 @@ export function Orders({ controller }: Props) {
       <Screen.Content additionalStyles={styles.mainContainer}>
         <Options />
 
-        <Text style={styles.listCounter}>
-          {viewController.orders.length} Pedidos listados
-        </Text>
-
-        {viewController.orders.map((order, index) => {
-          return viewController.orders.length - 1 !== index ? (
-            <Card
-              key={order.id}
-              orderData={order}
-              marginBottom={6}
-            />
-          ) : (
-            <Card
-              key={order.id}
-              orderData={order}
-            />
-          );
-        })}
+        <FlatList
+          data={viewController.orders}
+          renderItem={({ item }) => {
+            return <Card orderData={item} />;
+          }}
+          keyExtractor={(item) => item.id.toString()}
+          ItemSeparatorComponent={() => {
+            return <View style={{ marginBottom: 6 }} />;
+          }}
+          ListHeaderComponent={() => {
+            return (
+              <Text style={styles.listCounter}>
+                {viewController.orders.length} Pedidos listados
+              </Text>
+            );
+          }}
+        />
       </Screen.Content>
 
       {viewController.isModalOpen && <ServiceTypeModal />}

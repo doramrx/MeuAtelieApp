@@ -394,7 +394,7 @@ export function EditMode({
           onPress={openDatePicker}
         >
           <Text style={styles.dueDateValue}>
-            {orderData.orderItem.dueDate.toLocaleDateString("pt-BR")}
+            {orderData.orderItem.dueDate.toLocaleString("pt-BR")}
           </Text>
           <CalendarIcon
             width={22}

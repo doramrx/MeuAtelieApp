@@ -23,13 +23,24 @@ export function useOrderAdapter(): AdapterFunctions {
     title,
     due_date,
     type,
+    customer_name,
+    delivered_at
   }: OrderRawData): Order {
-    return {
+    const order: Order = {
       id,
       dueDate: new Date(due_date),
       items: [{ title }],
       type: type === "Tailored" ? "tailoredClothService" : "adjustService",
     };
+
+    if (customer_name) {
+      order.customer = {
+        name: customer_name,
+      };
+    }
+    order.finished = Boolean(delivered_at);
+
+    return order;
   }
 
   function mapToOrderEntityList(rawData: OrderRawData[]): Order[] {

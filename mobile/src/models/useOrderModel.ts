@@ -7,6 +7,8 @@ export interface OrderRawData {
   title: string;
   due_date: string;
   type: RawOrderType;
+  customer_name: string;
+  delivered_at: string | null;
 }
 
 interface OrderModelData {
@@ -21,6 +23,12 @@ interface OrderModelData {
    * @returns void
    */
   finishOrder: (id: number) => Promise<void>;
+  /**
+   * @function getOrdersByMonth
+   * @param month month to fetch orders. The month range is 1-12
+   * @returns raw order list
+   */
+  getOrdersByMonth: (month: number) => Promise<OrderRawData[]>;
 }
 
 export function useOrderModel(): OrderModelData {
@@ -76,8 +84,43 @@ export function useOrderModel(): OrderModelData {
     });
   }
 
+  function getOrdersByMonth(month: number): Promise<OrderRawData[]> {
+    return new Promise((resolve, reject) => {
+      database?.transaction(
+        (transaction) => {
+          transaction.executeSql(
+            `SELECT 
+            ord.id,
+            ori.title,
+            ord.due_date,
+            ord.type,
+            csm.name customer_name,
+            ord.delivered_at
+          FROM orders AS ord
+          JOIN order_items AS ori ON ori.id_order = ord.id
+          JOIN customers AS csm ON csm.id = ord.id_customer
+          WHERE strftime('%m', ord.due_date) = ?;`,
+            [month.toString().padStart(2, "0")],
+            (_, resultSet) => {
+              console.log(resultSet.rows._array);
+              resolve(resultSet.rows._array as OrderRawData[]);
+            }
+          );
+        },
+        (error) => {
+          console.log(error);
+          reject(null);
+        },
+        () => {
+          console.log("[Model] Order fetched successfully!");
+        }
+      );
+    });
+  }
+
   return {
     getOrders,
     finishOrder,
+    getOrdersByMonth,
   };
 }

@@ -100,21 +100,21 @@ export function DetailMode({ orderId, orderData }: Props) {
       <View style={styles.infoContainer}>
         <Text style={styles.infoLabel}>Contratado em:</Text>
         <Text style={styles.infoText}>
-          {orderData.createdAt.toLocaleDateString("pt-BR")}
+          {orderData.createdAt.toLocaleString("pt-BR")}
         </Text>
       </View>
 
       <View style={styles.infoContainer}>
         <Text style={styles.infoLabel}>Data de entrega:</Text>
         <Text style={styles.infoText}>
-          {orderData.dueDate.toLocaleDateString("pt-BR")}
+          {orderData.dueDate.toLocaleString("pt-BR")}
         </Text>
       </View>
       {orderData.deliveredAt && (
         <View style={styles.infoContainer}>
           <Text style={styles.infoLabel}>Finalizado em:</Text>
           <Text style={styles.infoText}>
-            {orderData.deliveredAt.toLocaleDateString("pt-BR")}
+            {orderData.deliveredAt.toLocaleString("pt-BR")}
           </Text>
         </View>
       )}

@@ -65,10 +65,10 @@ export function AdjustOrderForm({ controller }: Props) {
           <Text style={styles.dueDateLabel}>Selecione a data de entrega</Text>
           <Pressable
             style={styles.dueDatePicker}
-            onPress={viewController.onOpenDatePicker}
+            onPress={viewController.onOpenDateTimePicker}
           >
             <Text style={styles.dueDateValue}>
-              {viewController.dueDate.toLocaleDateString("pt-BR")}
+              {viewController.dueDate.toLocaleString("pt-BR")}
             </Text>
             <CalendarIcon
               width={22}

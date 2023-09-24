@@ -21,7 +21,7 @@ export interface TailoredClothOrderFormData {
   onUpdateTitle: (title: string) => void;
   onUpdateDescription: (description: string) => void;
   onUpdateCost: (cost: string) => void;
-  onOpenDatePicker: () => void;
+  onOpenDateTimePicker: () => void;
   onUpdateCustomerMeasure: (measureId: number, value: number) => void;
   onCreateOrder: () => void;
 }
@@ -43,7 +43,7 @@ export function useTailoredClothOrderFormViewController(): TailoredClothOrderFor
   const [cost, setCost] = useState("");
   const [dueDate, setDueDate] = useState(new Date());
 
-  const { openDatePicker } = useDatePicker({
+  const { openDateTimePicker } = useDatePicker({
     someDate: dueDate,
     setDate: setDueDate,
   });
@@ -96,7 +96,7 @@ export function useTailoredClothOrderFormViewController(): TailoredClothOrderFor
     onUpdateTitle,
     onUpdateDescription,
     onUpdateCost,
-    onOpenDatePicker: openDatePicker,
+    onOpenDateTimePicker: openDateTimePicker,
     onUpdateCustomerMeasure: customerMeasureViewModel.updateCustomerMeasure,
     onCreateOrder,
   };

@@ -36,21 +36,21 @@ export function DetailMode({ controller }: Props) {
         <View style={styles.infoContainer}>
           <Text style={styles.infoLabel}>Contratado em:</Text>
           <Text style={styles.infoText}>
-            {controller.adjustOrder.createdAt.toLocaleDateString("pt-BR")}
+            {controller.adjustOrder.createdAt.toLocaleString("pt-BR")}
           </Text>
         </View>
 
         <View style={styles.infoContainer}>
           <Text style={styles.infoLabel}>Data de entrega:</Text>
           <Text style={styles.infoText}>
-            {controller.adjustOrder.dueDate.toLocaleDateString("pt-BR")}
+            {controller.adjustOrder.dueDate.toLocaleString("pt-BR")}
           </Text>
         </View>
         {controller.adjustOrder.deliveredAt && (
           <View style={styles.infoContainer}>
             <Text style={styles.infoLabel}>Finalizado em:</Text>
             <Text style={styles.infoText}>
-              {controller.adjustOrder.deliveredAt.toLocaleDateString("pt-BR")}
+              {controller.adjustOrder.deliveredAt.toLocaleString("pt-BR")}
             </Text>
           </View>
         )}

@@ -70,6 +70,10 @@ export interface Order {
   id: number;
   dueDate: Date;
   type: OrderType;
+  customer?: {
+    name: string;
+  };
+  finished?: boolean;
   items: Array<{
     title: string;
   }>;

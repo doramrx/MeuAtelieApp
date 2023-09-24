@@ -173,10 +173,10 @@ export function EditMode({ controller }: Props) {
 
           <Pressable
             style={styles.dueDatePicker}
-            onPress={controller.onOpenDatePicker}
+            onPress={controller.onOpenDateTimePicker}
           >
             <Text style={styles.dueDateValue}>
-              {controller.adjustOrder.dueDate.toLocaleDateString("pt-BR")}
+              {controller.adjustOrder.dueDate.toLocaleString("pt-BR")}
             </Text>
 
             <CalendarIcon

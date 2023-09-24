@@ -17,7 +17,7 @@ export interface AdjustOrderFormData {
   dueDate: Date;
   itemAmount: string;
   items: AdjustOrderItem[];
-  onOpenDatePicker: () => void;
+  onOpenDateTimePicker: () => void;
   onUpdateItemAmount: (amount: string) => void;
   onUpdateItemTitle: (index: number, title: string) => void;
   onUpdateItemDescription: (index: number, description: string) => void;
@@ -40,7 +40,7 @@ export function useAdjustOrderFormViewController(): AdjustOrderFormData {
   const [dueDate, setDueDate] = useState(new Date());
   const navigation = useNavigation();
 
-  const { openDatePicker } = useDatePicker({
+  const { openDateTimePicker } = useDatePicker({
     someDate: dueDate,
     setDate: setDueDate,
   });
@@ -94,7 +94,7 @@ export function useAdjustOrderFormViewController(): AdjustOrderFormData {
     dueDate,
     itemAmount,
     items: adjustOrderItemViewModel.items,
-    onOpenDatePicker: openDatePicker,
+    onOpenDateTimePicker: openDateTimePicker,
     onUpdateItemAmount,
     onUpdateItemTitle: adjustOrderItemViewModel.updateItemTitle,
     onUpdateItemDescription: adjustOrderItemViewModel.updateItemDescription,

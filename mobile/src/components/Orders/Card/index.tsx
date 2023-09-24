@@ -6,6 +6,7 @@ import { THEME } from "../../../theme";
 import MeasuringTapeIcon from "../../../assets/icons/measuring-tape-icon.svg";
 import NeedleAndThreadIcon from "../../../assets/icons/needle-and-thread-icon.svg";
 import VerticalMoreIcon from "../../../assets/icons/vertical-more-icon.svg";
+
 import { Order } from "../../../entities/Order";
 
 interface Props {
@@ -46,11 +47,7 @@ export function Card({ orderData, marginBottom }: Props) {
             <Text style={styles.orderText}>Tipo Serviço: Roupa sob medida</Text>
 
             <Text style={styles.orderDueDate}>
-              {orderData.dueDate.toLocaleDateString("pt-BR", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-              })}
+              {orderData.dueDate.toLocaleString("pt-BR")}
             </Text>
           </View>
         ) : (
@@ -62,11 +59,7 @@ export function Card({ orderData, marginBottom }: Props) {
             </Text>
 
             <Text style={styles.orderDueDate}>
-              {orderData.dueDate.toLocaleDateString("pt-BR", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-              })}
+              {orderData.dueDate.toLocaleString("pt-BR")}
             </Text>
           </View>
         )}

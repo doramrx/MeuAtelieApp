@@ -1,8 +1,8 @@
-import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { Dispatch, SetStateAction } from "react";
+import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 
 interface DatePickerData {
-  openDatePicker: () => void;
+  openDateTimePicker: () => void;
 }
 
 interface Props {
@@ -11,18 +11,48 @@ interface Props {
 }
 
 export function useDatePicker({ someDate, setDate }: Props): DatePickerData {
-  function openDatePicker() {
-    DateTimePickerAndroid.open({
-      value: someDate,
-      onChange: (_, _date) => {
-        _date && setDate(_date);
-      },
-      mode: "date",
-      minimumDate: new Date(),
+  function getDate(initialDate: Date): Promise<Date> {
+    return new Promise((resolve, reject) => {
+      DateTimePickerAndroid.open({
+        value: initialDate,
+        onChange: (event, date) => {
+          event.type === "set" ? resolve(date || new Date()) : reject(null);
+        },
+        mode: "date",
+      });
     });
   }
 
-  return {
-    openDatePicker,
-  };
+  function getTime(initialDate: Date): Promise<number> {
+    return new Promise((resolve, reject) => {
+      DateTimePickerAndroid.open({
+        value: initialDate,
+        onChange: (event, datetime) => {
+          event.type === "set"
+            ? resolve(datetime?.getTime() || new Date().getTime())
+            : reject(null);
+        },
+        mode: "time",
+      });
+    });
+  }
+
+  async function openDateTimePicker() {
+    let selectedDate;
+    try {
+      selectedDate = await getDate(someDate);
+      const selectedTimeInMili = await getTime(selectedDate);
+
+      selectedDate.setTime(selectedTimeInMili);
+      selectedDate.setSeconds(0);
+    } catch {
+      // console.log("Rejecting");
+    } finally {
+      if (selectedDate) {
+        setDate(selectedDate);
+      }
+    }
+  }
+
+  return { openDateTimePicker };
 }

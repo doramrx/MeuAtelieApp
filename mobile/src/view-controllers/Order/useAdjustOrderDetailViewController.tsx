@@ -27,7 +27,7 @@ export interface AdjustOrderDetailData {
   onGoBack: () => void;
   onFinishOrder: () => void;
   onChangeMode: () => void;
-  onOpenDatePicker: () => void;
+  onOpenDateTimePicker: () => void;
   onUpdateItemTitle: (orderItemIndex: number, title: string) => void;
   onUpdateItemDescription: (
     orderItemIndex: number,
@@ -62,7 +62,7 @@ export function useAdjustOrderDetailViewController({
   const orderViewModel = useOrderViewModel({ shouldFetchData: false });
 
   const [dueDate, setDueDate] = useState(new Date());
-  const { openDatePicker } = useDatePicker({
+  const { openDateTimePicker } = useDatePicker({
     someDate: dueDate,
     setDate: setDueDate,
   });
@@ -203,7 +203,7 @@ export function useAdjustOrderDetailViewController({
     onGoBack: navigation.goBack,
     onFinishOrder,
     onChangeMode,
-    onOpenDatePicker: openDatePicker,
+    onOpenDateTimePicker: openDateTimePicker,
     onUpdateItemTitle,
     onUpdateItemDescription,
     onUpdateItemAdjust,
