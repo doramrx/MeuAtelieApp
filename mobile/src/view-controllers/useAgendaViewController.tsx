@@ -79,16 +79,30 @@ export function useAgendaViewController(): AgendaData {
     useCallback(() => {
       setMarkedDates(() => {
         const markedDates: MarkedDates = {};
+        const today = new Date();
 
         viewModel.orders.forEach((order) => {
           const key = order.dueDate.toISOString().split("T")[0];
-          console.log(key);
-          markedDates[key] = {
-            marked: true,
-            selectedColor: THEME.COLORS.PINK.V2,
-            selectedTextColor: THEME.COLORS.WHITE.FULL_WHITE,
-            dotColor: THEME.COLORS.PINK.V2,
-          };
+
+          if (order.dueDate.getDate() === today.getDate()) {
+            console.log("Today");
+            setSelectedDay(today.getDate());
+            markedDates[key] = {
+              today: true,
+              marked: true,
+              selected: true,
+              selectedColor: THEME.COLORS.PINK.V2,
+              selectedTextColor: THEME.COLORS.WHITE.FULL_WHITE,
+              dotColor: THEME.COLORS.PINK.V2,
+            };
+          } else {
+            markedDates[key] = {
+              marked: true,
+              selectedColor: THEME.COLORS.PINK.V2,
+              selectedTextColor: THEME.COLORS.WHITE.FULL_WHITE,
+              dotColor: THEME.COLORS.PINK.V2,
+            };
+          }
         });
 
         return markedDates;
