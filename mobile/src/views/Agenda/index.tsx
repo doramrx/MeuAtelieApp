@@ -1,5 +1,7 @@
 import { Text, View } from "react-native";
-import { LocaleConfig, Calendar } from "react-native-calendars";
+import { Calendar } from "react-native-calendars";
+
+import "../../config/reactNativeCalendars";
 
 import { styles } from "./styles";
 
@@ -10,53 +12,11 @@ import {
 
 import { Screen } from "../../components/shared/Screen";
 import { OrderList } from "../../components/Agenda/OrderList";
+import { Modal } from "../../components/Agenda/Modal";
 
 interface Props {
   controller: () => AgendaData;
 }
-
-LocaleConfig.locales["br"] = {
-  monthNames: [
-    "Janeiro",
-    "Fevereiro",
-    "Março",
-    "Abril",
-    "Maio",
-    "Junho",
-    "Julho",
-    "Agosto",
-    "Setembro",
-    "Outubro",
-    "Novembro",
-    "Dezembro",
-  ],
-  monthNamesShort: [
-    "Jan",
-    "Fev",
-    "Mar",
-    "Abr",
-    "Mai",
-    "Jun",
-    "Jul",
-    "Ago",
-    "Set",
-    "Out",
-    "Nov",
-    "Dez",
-  ],
-  dayNames: [
-    "Segunda",
-    "Terça",
-    "Quarta",
-    "Quinta",
-    "Sexta",
-    "Sábado",
-    "Domingo",
-  ],
-  dayNamesShort: ["Seg", "Ter", "Qua", "Qui", "Sex", "Sab", "Dom"],
-};
-
-LocaleConfig.defaultLocale = "br";
 
 export function Agenda({ controller }: Props) {
   const viewController = controller ? controller() : useAgendaViewController();
@@ -78,8 +38,18 @@ export function Agenda({ controller }: Props) {
         <OrderList
           data={viewController.orders}
           selectedDay={viewController.selectedDay}
+          onSelectOrder={viewController.onSelectOrder}
         />
       </Screen.Content>
+
+      {viewController.isModalOpen && viewController.selectedOrder && (
+        <Modal
+          orderId={viewController.selectedOrder.orderId}
+          orderType={viewController.selectedOrder.orderType}
+          isOrderFinished={viewController.selectedOrder.finished}
+          callback={viewController.onFinishOrder}
+        />
+      )}
     </Screen.Root>
   );
 }

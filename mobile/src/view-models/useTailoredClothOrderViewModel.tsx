@@ -9,9 +9,11 @@ import {
   useTailoredClothOrderModel,
 } from "../models/useTailoredClothOrderModel";
 
-interface TailoredClothOrderData {
+export interface TailoredClothOrderData {
   tailoredClothOrder: TailoredClothOrder | null;
   createNewOrder: (orderData: CreateTailoredOrderData) => Promise<boolean>;
+  fetchTailoredClothOrder: () => Promise<void>;
+  getTailoredClothOrder: () => Promise<TailoredClothOrder>;
 }
 
 interface ViewModelArgs {
@@ -48,6 +50,18 @@ export function useTailoredClothOrderViewModel({
     }
   }
 
+  async function getTailoredClothOrder(): Promise<TailoredClothOrder> {
+    if (!orderId) {
+      return Promise.reject();
+    }
+
+    const rawTailoredClothes = await model.getTailoredClothOrderById(orderId);
+    const tailoredClothes =
+      adapter.mapToTailoredClothOrderEntity(rawTailoredClothes);
+
+    return tailoredClothes;
+  }
+
   async function createNewOrder(
     orderData: CreateTailoredOrderData
   ): Promise<boolean> {
@@ -80,5 +94,7 @@ export function useTailoredClothOrderViewModel({
   return {
     tailoredClothOrder,
     createNewOrder,
+    fetchTailoredClothOrder,
+    getTailoredClothOrder,
   };
 }

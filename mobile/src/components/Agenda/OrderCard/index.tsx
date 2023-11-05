@@ -1,17 +1,33 @@
 import { Fragment } from "react";
-import { Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 
 import { styles } from "./styles";
 
-import { Order } from "../../../entities/Order";
+import { Order, OrderType } from "../../../entities/Order";
+import { useAppContext } from "../../../hooks/useAppContext";
 
 interface Props {
   order: Order;
+  onOrderClick: (
+    orderId: number,
+    orderType: OrderType,
+    finished: boolean
+  ) => void;
 }
 
-export function OrderCard({ order }: Props) {
+export function OrderCard({ order, onOrderClick }: Props) {
+  const { openModal } = useAppContext();
+
+  function onOpenModal() {
+    onOrderClick(order.id, order.type, order.finished || false);
+    openModal("AgendaOrderOptions");
+  }
+
   return (
-    <View style={[styles.container, order.finished && styles.orderFinished]}>
+    <Pressable
+      onPress={onOpenModal}
+      style={[styles.container, order.finished && styles.orderFinished]}
+    >
       <View style={[styles.infoBlock, styles.firstInfoBlock]}>
         <Text style={styles.text}>Cliente:</Text>
         <Text style={styles.text}>{order.customer?.name || ""}</Text>
@@ -39,6 +55,6 @@ export function OrderCard({ order }: Props) {
       <Text style={[styles.text, styles.dueDateText]}>
         {order.dueDate.toLocaleTimeString("pt-BR")}
       </Text>
-    </View>
+    </Pressable>
   );
 }

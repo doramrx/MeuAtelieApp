@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { Alert } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { DateData } from "react-native-calendars";
@@ -6,24 +6,46 @@ import { MarkedDates } from "react-native-calendars/src/types";
 
 import { THEME } from "../theme";
 
-import { Order } from "../entities/Order";
+import { Order, OrderType } from "../entities/Order";
 import { useAgendaViewModel } from "../view-models/useAgendaViewModel";
+import { useAppContext } from "../hooks/useAppContext";
+
+interface SelectedOrder {
+  orderId: number;
+  orderType: OrderType;
+  finished: boolean;
+}
 
 export interface AgendaData {
   orders: Order[];
   markedDates: MarkedDates | undefined;
   selectedDay: number | null;
+  isModalOpen: boolean;
+  selectedOrder: SelectedOrder | null;
   onMonthChange: (date: DateData) => void;
   onSelectDay: (date: DateData) => void;
+  onSelectOrder: (
+    orderId: number,
+    orderType: OrderType,
+    finished: boolean
+  ) => void;
+  onFinishOrder: () => void;
 }
 
 export function useAgendaViewController(): AgendaData {
   const viewModel = useAgendaViewModel();
 
+  const { isModalOpen } = useAppContext();
+
+  const currentMonthRef = useRef<number>();
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
   const [markedDates, setMarkedDates] = useState<MarkedDates>();
+  const [selectedOrder, setSelectedOrder] = useState<SelectedOrder | null>(
+    null
+  );
 
   async function onMonthChange(date: DateData) {
+    currentMonthRef.current = date.month;
     try {
       await viewModel.fetchOrderByMonth(date.month);
     } catch {
@@ -61,6 +83,22 @@ export function useAgendaViewController(): AgendaData {
     }
   }
 
+  function onSelectOrder(
+    orderId: number,
+    orderType: OrderType,
+    finished: boolean
+  ) {
+    setSelectedOrder({ orderId, orderType, finished });
+  }
+
+  function onFinishOrder() {
+    if (currentMonthRef.current) {
+      viewModel.fetchOrderByMonth(currentMonthRef.current);
+    } else {
+      viewModel.fetchOrderByMonth(new Date().getMonth() + 1);
+    }
+  }
+
   useFocusEffect(
     useCallback(() => {
       const today = new Date();
@@ -79,30 +117,17 @@ export function useAgendaViewController(): AgendaData {
     useCallback(() => {
       setMarkedDates(() => {
         const markedDates: MarkedDates = {};
-        const today = new Date();
 
         viewModel.orders.forEach((order) => {
           const key = order.dueDate.toISOString().split("T")[0];
 
-          if (order.dueDate.getDate() === today.getDate()) {
-            console.log("Today");
-            setSelectedDay(today.getDate());
-            markedDates[key] = {
-              today: true,
-              marked: true,
-              selected: true,
-              selectedColor: THEME.COLORS.PINK.V2,
-              selectedTextColor: THEME.COLORS.WHITE.FULL_WHITE,
-              dotColor: THEME.COLORS.PINK.V2,
-            };
-          } else {
-            markedDates[key] = {
-              marked: true,
-              selectedColor: THEME.COLORS.PINK.V2,
-              selectedTextColor: THEME.COLORS.WHITE.FULL_WHITE,
-              dotColor: THEME.COLORS.PINK.V2,
-            };
-          }
+          markedDates[key] = {
+            today: true,
+            marked: true,
+            selectedColor: THEME.COLORS.PINK.V2,
+            selectedTextColor: THEME.COLORS.WHITE.FULL_WHITE,
+            dotColor: THEME.COLORS.PINK.V2,
+          };
         });
 
         return markedDates;
@@ -113,8 +138,12 @@ export function useAgendaViewController(): AgendaData {
   return {
     orders: viewModel.orders,
     selectedDay,
+    isModalOpen,
     markedDates,
+    selectedOrder,
     onMonthChange,
     onSelectDay,
+    onSelectOrder,
+    onFinishOrder,
   };
 }

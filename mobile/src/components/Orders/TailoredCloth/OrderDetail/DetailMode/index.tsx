@@ -9,8 +9,8 @@ import { MeasureList } from "../../../MeasureList";
 import { ClientInfo } from "../../../OrderDetail/ClientInfo";
 import { PhotoCard } from "../../../PhotoCard";
 import { database } from "../../../../../database/database";
-import { Linking } from "react-native";
 import { TailoredClothOrder } from "../../../../../entities/Order";
+import { useWhatsappNotification } from "../../../../../utils/useWhatsappNotification";
 
 interface Props {
   orderId: number;
@@ -19,6 +19,8 @@ interface Props {
 
 export function DetailMode({ orderId, orderData }: Props) {
   const navigation = useNavigation();
+
+  const { sendMessage } = useWhatsappNotification();
 
   function handleNavigateBack() {
     navigation.goBack();
@@ -29,38 +31,46 @@ export function DetailMode({ orderId, orderData }: Props) {
       transaction.executeSql(
         "UPDATE orders SET delivered_at = ? WHERE id = ?;",
         [new Date().toISOString(), orderId],
-        (_, resultSet) => {
+        async (_, resultSet) => {
           if (resultSet.rowsAffected === 1) {
             Alert.alert("Sucesso", "Pedido finalizado com sucesso!");
 
-            //Olá, cliente! Seu pedido nº "numero pedido" - descrição foi finalizado. Venha buscar seu pedido!
-
-            Linking.openURL(
-              `whatsapp://send?text=Olá, ${
-                orderData?.customer.name
-              }! Seu pedido ${
-                orderData?.title
-              }, no valor de R$ ${orderData?.cost
-                .toFixed(2)
-                .replace(
-                  ".",
-                  ","
-                )} foi finalizado. Venha buscar o seu pedido no SatherAteliê! 😊&phone=47984156092`
-            )
-              .then((something) => {
-                console.log(something);
-              })
-              .catch((error) => {
-                console.log(error);
-              });
-
-            navigation.navigate("orders");
+            await sendWhatsappMessage();
           } else {
             Alert.alert("Erro", "Houve um erro ao finalizar o pedido!");
           }
         }
       );
     });
+  }
+
+  async function sendWhatsappMessage() {
+    Alert.alert(
+      "Sucesso",
+      "Pedido finalizado com sucesso!\nDeseja enviar uma mensagem de notificação para o whatsapp do cliente?",
+      [
+        {
+          text: "Sim",
+          onPress: async () => {
+            try {
+              await sendMessage({
+                order: orderData as TailoredClothOrder,
+                orderType: "tailoredClothService",
+              });
+            } catch (reason) {
+              console.log(reason);
+              Alert.alert(
+                "Erro",
+                "Não foi possível enviar a mensagem para o whatsapp do cliente!"
+              );
+            } finally {
+              navigation.navigate("orders");
+            }
+          },
+        },
+        { text: "Cancelar", style: "cancel" },
+      ]
+    );
   }
 
   if (!orderData) {

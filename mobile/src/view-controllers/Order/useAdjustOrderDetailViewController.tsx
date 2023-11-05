@@ -1,7 +1,6 @@
 import { useCallback, useRef, useState } from "react";
-import { Alert, Linking } from "react-native";
+import { Alert } from "react-native";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-/* eslint-disable indent */
 import {
   AdjustCheckBox,
   AdjustOrder,
@@ -18,6 +17,7 @@ import { useDatePicker } from "../../utils/useDatePicker";
 import { useAdjustOrderViewModel } from "../../view-models/useAdjustOrderViewModel";
 import { useOrderViewModel } from "../../view-models/useOrderViewModel";
 import { useAdjustOrderItemViewModel } from "../../view-models/useAdjustOrderItemViewModel";
+import { useWhatsappNotification } from "../../utils/useWhatsappNotification";
 
 export interface AdjustOrderDetailData {
   mode: OrderMode | null;
@@ -66,6 +66,7 @@ export function useAdjustOrderDetailViewController({
     someDate: dueDate,
     setDate: setDueDate,
   });
+  const { sendMessage } = useWhatsappNotification();
 
   async function onFinishOrder() {
     try {
@@ -89,26 +90,11 @@ export function useAdjustOrderDetailViewController({
       return;
     }
 
-    const message = `
-      Olá, ${adjustOrderViewModel.adjustOrder.customer.name}!
-      Seu pedido de ajuste no valor de R$ ${
-        adjustOrderViewModel.adjustOrder.cost
-      } foi finalizado. \n\nItens solicitados:\n${adjustOrderViewModel.adjustOrder.orderItems
-      .map((item) => {
-        return `\n\t${item.title}: ${item.adjusts
-          .map((adjust) => {
-            return `\n\t\t${adjust.description} - R$ ${adjust.cost
-              .toFixed(2)
-              .replace(".", ",")}`;
-          })
-          .join("")}\n`;
-      })
-      .join("")}\nVenha buscar o seu pedido no SatherAteliê! 😊
-    `;
     try {
-      await Linking.openURL(
-        `whatsapp://send?text=${message}&phone=47984156092`
-      );
+      await sendMessage({
+        order: adjustOrderViewModel.adjustOrder as AdjustOrder,
+        orderType: "adjustService",
+      });
     } catch (reason) {
       console.log(reason);
       Alert.alert(
