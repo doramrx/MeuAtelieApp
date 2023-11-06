@@ -47,6 +47,8 @@ export const THEME = {
         V2: "#F4F4F4",
       },
     },
+
+    YELLOW: "#fff152"
   },
   FONT: {
     WEIGHT: {

@@ -102,7 +102,6 @@ export function useOrderModel(): OrderModelData {
           WHERE strftime('%m', ord.due_date) = ?;`,
             [month.toString().padStart(2, "0")],
             (_, resultSet) => {
-              console.log(resultSet.rows._array);
               resolve(resultSet.rows._array as OrderRawData[]);
             }
           );

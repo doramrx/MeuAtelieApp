@@ -118,15 +118,72 @@ export function useAgendaViewController(): AgendaData {
       setMarkedDates(() => {
         const markedDates: MarkedDates = {};
 
+        const ordersGroupedByDay: {
+          [key: string]: {
+            ordersFinished: number;
+            ordersInProgress: number;
+          };
+        } = {};
+
+        viewModel.orders.forEach((order) => {
+          const key = order.dueDate.getDate();
+          const keyExists = Object.keys(ordersGroupedByDay).includes(
+            key.toString()
+          );
+
+          if (!keyExists) {
+            ordersGroupedByDay[key] = {
+              ordersFinished: order.finished ? 1 : 0,
+              ordersInProgress: !order.finished ? 1 : 0,
+            };
+
+            return;
+          }
+
+          if (order.finished) {
+            ordersGroupedByDay[key] = {
+              ...ordersGroupedByDay[key],
+              ordersFinished: ordersGroupedByDay[key].ordersFinished + 1,
+            };
+          } else {
+            ordersGroupedByDay[key] = {
+              ...ordersGroupedByDay[key],
+              ordersInProgress: ordersGroupedByDay[key].ordersInProgress + 1,
+            };
+          }
+        });
+
         viewModel.orders.forEach((order) => {
           const key = order.dueDate.toISOString().split("T")[0];
+          const currentDate = order.dueDate.getDate().toString();
+          const ordersGrouped = ordersGroupedByDay[currentDate];
+          let markColor;
+
+          // Only in progress orders
+          if (
+            ordersGrouped.ordersInProgress > 0 &&
+            ordersGrouped.ordersFinished === 0
+          ) {
+            markColor = THEME.COLORS.PINK.V2;
+          }
+          // There are both in progress and finished orders
+          else if (
+            ordersGrouped.ordersInProgress > 0 &&
+            ordersGrouped.ordersFinished > 0
+          ) {
+            markColor = THEME.COLORS.YELLOW;
+          }
+          // Only finished orders
+          else {
+            markColor = THEME.COLORS.GREEN;
+          }
 
           markedDates[key] = {
             today: true,
             marked: true,
-            selectedColor: THEME.COLORS.PINK.V2,
+            selectedColor: markColor,
             selectedTextColor: THEME.COLORS.WHITE.FULL_WHITE,
-            dotColor: THEME.COLORS.PINK.V2,
+            dotColor: markColor,
           };
         });
 
