@@ -1,5 +1,4 @@
 import { Text, TouchableHighlight } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 
 import { THEME } from "../../../theme";
 import { styles } from "./styles";
@@ -8,20 +7,12 @@ import { styles as modalStyles } from "../../shared/ModalTemplate/styles";
 import SewingMachineIcon from "../../../assets/icons/sewing-machine-icon.svg";
 
 import { ModalTemplate } from "../../shared/ModalTemplate";
-import { useAppContext } from "../../../hooks/useAppContext";
-import { ServiceType } from "../../../views/Order/OrderList";
+import { useViewController } from "./view-controller";
 
 export function ServiceTypeModal() {
-  const navigation = useNavigation();
+  const viewController = useViewController();
 
-  const { closeModal, modalType } = useAppContext();
-
-  function navigateToService(service: ServiceType) {
-    closeModal();
-    navigation.navigate(service);
-  }
-
-  return modalType === "ServiceSelection" ? (
+  return viewController.modalType === "ServiceSelection" ? (
     <ModalTemplate.Root>
       <ModalTemplate.Header
         icon={SewingMachineIcon}
@@ -34,7 +25,7 @@ export function ServiceTypeModal() {
             underlayColor={THEME.COLORS.PINK.V2_UNDERLAY}
             style={[styles.button, { marginBottom: 10 }]}
             onPress={() => {
-              navigateToService("adjustService");
+              viewController.onNavigateToOrderScreen("adjustService");
             }}
           >
             <Text style={styles.text}>Ajuste/conserto de peça</Text>
@@ -45,7 +36,7 @@ export function ServiceTypeModal() {
             underlayColor={THEME.COLORS.PINK.V2_UNDERLAY}
             style={styles.button}
             onPress={() => {
-              navigateToService("tailoredClothService");
+              viewController.onNavigateToOrderScreen("tailoredClothService");
             }}
           >
             <Text style={styles.text}>Roupa sob medida</Text>
@@ -58,7 +49,7 @@ export function ServiceTypeModal() {
             additionalButtonStyles={modalStyles.closeButton}
             additionalTextStyles={modalStyles.closeButtonText}
             underlayColor={THEME.COLORS.GRAY.LIGHT.V2}
-            onPress={closeModal}
+            onPress={viewController.onCloseModal}
           />
         </ModalTemplate.Actions>
       </ModalTemplate.Container>

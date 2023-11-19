@@ -2,17 +2,14 @@ import { useState } from "react";
 import { Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import { CustomerMeasure } from "../../entities/Order";
+import { CustomerMeasure } from "../../../../entities/Order";
+import { useOrderContext } from "../../../../hooks/useOrderContext";
+import { useMeasureViewModel } from "../../../../view-models/useMeasureViewModel";
+import { useCustomerMeasureViewModel } from "../../../../view-models/useCustomerMeasureViewModel";
+import { useTailoredClothOrderViewModel } from "../../../../view-models/useTailoredClothOrderViewModel";
+import { useDatePicker } from "../../../../utils/useDatePicker";
 
-import { useOrderContext } from "../../hooks/useOrderContext";
-
-import { useDatePicker } from "../../utils/useDatePicker";
-
-import { useMeasureViewModel } from "../../view-models/useMeasureViewModel";
-import { useCustomerMeasureViewModel } from "../../view-models/useCustomerMeasureViewModel";
-import { useTailoredClothOrderViewModel } from "../../view-models/useTailoredClothOrderViewModel";
-
-export interface TailoredClothOrderFormData {
+interface ViewControllerData {
   title: string;
   description: string;
   measures: CustomerMeasure[];
@@ -26,7 +23,7 @@ export interface TailoredClothOrderFormData {
   onCreateOrder: () => void;
 }
 
-export function useTailoredClothOrderFormViewController(): TailoredClothOrderFormData {
+export function useViewController(): ViewControllerData {
   const navigation = useNavigation();
   const { selectedCustomerId } = useOrderContext();
 

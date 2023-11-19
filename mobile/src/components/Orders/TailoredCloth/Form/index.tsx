@@ -15,10 +15,10 @@ import { Input } from "../../../shared/Input";
 import { PhotoCard } from "../../PhotoCard";
 import { MeasureList } from "../../MeasureList";
 
-import { useTailoredClothOrderFormViewController } from "../../../../view-controllers/components/useTailoredClothOrderFormViewController";
+import { useViewController } from "./view-controller";
 
 export function TailoredClothOrderForm() {
-  const viewController = useTailoredClothOrderFormViewController();
+  const viewController = useViewController();
 
   return (
     <ScrollView>

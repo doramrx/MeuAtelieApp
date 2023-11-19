@@ -1,16 +1,11 @@
-import { useState } from "react";
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 
 import { styles } from "./styles";
 
-type OptionStates = "Pending" | "Finished";
+import { useViewController } from "./view-controller";
 
 export function Options() {
-  const [activeOption, setActiveOption] = useState<OptionStates>("Pending");
-
-  function changeActiveOption(option: OptionStates) {
-    setActiveOption(option);
-  }
+  const viewController = useViewController();
 
   return (
     <View style={styles.container}>
@@ -25,15 +20,15 @@ export function Options() {
           style={[
             styles.option,
             styles.firstOption,
-            activeOption === "Pending" && styles.activeOption,
+            viewController.activeOption === "Pending" && styles.activeOption,
           ]}
-          onPress={() => changeActiveOption("Pending")}
+          onPress={() => viewController.onChangeOption("Pending")}
         >
           <Text
             style={[
               styles.optionText,
-              activeOption === "Pending" &&
-              styles.activeOptionText,
+              viewController.activeOption === "Pending" &&
+                styles.activeOptionText,
             ]}
           >
             Pendente
@@ -45,15 +40,15 @@ export function Options() {
           style={[
             styles.option,
             styles.lastOption,
-            activeOption === "Finished" && styles.activeOption,
+            viewController.activeOption === "Finished" && styles.activeOption,
           ]}
-          onPress={() => changeActiveOption("Finished")}
+          onPress={() => viewController.onChangeOption("Finished")}
         >
           <Text
             style={[
               styles.optionText,
-              activeOption === "Finished" &&
-              styles.activeOptionText,
+              viewController.activeOption === "Finished" &&
+                styles.activeOptionText,
             ]}
           >
             Finalizado

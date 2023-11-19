@@ -3,17 +3,18 @@ import { styles as modalStyles } from "../../../shared/ModalTemplate/styles";
 import EditIcon from "../../../../assets/icons/edit-icon-with-border.svg";
 
 import { CustomerMeasure } from "../../../../entities/Order";
-import { useMeasureListModalViewController } from "../../../../view-controllers/components/useMeasuresModalViewController";
 
 import { ModalTemplate } from "../../../shared/ModalTemplate";
 import { MeasureList } from "../../MeasureList";
+
+import { useViewController } from "./view-controller";
 
 interface Props {
   getMeasures: (measures: CustomerMeasure[]) => void;
 }
 
 export function MeasureListModal({ getMeasures }: Props) {
-  const viewController = useMeasureListModalViewController({
+  const viewController = useViewController({
     getMeasuresCallback: getMeasures,
   });
 

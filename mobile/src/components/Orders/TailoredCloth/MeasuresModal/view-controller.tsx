@@ -1,10 +1,10 @@
-import { ModalTypeVariations } from "../../contexts/AppContext";
-import { CustomerMeasure } from "../../entities/Order";
-import { useAppContext } from "../../hooks/useAppContext";
-import { useCustomerMeasureViewModel } from "../../view-models/useCustomerMeasureViewModel";
-import { useMeasureViewModel } from "../../view-models/useMeasureViewModel";
+import { ModalTypeVariations } from "../../../../contexts/AppContext";
+import { CustomerMeasure } from "../../../../entities/Order";
+import { useAppContext } from "../../../../hooks/useAppContext";
+import { useCustomerMeasureViewModel } from "../../../../view-models/useCustomerMeasureViewModel";
+import { useMeasureViewModel } from "../../../../view-models/useMeasureViewModel";
 
-interface MeasureListModalData {
+interface ViewControllerData {
   customerMeasures: CustomerMeasure[];
   modalType: ModalTypeVariations | null;
   onCloseModal: () => void;
@@ -12,13 +12,13 @@ interface MeasureListModalData {
   onUpdateCustomerMeasure: (id: number, value: number) => void;
 }
 
-interface ControllerArgs {
+interface Props {
   getMeasuresCallback: (customerMeasures: CustomerMeasure[]) => void;
 }
 
-export function useMeasureListModalViewController({
+export function useViewController({
   getMeasuresCallback,
-}: ControllerArgs): MeasureListModalData {
+}: Props): ViewControllerData {
   const { closeModal, modalType } = useAppContext();
   const measureViewModel = useMeasureViewModel();
   const customerMeasureViewModel = useCustomerMeasureViewModel({
@@ -39,6 +39,6 @@ export function useMeasureListModalViewController({
     modalType,
     onCloseModal: closeModal,
     onUpdateCustomerMeasure: customerMeasureViewModel.updateCustomerMeasure,
-    onGetMeasures
+    onGetMeasures,
   };
 }

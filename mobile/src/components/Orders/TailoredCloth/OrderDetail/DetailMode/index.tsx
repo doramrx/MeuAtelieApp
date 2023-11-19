@@ -1,6 +1,5 @@
 import { Fragment } from "react";
-import { Alert, Text, TouchableHighlight, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { Text, TouchableHighlight, View } from "react-native";
 
 import { THEME } from "../../../../../theme";
 import { styles } from "./styles";
@@ -8,9 +7,8 @@ import { styles } from "./styles";
 import { MeasureList } from "../../../MeasureList";
 import { ClientInfo } from "../../../OrderDetail/ClientInfo";
 import { PhotoCard } from "../../../PhotoCard";
-import { database } from "../../../../../database/database";
 import { TailoredClothOrder } from "../../../../../entities/Order";
-import { useWhatsappNotification } from "../../../../../utils/useWhatsappNotification";
+import { useViewController } from "./view-controller";
 
 interface Props {
   orderId: number;
@@ -18,71 +16,16 @@ interface Props {
 }
 
 export function DetailMode({ orderId, orderData }: Props) {
-  const navigation = useNavigation();
-
-  const { sendMessage } = useWhatsappNotification();
-
-  function handleNavigateBack() {
-    navigation.goBack();
-  }
-
-  function finishOrder() {
-    database?.transaction((transaction) => {
-      transaction.executeSql(
-        "UPDATE orders SET delivered_at = ? WHERE id = ?;",
-        [new Date().toISOString(), orderId],
-        async (_, resultSet) => {
-          if (resultSet.rowsAffected === 1) {
-            Alert.alert("Sucesso", "Pedido finalizado com sucesso!");
-
-            await sendWhatsappMessage();
-          } else {
-            Alert.alert("Erro", "Houve um erro ao finalizar o pedido!");
-          }
-        }
-      );
-    });
-  }
-
-  async function sendWhatsappMessage() {
-    Alert.alert(
-      "Sucesso",
-      "Pedido finalizado com sucesso!\nDeseja enviar uma mensagem de notificação para o whatsapp do cliente?",
-      [
-        {
-          text: "Sim",
-          onPress: async () => {
-            try {
-              await sendMessage({
-                order: orderData as TailoredClothOrder,
-                orderType: "tailoredClothService",
-              });
-            } catch (reason) {
-              console.log(reason);
-              Alert.alert(
-                "Erro",
-                "Não foi possível enviar a mensagem para o whatsapp do cliente!"
-              );
-            } finally {
-              navigation.navigate("orders");
-            }
-          },
-        },
-        { text: "Cancelar", style: "cancel" },
-      ]
-    );
-  }
+  const viewController = useViewController({ orderId, orderData });
 
   if (!orderData) {
-    handleNavigateBack();
+    viewController.onGoBack();
     return (
       <View>
         <Text>Dados não carregaram!</Text>
       </View>
     );
   }
-
-  console.log(orderData.measures);
 
   return (
     <Fragment>
@@ -164,7 +107,7 @@ export function DetailMode({ orderId, orderData }: Props) {
       {!orderData.deliveredAt && (
         <TouchableHighlight
           underlayColor={THEME.COLORS.PINK.V2_UNDERLAY}
-          onPress={finishOrder}
+          onPress={viewController.onFinishOrder}
           style={[styles.pinkButton, styles.button]}
         >
           <Text style={[styles.buttonText, styles.whiteButtonText]}>
@@ -175,7 +118,7 @@ export function DetailMode({ orderId, orderData }: Props) {
 
       <TouchableHighlight
         underlayColor={THEME.COLORS.GRAY.LIGHT.V2}
-        onPress={handleNavigateBack}
+        onPress={viewController.onGoBack}
         style={[styles.navigateBackButton, styles.button]}
       >
         <Text style={[styles.buttonText, styles.grayButtonText]}>Voltar</Text>

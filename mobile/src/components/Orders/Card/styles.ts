@@ -1,5 +1,5 @@
-import { StyleSheet, Platform, Dimensions } from "react-native";
-import Constants from "expo-constants";
+import { StyleSheet } from "react-native";
+
 import { THEME } from "../../../theme";
 
 export const styles = StyleSheet.create({
@@ -28,20 +28,20 @@ export const styles = StyleSheet.create({
   },
   orderTitle: {
     fontSize: 19,
-    fontWeight: THEME.FONT.WEIGHT.MEDIUM as any,
+    fontWeight: THEME.FONT.WEIGHT.MEDIUM,
     color: THEME.COLORS.GRAY.DARK.V2,
     marginLeft: 15,
   },
   orderText: {
     fontSize: 14,
-    fontWeight: THEME.FONT.WEIGHT.REGULAR as any,
+    fontWeight: THEME.FONT.WEIGHT.REGULAR,
     color: THEME.COLORS.GRAY.DARK.V2,
     marginLeft: 15,
   },
   orderDueDate: {
     fontSize: 14,
-    fontWeight: THEME.FONT.WEIGHT.REGULAR as any,
+    fontWeight: THEME.FONT.WEIGHT.REGULAR,
     color: THEME.COLORS.GRAY.DARK.V2,
     marginLeft: 15,
   },
-})
+});

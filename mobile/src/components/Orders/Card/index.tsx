@@ -1,4 +1,4 @@
-import { Pressable, Text, View } from "react-native";
+import { Pressable, Text, View, ViewStyle } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import { styles } from "./styles";
@@ -11,10 +11,10 @@ import { Order } from "../../../entities/Order";
 
 interface Props {
   orderData: Order;
-  marginBottom?: number;
+  containerStyles?: ViewStyle;
 }
 
-export function Card({ orderData, marginBottom }: Props) {
+export function Card({ orderData, containerStyles }: Props) {
   const navigation = useNavigation();
 
   function navigateToDetailScreen() {
@@ -26,7 +26,7 @@ export function Card({ orderData, marginBottom }: Props) {
 
   return (
     <Pressable
-      style={[styles.container, { marginBottom: marginBottom }]}
+      style={[styles.container, containerStyles]}
       onPress={navigateToDetailScreen}
     >
       <View style={styles.wrapper}>
