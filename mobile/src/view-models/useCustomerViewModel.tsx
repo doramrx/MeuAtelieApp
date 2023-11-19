@@ -10,6 +10,7 @@ interface CustomerViewModelData {
   updateCustomerFromList: (customer: Customer) => void;
   getCustomerById: (id: number) => Promise<Customer>;
   deleteCustomer: (id: number) => Promise<boolean>;
+  updateCustomer: (id: number, name: string, phone: string) => Promise<void>;
   createNewCustomer: (name: string, phone: string) => Promise<number>;
   nextPage: () => void;
 }
@@ -111,6 +112,26 @@ export function useCustomerViewModel(props?: Props): CustomerViewModelData {
     setPage((prevPage) => prevPage + 1);
   }
 
+  async function updateCustomer(
+    id: number,
+    name: string,
+    phone: string
+  ): Promise<void> {
+    if (id === null) {
+      return Promise.reject();
+    }
+
+    if (name === null || name.trim().length === 0) {
+      return Promise.reject();
+    }
+
+    if (phone === null || phone.trim().length === 0) {
+      return Promise.reject();
+    }
+
+    await model.updateCustomer(id, name, phone);
+  }
+
   useFocusEffect(
     useCallback(() => {
       if (props?.shouldFetch) {
@@ -128,5 +149,6 @@ export function useCustomerViewModel(props?: Props): CustomerViewModelData {
     nextPage,
     deleteCustomer,
     createNewCustomer,
+    updateCustomer,
   };
 }

@@ -31,11 +31,19 @@ interface CustomerModelData {
   deleteCustomer: (id: number) => Promise<number>;
   /**
    * @function createNewCustomer
-   * @param name{string} customer name
-   * @param phone{string} customer phone
-   * @returns {Promise} with customer ID.
+   * @param name customer name
+   * @param phone customer phone
+   * @returns customer ID.
    */
   createNewCustomer: (name: string, phone: string) => Promise<number>;
+  /**
+   * @function updateCustomer
+   * @param id customer id
+   * @param name customer name
+   * @param phone customer phone
+   * @returns true if successfully updated; false otherwise.
+   */
+  updateCustomer: (id: number, name: string, phone: string) => Promise<void>;
 }
 
 export function useCustomerModel(): CustomerModelData {
@@ -147,10 +155,38 @@ export function useCustomerModel(): CustomerModelData {
     });
   }
 
+  function updateCustomer(
+    id: number,
+    name: string,
+    phone: string
+  ): Promise<void> {
+    return new Promise((resolve, reject) => {
+      database?.transaction(
+        (transaction) => {
+          transaction.executeSql(
+            "UPDATE customers SET name = ?, phone = ? WHERE id = ?;",
+            [name, phone, id],
+            (_, resultSet) => {
+              resultSet.rowsAffected !== 1 ? reject() : resolve();
+            }
+          );
+        },
+        (error) => {
+          console.log(error);
+          reject();
+        },
+        () => {
+          console.log("[Model] customer updated successfully!");
+        }
+      );
+    });
+  }
+
   return {
     getCustomers,
     getCustomerById,
     deleteCustomer,
     createNewCustomer,
+    updateCustomer,
   };
 }
