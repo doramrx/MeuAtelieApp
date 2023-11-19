@@ -19,14 +19,14 @@ export const styles = StyleSheet.create({
   },
   customerName: {
     fontSize: 18,
-    fontWeight: THEME.FONT.WEIGHT.MEDIUM as any,
+    fontWeight: THEME.FONT.WEIGHT.MEDIUM,
     color: THEME.COLORS.GRAY.DARK.V2,
     marginLeft: 15,
   },
   customerPhone: {
     fontSize: 14,
-    fontWeight: THEME.FONT.WEIGHT.REGULAR as any,
+    fontWeight: THEME.FONT.WEIGHT.REGULAR,
     color: THEME.COLORS.GRAY.DARK.V2,
     marginLeft: 15,
   },
-})
+});
