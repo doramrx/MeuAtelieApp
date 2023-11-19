@@ -4,9 +4,9 @@ import { Pressable, Text, View } from "react-native";
 import { styles } from "./styles";
 
 import { Order, OrderType } from "../../../entities/Order";
-import { useAppContext } from "../../../hooks/useAppContext";
+import { useViewController } from "./view-controller";
 
-interface Props {
+export interface OrderCardProps {
   order: Order;
   onOrderClick: (
     orderId: number,
@@ -15,17 +15,12 @@ interface Props {
   ) => void;
 }
 
-export function OrderCard({ order, onOrderClick }: Props) {
-  const { openModal } = useAppContext();
-
-  function onOpenModal() {
-    onOrderClick(order.id, order.type, order.finished || false);
-    openModal("AgendaOrderOptions");
-  }
+export function OrderCard({ order, onOrderClick }: OrderCardProps) {
+  const viewController = useViewController({ onOrderClick, order });
 
   return (
     <Pressable
-      onPress={onOpenModal}
+      onPress={viewController.onOpenModal}
       style={[styles.container, order.finished && styles.orderFinished]}
     >
       <View style={[styles.infoBlock, styles.firstInfoBlock]}>
