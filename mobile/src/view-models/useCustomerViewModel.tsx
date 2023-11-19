@@ -10,10 +10,15 @@ interface CustomerViewModelData {
   updateCustomerFromList: (customer: Customer) => void;
   getCustomerById: (id: number) => Promise<Customer>;
   deleteCustomer: (id: number) => Promise<boolean>;
+  createNewCustomer: (name: string, phone: string) => Promise<number>;
   nextPage: () => void;
 }
 
-export function useCustomerViewModel(): CustomerViewModelData {
+interface Props {
+  shouldFetch: boolean;
+}
+
+export function useCustomerViewModel(props?: Props): CustomerViewModelData {
   const PAGINATION_LIMIT = 20;
   const [page, setPage] = useState(1);
 
@@ -68,6 +73,25 @@ export function useCustomerViewModel(): CustomerViewModelData {
     }
   }
 
+  async function createNewCustomer(
+    name: string,
+    phone: string
+  ): Promise<number> {
+    if (name.trim().length === 0) {
+      return Promise.reject();
+    }
+
+    if (phone.trim().length === 0) {
+      return Promise.reject();
+    }
+
+    try {
+      return await model.createNewCustomer(name, phone);
+    } catch {
+      return Promise.reject();
+    }
+  }
+
   function addCustomerIntoList(customer: Customer) {
     setCustomers((prevCustomers) => {
       return [...prevCustomers, customer];
@@ -89,7 +113,10 @@ export function useCustomerViewModel(): CustomerViewModelData {
 
   useFocusEffect(
     useCallback(() => {
-      fetchCustomers();
+      if (props?.shouldFetch) {
+        fetchCustomers();
+        console.log("Fetching customers");
+      }
     }, [page])
   );
 
@@ -100,5 +127,6 @@ export function useCustomerViewModel(): CustomerViewModelData {
     getCustomerById,
     nextPage,
     deleteCustomer,
+    createNewCustomer,
   };
 }

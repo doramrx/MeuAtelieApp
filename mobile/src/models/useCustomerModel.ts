@@ -29,6 +29,13 @@ interface CustomerModelData {
    * @returns deleted customer id
    */
   deleteCustomer: (id: number) => Promise<number>;
+  /**
+   * @function createNewCustomer
+   * @param name{string} customer name
+   * @param phone{string} customer phone
+   * @returns {Promise} with customer ID.
+   */
+  createNewCustomer: (name: string, phone: string) => Promise<number>;
 }
 
 export function useCustomerModel(): CustomerModelData {
@@ -117,9 +124,33 @@ export function useCustomerModel(): CustomerModelData {
     });
   }
 
+  function createNewCustomer(name: string, phone: string): Promise<number> {
+    return new Promise((resolve, reject) => {
+      database?.transaction(
+        (transaction) => {
+          transaction.executeSql(
+            "INSERT INTO customers (name, phone) VALUES (?, ?);",
+            [name, phone],
+            (_, resultSet) => {
+              resultSet.insertId ? resolve(resultSet.insertId) : reject(null);
+            }
+          );
+        },
+        (error) => {
+          console.log(error);
+          reject(null);
+        },
+        () => {
+          console.log("[Model] customer created successfully!");
+        }
+      );
+    });
+  }
+
   return {
     getCustomers,
     getCustomerById,
     deleteCustomer,
+    createNewCustomer,
   };
 }

@@ -21,7 +21,7 @@ export interface CustomerViewControllerData {
 }
 
 export function useCustomerViewController(): CustomerViewControllerData {
-  const viewModel = useCustomerViewModel();
+  const viewModel = useCustomerViewModel({ shouldFetch: true });
   const {
     openModal,
     closeBottomModal,

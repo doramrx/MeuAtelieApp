@@ -10,7 +10,7 @@ export interface CustomerSelectionData {
 }
 
 export function useCustomerSelectionViewController(): CustomerSelectionData {
-  const viewModel = useCustomerViewModel();
+  const viewModel = useCustomerViewModel({ shouldFetch: true });
   const { isModalOpen, openModal } = useAppContext();
 
   function onOpenCreateModal() {
