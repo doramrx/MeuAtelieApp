@@ -8,7 +8,7 @@ import AgendaIcon from "../../../assets/icons/Agenda.svg";
 
 import { ModalTemplate } from "../../shared/ModalTemplate";
 import { OrderType } from "../../../entities/Order";
-import { useAgendaModalViewController } from "../../../view-controllers/components/useAgendaModalViewController";
+import { useViewController } from "./view-controller";
 
 interface Props {
   orderId: number;
@@ -23,7 +23,7 @@ export function Modal({
   isOrderFinished,
   callback,
 }: Props) {
-  const viewController = useAgendaModalViewController({
+  const viewController = useViewController({
     orderId,
     orderType,
     callback,

@@ -1,20 +1,21 @@
+import { Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import { OrderType } from "../../entities/Order";
-import { ModalTypeVariations } from "../../contexts/AppContext";
+import { OrderType } from "../../../entities/Order";
+import { ModalTypeVariations } from "../../../contexts/AppContext";
+import { useAppContext } from "../../../hooks/useAppContext";
 
-import { useAppContext } from "../../hooks/useAppContext";
-import { useOrderViewModel } from "../../view-models/useOrderViewModel";
-import { Alert } from "react-native";
-import { useWhatsappNotification } from "../../utils/useWhatsappNotification";
+import { useOrderViewModel } from "../../../view-models/useOrderViewModel";
 import {
   AdjustOrderData,
   useAdjustOrderViewModel,
-} from "../../view-models/useAdjustOrderViewModel";
+} from "../../../view-models/useAdjustOrderViewModel";
 import {
   TailoredClothOrderData,
   useTailoredClothOrderViewModel,
-} from "../../view-models/useTailoredClothOrderViewModel";
+} from "../../../view-models/useTailoredClothOrderViewModel";
+
+import { useWhatsappNotification } from "../../../utils/useWhatsappNotification";
 
 export interface AgendaModalData {
   modalType: ModalTypeVariations | null;
@@ -29,7 +30,7 @@ interface Args {
   callback: () => void;
 }
 
-export function useAgendaModalViewController({
+export function useViewController({
   orderId,
   orderType,
   callback,
