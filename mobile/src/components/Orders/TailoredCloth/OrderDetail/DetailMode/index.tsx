@@ -99,7 +99,7 @@ export function DetailMode({ orderId, orderData }: Props) {
         <Text style={styles.emptyListText}>Nenhuma medida informada!</Text>
       ) : (
         <MeasureList
-          data={orderData.measures}
+          data={viewController.convertToCustomerMeasureView()}
           editable={false}
         />
       )}

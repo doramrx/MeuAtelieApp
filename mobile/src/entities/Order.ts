@@ -14,6 +14,12 @@ export interface CustomerMeasure {
   value: number;
 }
 
+export interface CustomerMeasureView {
+  orderItemId?: number;
+  measure: Measure;
+  value: string;
+}
+
 export interface TailoredClothOrder {
   id: number;
   title: string;

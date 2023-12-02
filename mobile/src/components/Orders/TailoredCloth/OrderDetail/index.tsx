@@ -17,8 +17,6 @@ export function TailoredClothOrderDetail({ orderId, controller }: Props) {
     ? controller()
     : useTailoredClothOrderDetailViewController({ orderId });
 
-  console.log(viewController.tailoredClothOrder);
-
   return viewController.tailoredClothOrder ? (
     <View style={{ paddingHorizontal: 25 }}>
       {viewController.mode === "detail" ? (
@@ -30,9 +28,7 @@ export function TailoredClothOrderDetail({ orderId, controller }: Props) {
         <EditMode
           orderId={orderId}
           orderData={viewController.tailoredClothOrder}
-          getOrderData={() => {
-            // Todo
-          }}
+          getOrderData={viewController.onChangeTailoredClothOrder}
         />
       )}
     </View>

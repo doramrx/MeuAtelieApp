@@ -1,9 +1,13 @@
 import { Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import { TailoredClothOrder } from "../../../../../entities/Order";
+import {
+  CustomerMeasureView,
+  TailoredClothOrder,
+} from "../../../../../entities/Order";
 import { useOrderViewModel } from "../../../../../view-models/useOrderViewModel";
 import { useWhatsappNotification } from "../../../../../utils/useWhatsappNotification";
+import { useMeasureAdapter } from "../../../../../adapters/measureAdapter";
 
 interface Props {
   orderId: number;
@@ -13,6 +17,7 @@ interface Props {
 interface ViewControllerData {
   onGoBack: () => void;
   onFinishOrder: () => void;
+  convertToCustomerMeasureView: () => CustomerMeasureView[];
 }
 
 export function useViewController({
@@ -21,6 +26,7 @@ export function useViewController({
 }: Props): ViewControllerData {
   const navigation = useNavigation();
   const { sendMessage } = useWhatsappNotification();
+  const adapter = useMeasureAdapter();
 
   const viewModel = useOrderViewModel({ shouldFetchData: false });
 
@@ -57,8 +63,15 @@ export function useViewController({
     }
   }
 
+  function convertToCustomerMeasureView(): CustomerMeasureView[] {
+    return adapter.mapCustomerMeasureToCustomerMeasureViewEntityList(
+      orderData?.measures || []
+    );
+  }
+
   return {
     onGoBack: navigation.goBack,
     onFinishOrder,
+    convertToCustomerMeasureView,
   };
 }

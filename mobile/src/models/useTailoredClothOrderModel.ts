@@ -28,6 +28,16 @@ export interface CreateTailoredOrderData {
   customerMeasures: CustomerMeasure[];
 }
 
+export interface UpdateTailoredOrderData {
+  orderId: number;
+  orderItemId: number;
+  title: string;
+  description: string | null;
+  cost: number;
+  dueDate: Date;
+  customerMeasures: CustomerMeasure[];
+}
+
 interface TailoredClothOrderModelData {
   /**
    * @function getTailoredClothOrderById
@@ -45,6 +55,14 @@ interface TailoredClothOrderModelData {
   createTailoredClothOrder: (
     orderData: CreateTailoredOrderData
   ) => Promise<number>;
+  /**
+   * @function updateTailoredClothOrder
+   * @param data tailored order data
+   * @returns void
+   */
+  updateTailoredClothOrder: (
+    orderData: UpdateTailoredOrderData
+  ) => Promise<void>;
 }
 
 export function useTailoredClothOrderModel(): TailoredClothOrderModelData {
@@ -176,8 +194,142 @@ export function useTailoredClothOrderModel(): TailoredClothOrderModelData {
     });
   }
 
+  function updateTailoredClothOrder(
+    orderData: UpdateTailoredOrderData
+  ): Promise<void> {
+    return new Promise((resolve, reject) => {
+      database?.transaction(
+        (transaction) => {
+          transaction.executeSql(
+            "UPDATE orders SET cost = ?, due_date = ? WHERE id = ?;",
+            [
+              orderData.cost,
+              orderData.dueDate.toISOString(),
+              orderData.orderId,
+            ],
+            (transaction, resultSet) => {
+              if (resultSet.rowsAffected !== 1) {
+                return reject("Não foi possível atualizar o pedido");
+              }
+
+              transaction.executeSql(
+                "UPDATE order_items SET title = ?, description = ? WHERE id = ?;",
+                [
+                  orderData.title,
+                  orderData.description || "",
+                  orderData.orderItemId,
+                ],
+                (transaction, resultSet) => {
+                  if (resultSet.rowsAffected !== 1) {
+                    return reject(
+                      "Não foi possível atualizar o item do pedido"
+                    );
+                  }
+
+                  const measuresToNotDelete = orderData.customerMeasures
+                    .filter(
+                      (measure) =>
+                        measure.orderItemId !== null &&
+                        measure.orderItemId !== undefined
+                    )
+                    .map((measure) => measure.orderItemId);
+
+                  if (measuresToNotDelete.length > 0) {
+                    transaction.executeSql(
+                      ` DELETE FROM order_customer_measures
+                    WHERE id NOT IN (${measuresToNotDelete.join(",")});`,
+                      [],
+                      (_, resultSet) => {
+                        if (resultSet.rowsAffected > 0) {
+                          console.log("Registros deletados com sucesso!");
+                        } else {
+                          console.log("Nenhuma medida foi deletada!");
+                        }
+                      }
+                    );
+                  }
+                  // Itens que serão atualizados possuem um id e um valor
+                  const measuresToUpdate = orderData.customerMeasures
+                    .filter(
+                      (measure) =>
+                        measure.orderItemId !== null &&
+                        measure.orderItemId !== undefined
+                    )
+                    .map((measure) => {
+                      return {
+                        value: Number(measure.value),
+                        orderMeasureId: measure.orderItemId,
+                      };
+                    });
+
+                  if (measuresToUpdate.length > 0) {
+                    measuresToUpdate.forEach((measure) => {
+                      transaction.executeSql(
+                        "UPDATE order_customer_measures SET value = ? WHERE id = ?;",
+                        [measure.value, measure.orderMeasureId as number],
+                        (_, resultSet) => {
+                          console.log(resultSet.rowsAffected);
+                          if (resultSet.rowsAffected === 1) {
+                            console.log("Medida(s) atualizada(s)!");
+                          } else {
+                            console.log("Nenhuma medida foi atualizada!");
+                          }
+                        }
+                      );
+                    });
+                  }
+
+                  const measuresToCreate = orderData.customerMeasures.filter(
+                    (measure) =>
+                      measure.orderItemId === null ||
+                      measure.orderItemId === undefined
+                  );
+
+                  console.log(measuresToCreate);
+
+                  // console.log(measuresToCreate);
+                  if (measuresToCreate.length > 0) {
+                    const measurementSQLValues = measuresToCreate.map(
+                      (measure) => {
+                        return `(${measure.measure.id}, ${
+                          orderData.orderItemId
+                        }, ${Number(measure.value)})`;
+                      }
+                    );
+                    // console.log(measurementSQLValues);
+                    transaction.executeSql(
+                      `INSERT INTO order_customer_measures (id_customer_measure, id_order_item, value)
+                  VALUES ${measurementSQLValues.join(",")};`,
+                      undefined,
+                      (_, resultSet) => {
+                        if (resultSet.insertId && resultSet.insertId > 0) {
+                          console.log("Registros inseridos com sucesso!");
+                        } else {
+                          console.log("Nenhuma medida foi inserida!");
+                        }
+                      }
+                    );
+                  }
+                  resolve();
+                }
+              );
+            }
+          );
+        },
+        (error) => {
+          console.log(error);
+          reject();
+        },
+        () => {
+          console.log("[Model] Tailored Cloth Order updated successfully");
+        }
+      );
+    });
+  }
+
   return {
     createTailoredClothOrder,
     getTailoredClothOrderById,
+    updateTailoredClothOrder,
   };
 }

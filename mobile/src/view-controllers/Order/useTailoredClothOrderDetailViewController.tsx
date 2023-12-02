@@ -6,6 +6,7 @@ import { useTailoredClothOrderViewModel } from "../../view-models/useTailoredClo
 export interface TailoredClothOrderDetailData {
   mode: OrderMode | null;
   tailoredClothOrder: TailoredClothOrder | null;
+  onChangeTailoredClothOrder: (orderData: TailoredClothOrder | null) => void;
 }
 
 interface ControllerArgs {
@@ -21,5 +22,6 @@ export function useTailoredClothOrderDetailViewController({
   return {
     tailoredClothOrder: viewModel.tailoredClothOrder,
     mode,
+    onChangeTailoredClothOrder: viewModel.setTailoredClothOrder,
   };
 }

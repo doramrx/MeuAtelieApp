@@ -1,12 +1,24 @@
 import { useCallback, useState } from "react";
 
-import { CustomerMeasure, Measure } from "../entities/Order";
+import {
+  CustomerMeasure,
+  CustomerMeasureView,
+  Measure,
+} from "../entities/Order";
 import { useMeasureAdapter } from "../adapters/measureAdapter";
 import { useFocusEffect } from "@react-navigation/native";
 
 interface CustomerMeasureData {
-  customerMeasures: CustomerMeasure[];
-  updateCustomerMeasure: (id: number, value: number) => void;
+  customerMeasures: CustomerMeasureView[];
+  updateCustomerMeasure: (id: number, value: string) => void;
+  initCustomerMeasures: (
+    customerMeasures?: CustomerMeasure[],
+    shouldLoadAllMeasures?: boolean
+  ) => void;
+  convertToCustomerMeasure: () => CustomerMeasure[];
+  convertCustomerMeasureToCustomerMeasureView(
+    customerMeasures: CustomerMeasure[]
+  ): CustomerMeasureView[];
 }
 
 interface CustomerMeasureArgs {
@@ -18,14 +30,11 @@ export function useCustomerMeasureViewModel({
 }: CustomerMeasureArgs): CustomerMeasureData {
   const adapter = useMeasureAdapter();
 
-  const [customerMeasures, setCustomerMeasures] = useState<CustomerMeasure[]>(
-    []
-  );
+  const [customerMeasures, setCustomerMeasures] = useState<
+    CustomerMeasureView[]
+  >([]);
 
-  function updateCustomerMeasure(id: number, value: number) {
-    console.log("[ViewController] Updating customer measure...");
-    console.log(value);
-
+  function updateCustomerMeasure(id: number, value: string) {
     setCustomerMeasures((prevMeasures) => {
       return prevMeasures.map((measure) => {
         return measure.measure.id === id ? { ...measure, value } : measure;
@@ -33,17 +42,73 @@ export function useCustomerMeasureViewModel({
     });
   }
 
+  function convertToCustomerMeasure(): CustomerMeasure[] {
+    return adapter.mapCustomerMeasureViewToCustomerMeasureEntityList(
+      customerMeasures.filter(
+        (customerMeasure) =>
+          customerMeasure.value !== "" && customerMeasure.value !== "0"
+      )
+    );
+  }
+
+  function convertCustomerMeasureToCustomerMeasureView(
+    customerMeasures: CustomerMeasure[]
+  ): CustomerMeasureView[] {
+    return adapter.mapCustomerMeasureToCustomerMeasureViewEntityList(
+      customerMeasures
+    );
+  }
+
+  function initCustomerMeasures(
+    customerMeasuresToPreload?: CustomerMeasure[],
+    shouldLoadAllMeasures?: boolean
+  ) {
+    if (!customerMeasuresToPreload) {
+      setCustomerMeasures(
+        adapter.mapMeasureToCustomerMeasureViewEntityList(measures)
+      );
+      return;
+    }
+
+    if (shouldLoadAllMeasures) {
+      setCustomerMeasures(() => {
+        return adapter
+          .mapMeasureToCustomerMeasureViewEntityList(measures)
+          .map((customerMeasure) => {
+            const preloadCustomerMeasure = customerMeasuresToPreload.find(
+              (preloadCustomerMeasure) =>
+                preloadCustomerMeasure.measure.id === customerMeasure.measure.id
+            );
+            if (preloadCustomerMeasure) {
+              return adapter.mapCustomerMeasureToCustomerMeasureViewEntity(
+                preloadCustomerMeasure
+              );
+            }
+            return customerMeasure;
+          });
+      });
+      return;
+    }
+
+    setCustomerMeasures(() => {
+      return customerMeasuresToPreload.map(
+        adapter.mapCustomerMeasureToCustomerMeasureViewEntity
+      );
+    });
+  }
+
   useFocusEffect(
     useCallback(() => {
       console.log("[ViewModel] CustomerMeasure - useFocusEffect");
-      setCustomerMeasures(
-        adapter.mapMeasureToCustomerMeasureEntityList(measures)
-      );
+      initCustomerMeasures();
     }, [measures])
   );
 
   return {
     customerMeasures,
     updateCustomerMeasure,
+    initCustomerMeasures,
+    convertToCustomerMeasure,
+    convertCustomerMeasureToCustomerMeasureView,
   };
 }

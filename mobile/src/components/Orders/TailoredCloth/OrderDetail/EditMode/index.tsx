@@ -1,18 +1,11 @@
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import {
-  Alert,
   Pressable,
   Text,
   TextInput,
   TouchableHighlight,
   View,
 } from "react-native";
-import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
-
-import { database } from "../../../../../database/database";
-
-import { useAppContext } from "../../../../../hooks/useAppContext";
-import { useOrderContext } from "../../../../../hooks/useOrderContext";
 
 import { styles } from "./styles";
 import { THEME } from "../../../../../theme";
@@ -22,261 +15,22 @@ import CalendarIcon from "../../../../../assets/icons/calendar-icon-filled.svg";
 import { Input } from "../../../../shared/Input";
 import { PhotoCard } from "../../../PhotoCard";
 import { MeasureList } from "../../../MeasureList";
-import { CustomerMeasureData, OrderData } from "../DetailMode";
 import { MeasureListModal } from "../../MeasuresModal";
+import { TailoredClothOrder } from "../../../../../entities/Order";
+import { useViewController } from "./view-controller";
 
 interface Props {
   orderId: number;
-  orderData: OrderData;
-  getOrderData: (orderData: OrderData) => void;
+  orderData: TailoredClothOrder;
+  getOrderData: (orderData: TailoredClothOrder) => void;
 }
 
-export function EditMode({
-  orderId,
-  orderData: _orderData,
-  getOrderData,
-}: Props) {
-  const { openModal, isModalOpen } = useAppContext();
-  const { changeMode } = useOrderContext();
-
-  const [orderData, setOrderData] = useState<OrderData>(_orderData);
-
-  function setTitle(title: string) {
-    setOrderData((prevState) => {
-      if (!prevState) {
-        return prevState;
-      }
-
-      return {
-        customer: {
-          ...prevState.customer,
-        },
-        orderItem: {
-          ...prevState.orderItem,
-          title,
-        },
-      };
-    });
-  }
-
-  function setDescription(description: string) {
-    setOrderData((prevState) => {
-      if (!prevState) {
-        return prevState;
-      }
-
-      return {
-        customer: {
-          ...prevState.customer,
-        },
-        orderItem: {
-          ...prevState.orderItem,
-          description,
-        },
-      };
-    });
-  }
-
-  function setCost(cost: string) {
-    setOrderData((prevState) => {
-      if (!prevState) {
-        return prevState;
-      }
-
-      return {
-        customer: {
-          ...prevState.customer,
-        },
-        orderItem: {
-          ...prevState.orderItem,
-          cost: Number(cost.replace(",", ".")),
-        },
-      };
-    });
-  }
-
-  function setDueDate(date: Date) {
-    setOrderData((prevState) => {
-      if (!prevState) {
-        return prevState;
-      }
-
-      return {
-        customer: {
-          ...prevState.customer,
-        },
-        orderItem: {
-          ...prevState.orderItem,
-          dueDate: date,
-        },
-      };
-    });
-  }
-
-  function setMeasures(measures: CustomerMeasureData[]) {
-    setOrderData((prevState) => {
-      if (!prevState) {
-        return prevState;
-      }
-
-      return {
-        customer: {
-          ...prevState.customer,
-        },
-        orderItem: {
-          ...prevState.orderItem,
-          measures,
-        },
-      };
-    });
-  }
-
-  function saveModifications() {
-    if (!orderData) {
-      return Alert.alert("Erro", "Não existem dados para serem atualizados!");
-    }
-
-    const {
-      id: orderItemId,
-      title,
-      description,
-      cost,
-      dueDate,
-      measures,
-    } = orderData.orderItem;
-
-    database.transaction((transaction) => {
-      transaction.executeSql(
-        "UPDATE orders SET cost = ?, due_date = ? WHERE id = ?;",
-        [cost, dueDate.toISOString(), orderId],
-        (transaction, resultSet) => {
-          if (resultSet.rowsAffected !== 1) {
-            return Alert.alert("Erro", "Não foi possível atualizar o pedido!");
-          }
-
-          transaction.executeSql(
-            "UPDATE order_items SET title = ?, description = ? WHERE id = ?;",
-            [title, description || "", orderItemId],
-            (transaction, resultSet) => {
-              if (resultSet.rowsAffected !== 1) {
-                return Alert.alert(
-                  "Erro",
-                  "Não foi possível atualizar o item do pedido!"
-                );
-              }
-
-              // console.log(">>>> AQUI <<<<");
-
-              const measuresToNotDelete = measures
-                .filter((measure) => measure.orderMeasureId !== null)
-                .map((measure) => measure.orderMeasureId);
-
-              if (measuresToNotDelete.length > 0) {
-                transaction.executeSql(
-                  ` DELETE FROM order_customer_measures 
-                    WHERE id NOT IN (${measuresToNotDelete.join(",")});`,
-                  [],
-                  (_, resultSet) => {
-                    if (resultSet.rowsAffected > 0) {
-                      // console.log("Registros deletados com sucesso!");
-                    } else {
-                      // console.log("Nenhuma medida foi deletada!");
-                    }
-                  }
-                );
-              }
-
-              // Itens que serão atualizados possuem um id e um valor
-              const measuresToUpdate = measures
-                .filter((measure) => measure.orderMeasureId !== null)
-                .map((measure) => {
-                  return {
-                    value: Number(measure.value.replace(",", ".")),
-                    orderMeasureId: measure.orderMeasureId,
-                  };
-                });
-
-              if (measuresToUpdate.length > 0) {
-                const updateSQLStatement = measuresToUpdate
-                  .map((measure) => {
-                    return `UPDATE order_customer_measures SET value = ${measure.value} WHERE id = ${measure.orderMeasureId};`;
-                  })
-                  .join("\n");
-
-                transaction.executeSql(
-                  updateSQLStatement,
-                  undefined,
-                  (_, resultSet) => {
-                    if (resultSet.rowsAffected >= 1) {
-                      // console.log("Medida(s) atualizada(s)!");
-                    } else {
-                      // console.log("Nenhuma medida foi atualizada!");
-                    }
-                  }
-                );
-              }
-
-              const measuresToCreate = measures.filter(
-                (measure) => measure.orderMeasureId === null
-              );
-
-              // console.log(measuresToCreate);
-
-              if (measuresToCreate.length > 0) {
-                const measurementSQLValues = measuresToCreate.map((measure) => {
-                  return `(${measure.id}, ${orderItemId}, ${Number(
-                    measure.value.replace(",", ".")
-                  )})`;
-                });
-
-                // console.log(measurementSQLValues);
-
-                transaction.executeSql(
-                  `INSERT INTO order_customer_measures (id_customer_measure, id_order_item, value) 
-                  VALUES ${measurementSQLValues.join(",")};`,
-                  undefined,
-                  (_, resultSet) => {
-                    if (resultSet.insertId && resultSet.insertId > 0) {
-                      // console.log("Registros inseridos com sucesso!");
-                    } else {
-                      // console.log("Nenhuma medida foi inserida!");
-                    }
-                  }
-                );
-              }
-
-              Alert.alert(
-                "Sucesso",
-                "Os dados do pedido foram atualizados com sucesso!"
-              );
-
-              getOrderData({
-                customer: {
-                  ...orderData.customer,
-                },
-                orderItem: {
-                  ...orderData.orderItem,
-                },
-              });
-
-              changeMode();
-            }
-          );
-        }
-      );
-    });
-  }
-
-  function openDatePicker() {
-    DateTimePickerAndroid.open({
-      value: orderData?.orderItem.dueDate || new Date(),
-      onChange: (_, date) => {
-        date && setDueDate(date);
-      },
-      mode: "date",
-      minimumDate: new Date(),
-    });
-  }
+export function EditMode({ orderId, orderData, getOrderData }: Props) {
+  const viewController = useViewController({
+    orderId,
+    tailoredClothOrder: orderData,
+    getOrderData,
+  });
 
   return (
     <Fragment>
@@ -287,16 +41,16 @@ export function EditMode({
       <Input
         placeholder="Título da peça"
         containerStyles={styles.input}
-        value={orderData.orderItem.title}
-        onChangeText={setTitle}
+        value={viewController.tailoredClothOrder.title}
+        onChangeText={viewController.onChangeTitle}
       />
 
       <TextInput
         placeholder="Descrição (opcional)"
         style={styles.textarea}
         multiline={true}
-        value={orderData.orderItem.description}
-        onChangeText={setDescription}
+        value={viewController.tailoredClothOrder.description}
+        onChangeText={viewController.onChangeDescription}
       />
 
       <Text style={styles.text}>Adicionar fotos do modelo (opcional)</Text>
@@ -309,22 +63,20 @@ export function EditMode({
       </View>
 
       <Text style={styles.text}>
-        {orderData.orderItem.measures.length === 0
+        {viewController.tailoredClothOrder.measures.length === 0
           ? "Adicionar medidas do cliente (opcional)"
           : "Atualizar medidas do cliente (opcional)"}
       </Text>
 
       <MeasureList
         containerStyles={{ marginTop: 20 }}
-        data={orderData.orderItem.measures}
+        data={viewController.onGetCustomerMeasures()}
         editable={false}
       />
 
       <TouchableHighlight
         underlayColor={THEME.COLORS.GRAY.LIGHT.V1}
-        onPress={() => {
-          openModal("MeasureList");
-        }}
+        onPress={viewController.onOpenMeasureListModal}
         style={[styles.button, styles.updateMeasurementsButton]}
       >
         <View style={styles.updateMeasurementsContent}>
@@ -334,7 +86,7 @@ export function EditMode({
             height={20}
           />
           <Text style={styles.measuresText}>
-            {orderData.orderItem.measures.length === 0
+            {viewController.tailoredClothOrder.measures.length === 0
               ? "Adicionar medidas"
               : "Atualizar medidas"}
           </Text>
@@ -347,7 +99,7 @@ export function EditMode({
           placeholder="R$ 00,0"
           maxLength={8}
           keyboardType="numeric"
-          value={String(orderData.orderItem.cost)}
+          value={viewController.inputCost}
           onChangeText={(text) => {
             const typedText = text.charAt(text.length - 1);
             const commaCountInText = (text.match(/,/g) || []).length;
@@ -369,7 +121,7 @@ export function EditMode({
               commaCountInText === 1 &&
               typedText === ","
             ) {
-              return setCost("0,");
+              return viewController.onChangeCost("0,");
             }
 
             if (
@@ -377,11 +129,11 @@ export function EditMode({
               dotCountInText === 1 &&
               typedText === "."
             ) {
-              return setCost("0.");
+              return viewController.onChangeCost("0.");
             }
 
             if (commaCountInText <= 1 || dotCountInText <= 1) {
-              return setCost(text);
+              return viewController.onChangeCost(text);
             }
           }}
         />
@@ -391,10 +143,10 @@ export function EditMode({
         <Text style={styles.dueDateLabel}>Selecione a data de entrega</Text>
         <Pressable
           style={styles.dueDatePicker}
-          onPress={openDatePicker}
+          onPress={viewController.onOpenDatePicker}
         >
           <Text style={styles.dueDateValue}>
-            {orderData.orderItem.dueDate.toLocaleString("pt-BR")}
+            {viewController.tailoredClothOrder.dueDate.toLocaleString("pt-BR")}
           </Text>
           <CalendarIcon
             width={22}
@@ -410,7 +162,7 @@ export function EditMode({
 
       <TouchableHighlight
         underlayColor={THEME.COLORS.PINK.V2_UNDERLAY}
-        onPress={saveModifications}
+        onPress={viewController.onSave}
         style={[styles.saveOrderButton, styles.button]}
       >
         <Text style={[styles.buttonText, styles.saveOrderText]}>
@@ -420,16 +172,17 @@ export function EditMode({
 
       <TouchableHighlight
         underlayColor={THEME.COLORS.GRAY.LIGHT.V2}
-        onPress={changeMode}
+        onPress={viewController.onCancel}
         style={[styles.cancelButton, styles.button]}
       >
         <Text style={[styles.buttonText, styles.cancelText]}>Cancelar</Text>
       </TouchableHighlight>
 
-      {isModalOpen && (
+      {viewController.isModalOpen && (
         <MeasureListModal
-          customerMeasures={orderData.orderItem.measures}
-          getMeasures={setMeasures}
+          customerMeasures={viewController.customerMeasures}
+          onUpdateCustomerMeasure={viewController.onUpdateCustomerMeasure}
+          onFinishEditing={viewController.onFinishEdition}
         />
       )}
     </Fragment>

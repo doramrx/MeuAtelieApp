@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Alert } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
-import { CustomerMeasure } from "../../../../entities/Order";
+import { CustomerMeasureView } from "../../../../entities/Order";
 import { useOrderContext } from "../../../../hooks/useOrderContext";
 import { useMeasureViewModel } from "../../../../view-models/useMeasureViewModel";
 import { useCustomerMeasureViewModel } from "../../../../view-models/useCustomerMeasureViewModel";
@@ -12,14 +12,14 @@ import { useDatePicker } from "../../../../utils/useDatePicker";
 interface ViewControllerData {
   title: string;
   description: string;
-  measures: CustomerMeasure[];
+  measures: CustomerMeasureView[];
   cost: string;
   dueDate: Date;
   onUpdateTitle: (title: string) => void;
   onUpdateDescription: (description: string) => void;
   onUpdateCost: (cost: string) => void;
   onOpenDateTimePicker: () => void;
-  onUpdateCustomerMeasure: (measureId: number, value: number) => void;
+  onUpdateCustomerMeasure: (measureId: number, value: string) => void;
   onCreateOrder: () => void;
 }
 
@@ -70,7 +70,7 @@ export function useViewController(): ViewControllerData {
         dueDate,
         createdAt: new Date(),
         customerId: selectedCustomerId,
-        customerMeasures: customerMeasureViewModel.customerMeasures,
+        customerMeasures: customerMeasureViewModel.convertToCustomerMeasure(),
       });
 
       Alert.alert("Sucesso", "Pedido cadastrado com sucesso!");
@@ -83,6 +83,12 @@ export function useViewController(): ViewControllerData {
       }
     }
   }
+
+  useFocusEffect(
+    useCallback(() => {
+      customerMeasureViewModel.initCustomerMeasures();
+    }, [])
+  );
 
   return {
     title,

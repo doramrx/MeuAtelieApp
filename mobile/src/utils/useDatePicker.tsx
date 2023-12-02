@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from "react";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 
 interface DatePickerData {
@@ -7,7 +6,7 @@ interface DatePickerData {
 
 interface Props {
   someDate: Date;
-  setDate: Dispatch<SetStateAction<Date>>;
+  setDate: (date: Date) => void;
 }
 
 export function useDatePicker({ someDate, setDate }: Props): DatePickerData {

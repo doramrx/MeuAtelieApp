@@ -2,7 +2,7 @@ import { THEME } from "../../../../theme";
 import { styles as modalStyles } from "../../../shared/ModalTemplate/styles";
 import EditIcon from "../../../../assets/icons/edit-icon-with-border.svg";
 
-import { CustomerMeasure } from "../../../../entities/Order";
+import { CustomerMeasureView } from "../../../../entities/Order";
 
 import { ModalTemplate } from "../../../shared/ModalTemplate";
 import { MeasureList } from "../../MeasureList";
@@ -10,13 +10,17 @@ import { MeasureList } from "../../MeasureList";
 import { useViewController } from "./view-controller";
 
 interface Props {
-  getMeasures: (measures: CustomerMeasure[]) => void;
+  customerMeasures: CustomerMeasureView[];
+  onUpdateCustomerMeasure: (id: number, value: string) => void;
+  onFinishEditing: () => void;
 }
 
-export function MeasureListModal({ getMeasures }: Props) {
-  const viewController = useViewController({
-    getMeasuresCallback: getMeasures,
-  });
+export function MeasureListModal({
+  customerMeasures,
+  onUpdateCustomerMeasure,
+  onFinishEditing,
+}: Props) {
+  const viewController = useViewController();
 
   return viewController.modalType === "MeasureList" ? (
     <ModalTemplate.Root>
@@ -28,8 +32,8 @@ export function MeasureListModal({ getMeasures }: Props) {
       <ModalTemplate.Container title="Editar medidas">
         <ModalTemplate.Content>
           <MeasureList
-            data={viewController.customerMeasures}
-            onUpdateMeasure={viewController.onUpdateCustomerMeasure}
+            data={customerMeasures}
+            onUpdateMeasure={onUpdateCustomerMeasure}
             containerStyles={{ width: "100%" }}
           />
         </ModalTemplate.Content>
@@ -47,7 +51,7 @@ export function MeasureListModal({ getMeasures }: Props) {
             additionalButtonStyles={{ backgroundColor: THEME.COLORS.PINK.V2 }}
             additionalTextStyles={{ color: THEME.COLORS.WHITE.FULL_WHITE }}
             underlayColor={THEME.COLORS.PINK.V2_UNDERLAY}
-            onPress={viewController.onGetMeasures}
+            onPress={onFinishEditing}
           />
         </ModalTemplate.Actions>
       </ModalTemplate.Container>
