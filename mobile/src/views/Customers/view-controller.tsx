@@ -1,9 +1,9 @@
 import { useState } from "react";
-
-import { Customer } from "../entities/Customer";
-import { useAppContext } from "../hooks/useAppContext";
 import { Alert } from "react-native";
-import { useCustomerViewModel } from "../view-models/useCustomerViewModel";
+
+import { Customer } from "../../entities/Customer";
+import { useCustomerViewModel } from "../../view-models/useCustomerViewModel";
+import { useAppContext } from "../../hooks/useAppContext";
 
 export interface CustomerViewControllerData {
   customerId: number;
@@ -20,7 +20,7 @@ export interface CustomerViewControllerData {
   onListUpdate: (customerId: number) => void;
 }
 
-export function useCustomerViewController(): CustomerViewControllerData {
+export function useViewController(): CustomerViewControllerData {
   const viewModel = useCustomerViewModel({ shouldFetch: true });
   const {
     openModal,

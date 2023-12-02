@@ -1,7 +1,7 @@
-import { OrderMode } from "../../contexts/OrderContext";
-import { TailoredClothOrder } from "../../entities/Order";
-import { useOrderContext } from "../../hooks/useOrderContext";
-import { useTailoredClothOrderViewModel } from "../../view-models/useTailoredClothOrderViewModel";
+import { OrderMode } from "../../../../contexts/OrderContext";
+import { TailoredClothOrder } from "../../../../entities/Order";
+import { useOrderContext } from "../../../../hooks/useOrderContext";
+import { useTailoredClothOrderViewModel } from "../../../../view-models/useTailoredClothOrderViewModel";
 
 export interface TailoredClothOrderDetailData {
   mode: OrderMode | null;
@@ -13,7 +13,7 @@ interface ControllerArgs {
   orderId: number;
 }
 
-export function useTailoredClothOrderDetailViewController({
+export function useViewController({
   orderId,
 }: ControllerArgs): TailoredClothOrderDetailData {
   const { mode } = useOrderContext();

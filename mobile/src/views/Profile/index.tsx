@@ -1,10 +1,5 @@
 import { Text, TouchableHighlight, TouchableOpacity, View } from "react-native";
 
-import {
-  ProfileViewControllerData,
-  useProfileViewController,
-} from "../../view-controllers/useProfileViewController";
-
 import { THEME } from "../../theme";
 import { styles } from "./styles";
 import UserIcon from "../../assets/icons/user-icon-filled.svg";
@@ -18,12 +13,17 @@ import { Screen } from "../../components/shared/Screen";
 import { Button } from "../../components/Profile/Button";
 import { Modal } from "../../components/Profile/Modal";
 
+import {
+  ProfileViewControllerData,
+  useViewController,
+} from "./view-controller";
+
 interface Props {
   controller?: () => ProfileViewControllerData;
 }
 
 export function ProfileView({ controller }: Props) {
-  const viewController = controller ? controller() : useProfileViewController();
+  const viewController = controller ? controller() : useViewController();
 
   return (
     <Screen.Root>

@@ -5,21 +5,17 @@ import "../../config/reactNativeCalendars";
 
 import { styles } from "./styles";
 
-import {
-  AgendaData,
-  useAgendaViewController,
-} from "../../view-controllers/useAgendaViewController";
-
 import { Screen } from "../../components/shared/Screen";
 import { OrderList } from "../../components/Agenda/OrderList";
 import { Modal } from "../../components/Agenda/Modal";
+import { AgendaData, useViewController } from "./view-controller";
 
 interface Props {
   controller: () => AgendaData;
 }
 
 export function Agenda({ controller }: Props) {
-  const viewController = controller ? controller() : useAgendaViewController();
+  const viewController = controller ? controller() : useViewController();
 
   return (
     <Screen.Root>

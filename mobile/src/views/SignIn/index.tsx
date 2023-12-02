@@ -1,11 +1,6 @@
 import { Text, View, Image, TouchableHighlight } from "react-native";
 import { Link } from "@react-navigation/native";
 
-import {
-  SignInViewControllerData,
-  useSignInViewController,
-} from "../../view-controllers/useSignInViewController";
-
 import { styles } from "./styles";
 import { THEME } from "../../theme";
 
@@ -15,13 +10,14 @@ import PasswordIconFilled from "../../assets/icons/password-icon-filled.svg";
 
 import { Input } from "../../components/shared/Input";
 import { Screen } from "../../components/shared/Screen";
+import { SignInViewControllerData, useViewController } from "./view-controller";
 
 interface Props {
   controller?: () => SignInViewControllerData;
 }
 
 export function SignIn({ controller }: Props) {
-  const viewController = controller ? controller() : useSignInViewController();
+  const viewController = controller ? controller() : useViewController();
 
   return (
     <Screen.Root>

@@ -1,7 +1,7 @@
-import { AdjustCheckBox } from "../../entities/Order";
-import { useAppContext } from "../../hooks/useAppContext";
-import { useAdjustServiceCheckBoxViewModel } from "../../view-models/useAdjustServiceCheckBoxViewModel";
-import { useAdjustServiceViewModel } from "../../view-models/useAdjustServiceViewModel";
+import { AdjustCheckBox } from "../../../../entities/Order";
+import { useAppContext } from "../../../../hooks/useAppContext";
+import { useAdjustServiceCheckBoxViewModel } from "../../../../view-models/useAdjustServiceCheckBoxViewModel";
+import { useAdjustServiceViewModel } from "../../../../view-models/useAdjustServiceViewModel";
 
 interface AdjustListModalData {
   adjusts: AdjustCheckBox[];
@@ -15,7 +15,7 @@ interface ControllerArgs {
   onGetAdjusts: (adjusts: AdjustCheckBox[]) => void;
 }
 
-export function useAdjustListModalViewController({
+export function useViewController({
   adjusts,
   onGetAdjusts: _onGetAdjusts,
 }: ControllerArgs): AdjustListModalData {

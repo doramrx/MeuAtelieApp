@@ -3,12 +3,10 @@ import { Alert } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { DateData } from "react-native-calendars";
 import { MarkedDates } from "react-native-calendars/src/types";
-
-import { THEME } from "../theme";
-
-import { Order, OrderType } from "../entities/Order";
-import { useAgendaViewModel } from "../view-models/useAgendaViewModel";
-import { useAppContext } from "../hooks/useAppContext";
+import { Order, OrderType } from "../../entities/Order";
+import { useAgendaViewModel } from "../../view-models/useAgendaViewModel";
+import { useAppContext } from "../../hooks/useAppContext";
+import { THEME } from "../../theme";
 
 interface SelectedOrder {
   orderId: number;
@@ -32,7 +30,7 @@ export interface AgendaData {
   onFinishOrder: () => void;
 }
 
-export function useAgendaViewController(): AgendaData {
+export function useViewController(): AgendaData {
   const viewModel = useAgendaViewModel();
 
   const { isModalOpen } = useAppContext();

@@ -8,10 +8,8 @@ import { Card } from "../../components/Customers/Card/index";
 import { BottomModal } from "../../components/shared/BottomModal";
 import { Screen } from "../../components/shared/Screen";
 import { Modal } from "../../components/Customers/Modal";
-import {
-  CustomerViewControllerData,
-  useCustomerViewController,
-} from "../../view-controllers/useCustomerViewController";
+
+import { CustomerViewControllerData, useViewController } from "./view-controller";
 
 interface Props {
   controller?: () => CustomerViewControllerData;
@@ -20,7 +18,7 @@ interface Props {
 export function Customers({ controller }: Props) {
   const viewController = controller
     ? controller()
-    : useCustomerViewController();
+    : useViewController();
 
   return (
     <Screen.Root>

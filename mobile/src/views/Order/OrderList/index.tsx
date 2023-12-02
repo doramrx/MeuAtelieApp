@@ -8,11 +8,12 @@ import { Screen } from "../../../components/shared/Screen";
 import { Card } from "../../../components/Orders/Card";
 import { Options } from "../../../components/Orders/Options";
 import { ServiceTypeModal } from "../../../components/Orders/ServiceTypeModal";
+
+import { OrderType } from "../../../entities/Order";
 import {
   OrderListViewControllerData,
-  useOrderListViewController,
-} from "../../../view-controllers/Order/useOrderListViewController";
-import { OrderType } from "../../../entities/Order";
+  useViewController,
+} from "./view-controller";
 
 export interface OrderData {
   orderId: number;
@@ -28,9 +29,7 @@ interface Props {
 }
 
 export function Orders({ controller }: Props) {
-  const viewController = controller
-    ? controller()
-    : useOrderListViewController();
+  const viewController = controller ? controller() : useViewController();
 
   return (
     <Screen.Root>

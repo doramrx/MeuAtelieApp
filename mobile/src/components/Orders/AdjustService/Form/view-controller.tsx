@@ -2,14 +2,12 @@ import { useState } from "react";
 import { Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import { Adjust, AdjustOrderItem } from "../../entities/Order";
-
-import { useOrderContext } from "../../hooks/useOrderContext";
-import { useDatePicker } from "../../utils/useDatePicker";
-
-import { useAdjustServiceViewModel } from "../../view-models/useAdjustServiceViewModel";
-import { useAdjustOrderViewModel } from "../../view-models/useAdjustOrderViewModel";
-import { useAdjustOrderItemViewModel } from "../../view-models/useAdjustOrderItemViewModel";
+import { Adjust, AdjustOrderItem } from "../../../../entities/Order";
+import { useOrderContext } from "../../../../hooks/useOrderContext";
+import { useAdjustServiceViewModel } from "../../../../view-models/useAdjustServiceViewModel";
+import { useAdjustOrderItemViewModel } from "../../../../view-models/useAdjustOrderItemViewModel";
+import { useAdjustOrderViewModel } from "../../../../view-models/useAdjustOrderViewModel";
+import { useDatePicker } from "../../../../utils/useDatePicker";
 
 export interface AdjustOrderFormData {
   customerId: number | null;
@@ -27,7 +25,7 @@ export interface AdjustOrderFormData {
   onCreateOrder: () => Promise<void>;
 }
 
-export function useAdjustOrderFormViewController(): AdjustOrderFormData {
+export function useViewController(): AdjustOrderFormData {
   const { selectedCustomerId } = useOrderContext();
 
   const adjustServicesViewModel = useAdjustServiceViewModel();

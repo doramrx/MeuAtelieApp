@@ -5,7 +5,7 @@ import EditIcon from "../../../../assets/icons/edit-icon-with-border.svg";
 import { ModalTemplate } from "../../../shared/ModalTemplate";
 import { AdjustList } from "../AdjustList";
 import { AdjustCheckBox } from "../../../../entities/Order";
-import { useAdjustListModalViewController } from "../../../../view-controllers/components/useAdjustListModalViewController";
+import { useViewController } from "./view-controller";
 
 interface Props {
   orderAdjusts: AdjustCheckBox[];
@@ -13,7 +13,7 @@ interface Props {
 }
 
 export function AdjustListModal({ orderAdjusts, onGetAdjusts }: Props) {
-  const viewController = useAdjustListModalViewController({
+  const viewController = useViewController({
     adjusts: orderAdjusts,
     onGetAdjusts,
   });

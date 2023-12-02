@@ -1,8 +1,8 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 
-import { OrderType } from "../../entities/Order";
-import { useOrderContext } from "../../hooks/useOrderContext";
-import { OrderMode } from "../../contexts/OrderContext";
+import { OrderType } from "../../../entities/Order";
+import { OrderMode } from "../../../contexts/OrderContext";
+import { useOrderContext } from "../../../hooks/useOrderContext";
 
 interface RouteParamsData {
   orderId: number;
@@ -16,7 +16,7 @@ export interface OrderDetailViewControllerData {
   orderType: OrderType;
 }
 
-export function useOrderDetailViewController(): OrderDetailViewControllerData {
+export function useViewController(): OrderDetailViewControllerData {
   const navigation = useNavigation();
   const routeParams = useRoute().params as RouteParamsData;
   const { mode, changeMode } = useOrderContext();

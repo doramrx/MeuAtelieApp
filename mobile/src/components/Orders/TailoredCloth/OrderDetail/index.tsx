@@ -2,10 +2,11 @@ import { Text, View } from "react-native";
 
 import { DetailMode } from "./DetailMode";
 import { EditMode } from "./EditMode";
+
 import {
-  useTailoredClothOrderDetailViewController,
   TailoredClothOrderDetailData,
-} from "../../../../view-controllers/Order/useTailoredClothOrderDetailViewController";
+  useViewController,
+} from "./view-controller";
 
 interface Props {
   orderId: number;
@@ -15,7 +16,7 @@ interface Props {
 export function TailoredClothOrderDetail({ orderId, controller }: Props) {
   const viewController = controller
     ? controller()
-    : useTailoredClothOrderDetailViewController({ orderId });
+    : useViewController({ orderId });
 
   return viewController.tailoredClothOrder ? (
     <View style={{ paddingHorizontal: 25 }}>

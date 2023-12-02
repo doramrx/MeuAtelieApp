@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import { Alert } from "react-native";
-import { useDressmakerViewModel } from "../view-models/useDressmakerViewModel";
+import { useDressmakerViewModel } from "../../view-models/useDressmakerViewModel";
 
 export interface SignUpViewControllerData {
   dressmakerName: string;
@@ -15,7 +15,7 @@ export interface SignUpViewControllerData {
   onSignUp: () => void;
 }
 
-export function useSignUpViewController(): SignUpViewControllerData {
+export function useViewController(): SignUpViewControllerData {
   const navigation = useNavigation();
 
   const viewModel = useDressmakerViewModel();

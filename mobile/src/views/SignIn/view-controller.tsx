@@ -1,8 +1,9 @@
-import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
-import { useAuthContext } from "../hooks/useAuthContext";
 import { Alert } from "react-native";
-import { useDressmakerViewModel } from "../view-models/useDressmakerViewModel";
+import { useNavigation } from "@react-navigation/native";
+
+import { useDressmakerViewModel } from "../../view-models/useDressmakerViewModel";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 export interface SignInViewControllerData {
   email: string;
@@ -12,7 +13,7 @@ export interface SignInViewControllerData {
   onLogIn: () => void;
 }
 
-export function useSignInViewController(): SignInViewControllerData {
+export function useViewController(): SignInViewControllerData {
   const navigation = useNavigation();
 
   const viewModel = useDressmakerViewModel();

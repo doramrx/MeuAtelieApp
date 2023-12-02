@@ -1,11 +1,6 @@
 import { Text, View, Image, TouchableHighlight } from "react-native";
 import { Link } from "@react-navigation/native";
 
-import {
-  SignUpViewControllerData,
-  useSignUpViewController,
-} from "../../view-controllers/useSignUpViewController";
-
 import { styles } from "./styles";
 import { THEME } from "../../theme";
 
@@ -17,12 +12,14 @@ import UserIconFilled from "../../assets/icons/user-icon-filled.svg";
 import { Input } from "../../components/shared/Input";
 import { Screen } from "../../components/shared/Screen";
 
+import { SignUpViewControllerData, useViewController } from "./view-controller";
+
 interface Props {
   controller?: () => SignUpViewControllerData;
 }
 
 export function SignUp({ controller }: Props) {
-  const viewController = controller ? controller() : useSignUpViewController();
+  const viewController = controller ? controller() : useViewController();
 
   return (
     <Screen.Root>

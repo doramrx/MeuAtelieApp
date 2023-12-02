@@ -8,14 +8,14 @@ import SearchIcon from "../../../../assets/icons/search-icon.svg";
 import { Input } from "../../Input";
 import { Modal } from "../../../Customers/Modal";
 import { RadioGroup } from "../../../Orders/TailoredCloth/RadioGroup";
-import { useCustomerSelectionViewController } from "../../../../view-controllers/components/useCustomerSelectionViewController";
+import { useViewController } from "./view-controller";
 
 interface Props {
   title: string;
 }
 
 export function CustomerSelection({ title }: Props) {
-  const viewController = useCustomerSelectionViewController();
+  const viewController = useViewController();
 
   return (
     <Fragment>

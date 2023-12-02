@@ -1,6 +1,6 @@
-import { Order } from "../../entities/Order";
-import { useAppContext } from "../../hooks/useAppContext";
-import { useOrderViewModel } from "../../view-models/useOrderViewModel";
+import { Order } from "../../../entities/Order";
+import { useAppContext } from "../../../hooks/useAppContext";
+import { useOrderViewModel } from "../../../view-models/useOrderViewModel";
 
 export interface OrderListViewControllerData {
   orders: Order[];
@@ -8,7 +8,7 @@ export interface OrderListViewControllerData {
   onOpenServiceSelectionModal: () => void;
 }
 
-export function useOrderListViewController(): OrderListViewControllerData {
+export function useViewController(): OrderListViewControllerData {
   const { openModal, isModalOpen } = useAppContext();
 
   const viewModel = useOrderViewModel({});

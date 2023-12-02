@@ -2,9 +2,9 @@ import { useCallback, useState } from "react";
 import { Alert } from "react-native";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
-import { useDressmakerViewModel } from "../view-models/useDressmakerViewModel";
-import { useAppContext } from "../hooks/useAppContext";
-import { useAuthContext } from "../hooks/useAuthContext";
+import { useDressmakerViewModel } from "../../view-models/useDressmakerViewModel";
+import { useAuthContext } from "../../hooks/useAuthContext";
+import { useAppContext } from "../../hooks/useAppContext";
 
 export interface ProfileViewControllerData {
   userId: number;
@@ -18,7 +18,7 @@ export interface ProfileViewControllerData {
   onDeleteAccount: () => void;
 }
 
-export function useProfileViewController(): ProfileViewControllerData {
+export function useViewController(): ProfileViewControllerData {
   const navigation = useNavigation();
 
   const viewModel = useDressmakerViewModel();

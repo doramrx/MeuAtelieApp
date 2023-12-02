@@ -9,19 +9,18 @@ import XIcon from "../../../assets/icons/x-icon.svg";
 import { Screen } from "../../../components/shared/Screen";
 import { TailoredClothOrderDetail } from "../../../components/Orders/TailoredCloth/OrderDetail";
 import { AdjustOrderDetail } from "../../../components/Orders/AdjustService/AdjustOrderDetail";
+
 import {
   OrderDetailViewControllerData,
-  useOrderDetailViewController,
-} from "../../../view-controllers/Order/useOrderDetailViewController";
+  useViewController,
+} from "./view-controller";
 
 interface Props {
   controller?: () => OrderDetailViewControllerData;
 }
 
 export function OrderDetail({ controller }: Props) {
-  const viewController = controller
-    ? controller()
-    : useOrderDetailViewController();
+  const viewController = controller ? controller() : useViewController();
 
   return (
     <Screen.Root>

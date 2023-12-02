@@ -12,11 +12,7 @@ import CalendarIcon from "../../../../assets/icons/calendar-icon-filled.svg";
 
 import { Input } from "../../../shared/Input";
 import { ExpandableAdjustItemList } from "../ExpandableAdjustItemList";
-
-import {
-  AdjustOrderFormData,
-  useAdjustOrderFormViewController,
-} from "../../../../view-controllers/components/useAdjustOrderFormViewController";
+import { AdjustOrderFormData, useViewController } from "./view-controller";
 
 interface Props {
   controller?: () => AdjustOrderFormData;
@@ -25,7 +21,7 @@ interface Props {
 export function AdjustOrderForm({ controller }: Props) {
   const viewController = controller
     ? controller()
-    : useAdjustOrderFormViewController();
+    : useViewController();
 
   return (
     <ScrollView>

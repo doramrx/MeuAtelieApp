@@ -1,6 +1,6 @@
-import { Customer } from "../../entities/Customer";
-import { useAppContext } from "../../hooks/useAppContext";
-import { useCustomerViewModel } from "../../view-models/useCustomerViewModel";
+import { Customer } from "../../../../entities/Customer";
+import { useAppContext } from "../../../../hooks/useAppContext";
+import { useCustomerViewModel } from "../../../../view-models/useCustomerViewModel";
 
 export interface CustomerSelectionData {
   customers: Customer[];
@@ -9,7 +9,7 @@ export interface CustomerSelectionData {
   onMoveNextPage: () => void;
 }
 
-export function useCustomerSelectionViewController(): CustomerSelectionData {
+export function useViewController(): CustomerSelectionData {
   const viewModel = useCustomerViewModel({ shouldFetch: true });
   const { isModalOpen, openModal } = useAppContext();
 
