@@ -24,7 +24,7 @@ export function useOrderAdapter(): AdapterFunctions {
     due_date,
     type,
     customer_name,
-    delivered_at
+    delivered_at,
   }: OrderRawData): Order {
     const order: Order = {
       id,
@@ -116,6 +116,7 @@ export function useOrderAdapter(): AdapterFunctions {
           description: rawOrderItem.order_item_description,
           adjusts: [
             {
+              orderedAdjustId: rawOrderItem.ordered_service_id,
               id: rawOrderItem.adjust_service_id,
               description: rawOrderItem.adjust_service_description,
               cost: rawOrderItem.ordered_service_cost,
@@ -131,6 +132,7 @@ export function useOrderAdapter(): AdapterFunctions {
 
       if (previousOrderItemId === currentOrderItemId) {
         orderItems[orderItems.length - 1].adjusts.push({
+          orderedAdjustId: rawOrderItem.ordered_service_id,
           id: rawOrderItem.adjust_service_id,
           description: rawOrderItem.adjust_service_description,
           cost: rawOrderItem.ordered_service_cost,
@@ -143,6 +145,7 @@ export function useOrderAdapter(): AdapterFunctions {
           description: rawOrderItem.order_item_description,
           adjusts: [
             {
+              orderedAdjustId: rawOrderItem.ordered_service_id,
               id: rawOrderItem.adjust_service_id,
               description: rawOrderItem.adjust_service_description,
               cost: rawOrderItem.ordered_service_cost,

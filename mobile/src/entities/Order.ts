@@ -1,4 +1,4 @@
-interface Customer {
+export interface Customer {
   name: string;
   phone: string;
 }
@@ -55,6 +55,7 @@ export interface Adjust {
 }
 
 export interface AdjustCheckBox {
+  orderedAdjustId?: number;
   id: number;
   description: string;
   cost: number;

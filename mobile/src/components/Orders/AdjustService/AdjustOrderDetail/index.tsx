@@ -1,27 +1,37 @@
 import { Fragment } from "react";
-import { Text } from "react-native";
-
-import { useAdjustOrderDetailViewController } from "../../../../view-controllers/Order/useAdjustOrderDetailViewController";
+import { Text, View } from "react-native";
 
 import { DetailMode } from "./DetailMode";
 import { EditMode } from "./EditMode";
+import { useViewController } from "./view-controller";
 
 interface Props {
   orderId: number;
 }
 
 export function AdjustOrderDetail({ orderId }: Props) {
-  const viewController = useAdjustOrderDetailViewController({ orderId });
+  const viewController = useViewController({ orderId });
 
-  return viewController.adjustOrder ? (
+  return viewController.orderData ? (
     <Fragment>
       {viewController.mode === "detail" ? (
-        <DetailMode controller={viewController} />
+        <DetailMode
+          orderId={orderId}
+          orderData={viewController.orderData}
+        />
       ) : (
-        <EditMode controller={viewController} />
+        <EditMode
+          orderId={orderId}
+          customerData={viewController.orderData.customer}
+          orderItemsData={viewController.orderData.orderItems}
+          orderDueDate={viewController.orderData.dueDate}
+          onTriggerFetchOrderData={viewController.onFetchAdjustOrderData}
+        />
       )}
     </Fragment>
   ) : (
-    <Text>Loading data...</Text>
+    <View>
+      <Text>Loading data...</Text>
+    </View>
   );
 }

@@ -139,17 +139,13 @@ export function useAdjustOrderItemViewModel(
     });
   }
 
-  function setAdjustOrderItems(items: AdjustOrderItem[]) {
-    setItems([...items]);
-  }
-
   useFocusEffect(
     useCallback(() => {
       if (!viewModelArgs) {
         return;
       }
 
-      setItems([...viewModelArgs.adjustOrderItems]);
+      setItems(viewModelArgs.adjustOrderItems);
     }, [])
   );
 
@@ -161,6 +157,6 @@ export function useAdjustOrderItemViewModel(
     updateItemAdjust,
     getTotalCost,
     updateOrderItemAdjusts,
-    setAdjustOrderItems,
+    setAdjustOrderItems: setItems,
   };
 }

@@ -43,9 +43,10 @@ export function useAdjustServiceCheckBoxViewModel({
             ...adapter.mapToAdjustCheckboxEntityList(_adjusts),
           ].sort((a, b) => a.id - b.id)
         );
-      } else {
-        setAdjusts(adapter.mapToAdjustCheckboxEntityList(_adjusts));
+        return;
       }
+
+      setAdjusts(adapter.mapToAdjustCheckboxEntityList(_adjusts));
     }, [_adjusts])
   );
 

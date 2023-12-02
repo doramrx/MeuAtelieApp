@@ -5,7 +5,7 @@ import {
   CreateAdjustOrderData,
   useAdjustOrderModel,
 } from "../models/useAdjustOrderModel";
-import { AdjustOrder } from "../entities/Order";
+import { AdjustOrder, AdjustOrderItem } from "../entities/Order";
 import { useOrderAdapter } from "../adapters/orderAdapter";
 
 export interface AdjustOrderData {
@@ -13,6 +13,11 @@ export interface AdjustOrderData {
   createAdjustOrder: (orderData: CreateAdjustOrderData) => Promise<boolean>;
   fetchAdjustOrder: () => Promise<void>;
   getAdjustOrder: () => Promise<AdjustOrder>;
+  updateAdjustOrder: (
+    dueDate: Date,
+    orderItems: AdjustOrderItem[],
+    orderId: number
+  ) => Promise<void>;
 }
 
 interface ViewModelArgs {
@@ -65,8 +70,46 @@ export function useAdjustOrderViewModel({
       const rawAdjustOrder = await model.getAdjustOrderById(orderId);
 
       if (rawAdjustOrder.length > 0) {
+        // rawAdjustOrder.forEach((rawItem) => {
+        //   console.log(
+        //     `adjust_service_description: ${rawItem.adjust_service_description}`
+        //   );
+        //   console.log(`adjust_service_id: ${rawItem.adjust_service_id}`);
+        //   console.log(`customer_name: ${rawItem.customer_name}`);
+        //   console.log(`customer_phone: ${rawItem.customer_phone}`);
+        //   console.log(`order_cost: ${rawItem.order_cost}`);
+        //   console.log(`order_created_at: ${rawItem.order_created_at}`);
+        //   console.log(`order_delivered_at: ${rawItem.order_delivered_at}`);
+        //   console.log(`order_due_date: ${rawItem.order_due_date}`);
+        //   console.log(
+        //     `order_item_description: ${rawItem.order_item_description}`
+        //   );
+        //   console.log(`order_item_id: ${rawItem.order_item_id}`);
+        //   console.log(`order_item_title: ${rawItem.order_item_title}`);
+        //   console.log(`ordered_service_cost: ${rawItem.ordered_service_cost}`);
+        //   console.log(`ordered_service_id: ${rawItem.ordered_service_id}`);
+        //   console.log("++++++++++++++++++++++++++++++++++++++++++++++++");
+        // });
+        // console.log("################################################");
         const order = adapter.mapToAdjustOrderEntity(rawAdjustOrder);
+
+        // order.orderItems.forEach((item) => {
+        //   console.log(`item id: ${item.id}`);
+        //   console.log(`item title: ${item.title}`);
+        //   console.log(`item description: ${item.description}`);
+        //   item.adjusts.forEach((adjust) => {
+        //     console.log(`adjust id: ${adjust.id}`);
+        //     console.log(`adjust description: ${adjust.description}`);
+        //     console.log(`adjust cost: ${adjust.cost}`);
+        //     console.log(`adjust checked: ${adjust.checked}`);
+        //     console.log(`adjust orderedAdjustId: ${adjust.orderedAdjustId}`);
+        //     console.log("----------------------------------------------");
+        //   });
+        //   console.log("=====================================================");
+        // });
+
         setAdjustOrder(order);
+        console.log("[ViewModel] Adjust order data fetched successfully!");
       }
     } catch (error) {
       console.log("[ViewModel] rejecting on fetchAdjustOrder [catch]");
@@ -90,6 +133,21 @@ export function useAdjustOrderViewModel({
     }
   }
 
+  async function updateAdjustOrder(
+    dueDate: Date,
+    orderItems: AdjustOrderItem[]
+  ): Promise<void> {
+    if (!orderId) {
+      return Promise.reject();
+    }
+
+    return model.updateAdjustOrder({
+      dueDate,
+      items: orderItems,
+      orderId,
+    });
+  }
+
   useFocusEffect(
     useCallback(() => {
       if (shouldFetchData) {
@@ -104,5 +162,6 @@ export function useAdjustOrderViewModel({
     adjustOrder,
     createAdjustOrder,
     getAdjustOrder,
+    updateAdjustOrder,
   };
 }

@@ -25,6 +25,12 @@ export interface AdjustOrderRawData {
   customer_phone: string;
 }
 
+export interface UpdateAdjustOrderData {
+  orderId: number;
+  dueDate: Date;
+  items: AdjustOrderItem[];
+}
+
 interface AdjustOrderData {
   /**
    * @function createAdjustOrder
@@ -38,6 +44,12 @@ interface AdjustOrderData {
    * @returns adjust order
    */
   getAdjustOrderById: (id: number) => Promise<AdjustOrderRawData[]>;
+  /**
+   * @function updateAdjustOrder
+   * @param orderData adjust order data
+   * @returns void
+   */
+  updateAdjustOrder: (orderData: UpdateAdjustOrderData) => Promise<void>;
 }
 
 export function useAdjustOrderModel(): AdjustOrderData {
@@ -165,8 +177,122 @@ export function useAdjustOrderModel(): AdjustOrderData {
     });
   }
 
+  function updateAdjustOrder(orderData: UpdateAdjustOrderData): Promise<void> {
+    return new Promise((resolve, reject) => {
+      database?.transaction(
+        (transaction) => {
+          const orderTotalCost = orderData.items.reduce((accumulator, item) => {
+            return (
+              accumulator +
+              item.adjusts.reduce((subtotal, adjust) => {
+                return subtotal + adjust.cost;
+              }, 0)
+            );
+          }, 0);
+
+          transaction.executeSql(
+            "UPDATE orders SET cost = ?, due_date = ? WHERE id = ?;",
+            [
+              orderTotalCost,
+              orderData.dueDate.toISOString(),
+              orderData.orderId,
+            ],
+            (transaction, resultSet) => {
+              if (resultSet.rowsAffected !== 1) {
+                reject(
+                  "Não foi possível atualizar o pedido de ajuste de roupa"
+                );
+              }
+
+              orderData.items.forEach((item) => {
+                transaction.executeSql(
+                  "UPDATE order_items SET title = ?, description = ? WHERE id = ?;",
+                  [item.title, item.description || "", item.id],
+                  (transaction, resultSet) => {
+                    if (resultSet.rowsAffected !== 1) {
+                      reject("Não foi possível atualizar os itens de ajuste");
+                    }
+
+                    const registeredAdjustsNotRemoved = item.adjusts.filter(
+                      (adjust) => adjust.orderedAdjustId !== undefined
+                    );
+
+                    if (registeredAdjustsNotRemoved.length > 0) {
+                      const deleteAdjustsSQL = registeredAdjustsNotRemoved
+                        .map((adjust) => adjust.orderedAdjustId)
+                        .join(",");
+
+                      transaction.executeSql(
+                        `DELETE FROM ordered_services WHERE id NOT IN (${deleteAdjustsSQL}) AND id_order_item = ?;`,
+                        [item.id],
+                        (_, resultSet) => {
+                          if (resultSet.rowsAffected === 0) {
+                            console.log("Não foi possível deletar os ajustes");
+                          } else {
+                            console.log("Ajustes deletados com sucesso");
+                          }
+                        }
+                      );
+                    } else {
+                      transaction.executeSql(
+                        "DELETE FROM ordered_services WHERE id_order_item = ?;",
+                        [item.id],
+                        (_, resultSet) => {
+                          if (resultSet.rowsAffected === 0) {
+                            console.log("Não foi possível deletar os ajustes");
+                          } else {
+                            console.log("Todos os ajustes foram deletados");
+                          }
+                        }
+                      );
+                    }
+
+                    const adjustsToCreate = item.adjusts.filter(
+                      (adjust) => adjust.orderedAdjustId === undefined
+                    );
+
+                    if (adjustsToCreate.length > 0) {
+                      const adjustsToCreateValuesSQL = adjustsToCreate.map(
+                        (adjust) => {
+                          return `(${adjust.id}, ${item.id}, ${adjust.cost})`;
+                        }
+                      );
+
+                      transaction.executeSql(
+                        `INSERT INTO ordered_services(id_adjust_service, id_order_item, cost) VALUES ${adjustsToCreateValuesSQL};`,
+                        undefined,
+                        (_, resultSet) => {
+                          if (resultSet.insertId && resultSet.insertId === 0) {
+                            console.log(
+                              "Não foi possível cadastrar novos registros de ajuste de roupa!"
+                            );
+                          } else {
+                            console.log("Ajustes inseridos com sucesso");
+                          }
+                        }
+                      );
+                    }
+                    resolve();
+                  }
+                );
+              });
+            }
+          );
+        },
+        (error) => {
+          console.log(error);
+          reject();
+        },
+        () => {
+          console.log("[Model] Adjust order updated successfully!");
+        }
+      );
+    });
+  }
+
   return {
     createAdjustOrder,
     getAdjustOrderById,
+    updateAdjustOrder,
   };
 }
