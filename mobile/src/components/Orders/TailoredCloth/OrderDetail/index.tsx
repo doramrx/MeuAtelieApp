@@ -29,7 +29,7 @@ export function TailoredClothOrderDetail({ orderId, controller }: Props) {
         <EditMode
           orderId={orderId}
           orderData={viewController.tailoredClothOrder}
-          getOrderData={viewController.onChangeTailoredClothOrder}
+          onTriggerFetchOrderData={viewController.onFetchAdjustOrderData}
         />
       )}
     </View>

@@ -254,7 +254,7 @@ if (database) {
       transaction.executeSql(`
             CREATE TABLE IF NOT EXISTS clothing_photos (
                 id              INTEGER PRIMARY KEY,
-                photo           TEXT    NOT NULL,
+                photo_iri       TEXT    NOT NULL,
                 id_order_item   INTEGER NOT NULL
             );
     `);

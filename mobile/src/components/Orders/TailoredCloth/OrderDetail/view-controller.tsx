@@ -6,7 +6,7 @@ import { useTailoredClothOrderViewModel } from "../../../../view-models/useTailo
 export interface TailoredClothOrderDetailData {
   mode: OrderMode | null;
   tailoredClothOrder: TailoredClothOrder | null;
-  onChangeTailoredClothOrder: (orderData: TailoredClothOrder | null) => void;
+  onFetchAdjustOrderData: () => Promise<void>;
 }
 
 interface ControllerArgs {
@@ -22,6 +22,6 @@ export function useViewController({
   return {
     tailoredClothOrder: viewModel.tailoredClothOrder,
     mode,
-    onChangeTailoredClothOrder: viewModel.setTailoredClothOrder,
+    onFetchAdjustOrderData: viewModel.fetchTailoredClothOrder,
   };
 }

@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 
 import { styles } from "./styles";
 import { THEME } from "../../../theme";
@@ -6,21 +6,20 @@ import { THEME } from "../../../theme";
 import PhotoIcon from "../../../assets/icons/photo-icon.svg";
 
 interface Props {
-  total: number;
-  index: number;
+  onPress: () => void;
 }
 
-export function PhotoCard({ index, total }: Props) {
+export function PhotoCard({ onPress }: Props) {
   return (
-    <TouchableOpacity style={styles.photoCard}>
+    <TouchableOpacity
+      style={styles.photoCard}
+      onPress={onPress}
+    >
       <PhotoIcon
+        style={styles.photoIcon}
         color={THEME.COLORS.GRAY.LIGHT.V1}
-        width={35}
-        height={35}
+        width={60}
       />
-      <Text style={styles.photoCardText}>
-        {index}/{total}
-      </Text>
     </TouchableOpacity>
   );
 }

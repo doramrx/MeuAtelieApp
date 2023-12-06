@@ -20,6 +20,16 @@ export interface CustomerMeasureView {
   value: string;
 }
 
+export interface ModelPhoto {
+  id: number;
+  filename: string;
+}
+
+export interface ModelPhotoView {
+  id?: number;
+  uri: string;
+}
+
 export interface TailoredClothOrder {
   id: number;
   title: string;
@@ -29,6 +39,7 @@ export interface TailoredClothOrder {
   deliveredAt: Date | null;
   cost: number;
   measures: CustomerMeasure[];
+  modelPhotos: ModelPhoto[];
   customer: Customer;
 }
 

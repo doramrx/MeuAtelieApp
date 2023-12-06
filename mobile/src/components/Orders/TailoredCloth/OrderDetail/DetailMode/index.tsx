@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import { Fragment } from "react";
 import { Text, TouchableHighlight, View } from "react-native";
 
@@ -9,6 +10,8 @@ import { ClientInfo } from "../../../OrderDetail/ClientInfo";
 import { PhotoCard } from "../../../PhotoCard";
 import { TailoredClothOrder } from "../../../../../entities/Order";
 import { useViewController } from "./view-controller";
+import { ModelPhotoList } from "../../ModelPhotoList";
+import { PhotoModal } from "../../PhotoModal";
 
 interface Props {
   orderId: number;
@@ -80,17 +83,10 @@ export function DetailMode({ orderId, orderData }: Props) {
       </View>
 
       <View style={styles.photoContainer}>
-        <PhotoCard
-          total={3}
-          index={0}
-        />
-        <PhotoCard
-          total={3}
-          index={0}
-        />
-        <PhotoCard
-          total={3}
-          index={0}
+        <ModelPhotoList
+          modelPhotos={viewController.onGetModelPhotos()}
+          onSelectPhoto={viewController.onSelectPhoto}
+          shouldShowAddPhotoButton={false}
         />
       </View>
 
@@ -123,6 +119,9 @@ export function DetailMode({ orderId, orderData }: Props) {
       >
         <Text style={[styles.buttonText, styles.grayButtonText]}>Voltar</Text>
       </TouchableHighlight>
+      {viewController.isModalOpen && (
+        <PhotoModal onGetModelPhoto={viewController.onGetModelPhoto} />
+      )}
     </Fragment>
   );
 }

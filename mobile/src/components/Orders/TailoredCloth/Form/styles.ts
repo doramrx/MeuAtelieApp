@@ -58,6 +58,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     alignSelf: "flex-start",
     marginTop: 14,
+    width: ninetyPercentOfScreenWidth,
   },
 
   serviceCostWrapper: {

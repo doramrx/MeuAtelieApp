@@ -11,12 +11,19 @@
       "resizeMode": "cover",
       "backgroundColor": "#FF9FA4"
     },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "O aplicativo necessita de permissão para acessar as fotos para adicionar fotos de modelo em pedidos de roupa sob medida",
+          "cameraPermission": "O aplicativo necessita de permissão para acessar a câmera para tirar fotos de modelo nos pedidos de roupa sob medida"
+        }
+      ]
+    ],
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },

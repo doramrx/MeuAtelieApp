@@ -67,14 +67,14 @@ export function TabNavigator() {
         }}
       />
       <Tab.Screen
-        name="profile"
-        component={ProfileView}
+        name="agenda"
+        component={Agenda}
         options={{
-          tabBarLabel: "Perfil",
+          tabBarLabel: "Agenda",
           tabBarActiveTintColor: THEME.COLORS.PINK.V1,
           tabBarInactiveTintColor: THEME.COLORS.GRAY.MEDIUM.V2,
           tabBarIcon: ({ focused }) => (
-            <UserIcon
+            <AgendaIcon
               style={
                 {
                   color: focused
@@ -87,14 +87,14 @@ export function TabNavigator() {
         }}
       />
       <Tab.Screen
-        name="agenda"
-        component={Agenda}
+        name="profile"
+        component={ProfileView}
         options={{
-          tabBarLabel: "Agenda",
+          tabBarLabel: "Perfil",
           tabBarActiveTintColor: THEME.COLORS.PINK.V1,
           tabBarInactiveTintColor: THEME.COLORS.GRAY.MEDIUM.V2,
           tabBarIcon: ({ focused }) => (
-            <AgendaIcon
+            <UserIcon
               style={
                 {
                   color: focused

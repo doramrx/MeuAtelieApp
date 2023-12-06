@@ -2,6 +2,7 @@ import {
   AdjustOrder,
   AdjustOrderItem,
   CustomerMeasure,
+  ModelPhoto,
   Order,
   TailoredClothOrder,
 } from "../entities/Order";
@@ -72,18 +73,59 @@ export function useOrderAdapter(): AdapterFunctions {
   function mapToTailoredClothOrderEntity(
     rawData: TailoredClothOrderRawData[]
   ): TailoredClothOrder {
-    let measures: CustomerMeasure[] = [];
+    const modelPhotos: ModelPhoto[] = [];
+    const measures: CustomerMeasure[] = [];
+
+    if (rawData[0].order_model_photo_id) {
+      rawData.forEach((rawModalPhoto) => {
+        if (modelPhotos.length === 0) {
+          modelPhotos.push({
+            id: rawModalPhoto.order_model_photo_id,
+            filename: rawModalPhoto.order_model_photo_filename,
+          });
+
+          return;
+        }
+
+        const lastModelPhotoId = modelPhotos[modelPhotos.length - 1].id;
+
+        if (rawModalPhoto.order_model_photo_id !== lastModelPhotoId) {
+          modelPhotos.push({
+            id: rawModalPhoto.order_model_photo_id,
+            filename: rawModalPhoto.order_model_photo_filename,
+          });
+        }
+      });
+    }
 
     if (rawData[0].customer_measure_id) {
-      measures = rawData.map((rawMeasure) => {
-        return {
-          orderItemId: rawMeasure.order_customer_measure_id,
-          measure: {
-            id: rawMeasure.customer_measure_id,
-            name: rawMeasure.customer_measure_name,
-          },
-          value: rawMeasure.customer_measure_value,
-        };
+      rawData.forEach((rawMeasure) => {
+        if (measures.length === 0) {
+          measures.push({
+            orderItemId: rawMeasure.order_customer_measure_id,
+            measure: {
+              id: rawMeasure.customer_measure_id,
+              name: rawMeasure.customer_measure_name,
+            },
+            value: rawMeasure.customer_measure_value,
+          });
+
+          return;
+        }
+
+        const lastMeasureId = measures[measures.length - 1]
+          .orderItemId as number;
+
+        if (lastMeasureId !== rawMeasure.order_customer_measure_id) {
+          measures.push({
+            orderItemId: rawMeasure.order_customer_measure_id,
+            measure: {
+              id: rawMeasure.customer_measure_id,
+              name: rawMeasure.customer_measure_name,
+            },
+            value: rawMeasure.customer_measure_value,
+          });
+        }
       });
     }
 
@@ -98,6 +140,7 @@ export function useOrderAdapter(): AdapterFunctions {
         ? new Date(rawData[0].order_delivered_at)
         : null,
       measures,
+      modelPhotos,
       customer: {
         name: rawData[0].customer_name,
         phone: rawData[0].customer_phone,

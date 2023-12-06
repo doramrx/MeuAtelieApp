@@ -1,13 +1,18 @@
+import { useRef } from "react";
 import { Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import * as FileSystem from "expo-file-system";
 
 import {
   CustomerMeasureView,
+  ModelPhotoView,
   TailoredClothOrder,
 } from "../../../../../entities/Order";
 import { useOrderViewModel } from "../../../../../view-models/useOrderViewModel";
 import { useWhatsappNotification } from "../../../../../utils/useWhatsappNotification";
 import { useMeasureAdapter } from "../../../../../adapters/measureAdapter";
+import { useAppContext } from "../../../../../hooks/useAppContext";
+import { ModalTypeVariations } from "../../../../../contexts/AppContext";
 
 interface Props {
   orderId: number;
@@ -15,9 +20,13 @@ interface Props {
 }
 
 interface ViewControllerData {
+  isModalOpen: boolean;
   onGoBack: () => void;
   onFinishOrder: () => void;
   convertToCustomerMeasureView: () => CustomerMeasureView[];
+  onGetModelPhoto: () => ModelPhotoView | null;
+  onGetModelPhotos: () => ModelPhotoView[];
+  onSelectPhoto: (modelPhotoIndex: number) => void;
 }
 
 export function useViewController({
@@ -27,6 +36,10 @@ export function useViewController({
   const navigation = useNavigation();
   const { sendMessage } = useWhatsappNotification();
   const adapter = useMeasureAdapter();
+
+  const selectedModelPhoto = useRef<number>(0);
+
+  const { isModalOpen, openModal } = useAppContext();
 
   const viewModel = useOrderViewModel({ shouldFetchData: false });
 
@@ -69,9 +82,51 @@ export function useViewController({
     );
   }
 
+  function onGetModelPhoto() {
+    if (!orderData || orderData.modelPhotos.length === 0) {
+      return null;
+    }
+
+    const modelPhoto = orderData.modelPhotos[selectedModelPhoto.current];
+    const photoURI =
+      FileSystem.documentDirectory +
+      `orderPhotos/${orderData.id}/${modelPhoto.filename}`;
+
+    return {
+      id: modelPhoto.id,
+      uri: photoURI,
+    };
+  }
+
+  function onGetModelPhotos() {
+    if (!orderData || orderData.modelPhotos.length === 0) {
+      return [];
+    }
+
+    const orderPhotosFolder =
+      FileSystem.documentDirectory + `orderPhotos/${orderData.id}/`;
+
+    return orderData.modelPhotos.map((modelPhoto) => {
+      return {
+        id: modelPhoto.id,
+        uri: orderPhotosFolder.concat(modelPhoto.filename),
+      };
+    });
+  }
+
+  function onSelectPhoto(modelPhotoIndex: number) {
+    selectedModelPhoto.current = modelPhotoIndex;
+
+    openModal("ModelPhotoView");
+  }
+
   return {
+    isModalOpen,
     onGoBack: navigation.goBack,
     onFinishOrder,
     convertToCustomerMeasureView,
+    onGetModelPhoto,
+    onGetModelPhotos,
+    onSelectPhoto,
   };
 }

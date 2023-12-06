@@ -13,23 +13,29 @@ import UpdateIcon from "../../../../../assets/icons/update-icon.svg";
 import CalendarIcon from "../../../../../assets/icons/calendar-icon-filled.svg";
 
 import { Input } from "../../../../shared/Input";
-import { PhotoCard } from "../../../PhotoCard";
 import { MeasureList } from "../../../MeasureList";
 import { MeasureListModal } from "../../MeasuresModal";
 import { TailoredClothOrder } from "../../../../../entities/Order";
 import { useViewController } from "./view-controller";
+import { ModelPhotoList } from "../../ModelPhotoList";
+import { PhotoModal } from "../../PhotoModal";
+import { ChoosePhotoSourceModal } from "../../ChoosePhotoSourceModal";
 
 interface Props {
   orderId: number;
   orderData: TailoredClothOrder;
-  getOrderData: (orderData: TailoredClothOrder) => void;
+  onTriggerFetchOrderData: () => Promise<void>;
 }
 
-export function EditMode({ orderId, orderData, getOrderData }: Props) {
+export function EditMode({
+  orderId,
+  orderData,
+  onTriggerFetchOrderData,
+}: Props) {
   const viewController = useViewController({
     orderId,
     tailoredClothOrder: orderData,
-    getOrderData,
+    onTriggerFetchOrderData,
   });
 
   return (
@@ -56,9 +62,11 @@ export function EditMode({ orderId, orderData, getOrderData }: Props) {
       <Text style={styles.text}>Adicionar fotos do modelo (opcional)</Text>
 
       <View style={styles.photoContainer}>
-        <PhotoCard
-          index={0}
-          total={3}
+        <ModelPhotoList
+          modelPhotos={viewController.modelPhotos}
+          onSelectPhoto={viewController.onSelectPhoto}
+          shouldShowAddPhotoButton={viewController.canAddMorePhotos()}
+          onAddMorePhotos={viewController.onOpenBottomModal}
         />
       </View>
 
@@ -183,6 +191,18 @@ export function EditMode({ orderId, orderData, getOrderData }: Props) {
           customerMeasures={viewController.customerMeasures}
           onUpdateCustomerMeasure={viewController.onUpdateCustomerMeasure}
           onFinishEditing={viewController.onFinishEdition}
+        />
+      )}
+      {viewController.isModalOpen && (
+        <PhotoModal
+          onGetModelPhoto={viewController.onGetModelPhoto}
+          onRemoveModelPhoto={viewController.onRemoveModelPhoto}
+        />
+      )}
+      {viewController.isBottomModalOpen && (
+        <ChoosePhotoSourceModal
+          onChooseCameraSource={viewController.onChooseCameraSource}
+          onChooseGallerySource={viewController.onChooseGallerySource}
         />
       )}
     </Fragment>

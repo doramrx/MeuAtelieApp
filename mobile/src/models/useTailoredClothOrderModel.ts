@@ -1,5 +1,5 @@
 import { database } from "../database/database";
-import { CustomerMeasure } from "../entities/Order";
+import { CustomerMeasure, ModelPhotoView } from "../entities/Order";
 
 export interface TailoredClothOrderRawData {
   order_cost: number;
@@ -16,6 +16,8 @@ export interface TailoredClothOrderRawData {
   customer_measure_name: string;
   customer_measure_value: number;
   order_customer_measure_id: number;
+  order_model_photo_id: number;
+  order_model_photo_filename: string;
 }
 
 export interface CreateTailoredOrderData {
@@ -26,6 +28,12 @@ export interface CreateTailoredOrderData {
   clothTitle: string;
   clothDescription: string;
   customerMeasures: CustomerMeasure[];
+  modelPhotoFileName: string[];
+}
+
+export interface CreateTailoredOrderDataResult {
+  orderId: number;
+  orderItemId: number;
 }
 
 export interface UpdateTailoredOrderData {
@@ -36,6 +44,7 @@ export interface UpdateTailoredOrderData {
   cost: number;
   dueDate: Date;
   customerMeasures: CustomerMeasure[];
+  modelPhotos: ModelPhotoView[];
 }
 
 interface TailoredClothOrderModelData {
@@ -54,7 +63,7 @@ interface TailoredClothOrderModelData {
    */
   createTailoredClothOrder: (
     orderData: CreateTailoredOrderData
-  ) => Promise<number>;
+  ) => Promise<CreateTailoredOrderDataResult>;
   /**
    * @function updateTailoredClothOrder
    * @param data tailored order data
@@ -87,7 +96,9 @@ export function useTailoredClothOrderModel(): TailoredClothOrderModelData {
           (csm_mea.id) customer_measure_id,
           (csm_mea.measure) customer_measure_name,
           (ord_csm_mea.value) customer_measure_value,
-          (ord_csm_mea.id) order_customer_measure_id
+          (ord_csm_mea.id) order_customer_measure_id,
+          (clo_pho.id) order_model_photo_id,
+          (clo_pho.photo_iri) order_model_photo_filename
         FROM orders ord
         JOIN order_items ord_it
           ON ord.id = ord_it.id_order
@@ -97,6 +108,8 @@ export function useTailoredClothOrderModel(): TailoredClothOrderModelData {
           ON ord_csm_mea.id_order_item = ord_it.id
         LEFT OUTER JOIN customer_measures csm_mea
           ON csm_mea.id = ord_csm_mea.id_customer_measure
+        LEFT OUTER JOIN clothing_photos clo_pho
+          ON clo_pho.id_order_item = ord_it.id
         WHERE ord.id = ?;`,
             [id],
             (_, resultSet) => {
@@ -117,7 +130,7 @@ export function useTailoredClothOrderModel(): TailoredClothOrderModelData {
 
   function createTailoredClothOrder(
     orderData: CreateTailoredOrderData
-  ): Promise<number> {
+  ): Promise<CreateTailoredOrderDataResult> {
     return new Promise((resolve, reject) => {
       database?.transaction(
         (transaction) => {
@@ -152,7 +165,10 @@ export function useTailoredClothOrderModel(): TailoredClothOrderModelData {
                   }
 
                   if (orderData.customerMeasures.length === 0) {
-                    return resolve(createdOrderId);
+                    return resolve({
+                      orderId: createdOrderId,
+                      orderItemId: createdOrderItemId,
+                    });
                   }
 
                   const customerMeasuresSQL = orderData.customerMeasures
@@ -163,19 +179,48 @@ export function useTailoredClothOrderModel(): TailoredClothOrderModelData {
                     .join(",");
 
                   transaction.executeSql(
-                    `
-                  INSERT INTO order_customer_measures (id_customer_measure, id_order_item, value) VALUES ${customerMeasuresSQL};`,
+                    `INSERT INTO order_customer_measures (id_customer_measure, id_order_item, value) VALUES ${customerMeasuresSQL};`,
                     undefined,
-                    (_, resultSet) => {
+                    (transaction, resultSet) => {
                       const createdCustomerMeasureId = resultSet.insertId;
 
                       if (!createdCustomerMeasureId) {
                         return reject(
-                          "Não foi possível cadastras as medidas do cliente!"
+                          "Não foi possível cadastrar as medidas do cliente!"
                         );
                       }
 
-                      return resolve(createdOrderId);
+                      if (orderData.modelPhotoFileName.length === 0) {
+                        return resolve({
+                          orderId: createdOrderId,
+                          orderItemId: createdOrderItemId,
+                        });
+                      }
+
+                      const clothingPhotosSQLValues =
+                        orderData.modelPhotoFileName
+                          .map(
+                            (modelPhotoFileName) =>
+                              `('${modelPhotoFileName}', ${createdOrderItemId})`
+                          )
+                          .join(",");
+
+                      transaction.executeSql(
+                        `INSERT INTO clothing_photos (photo_iri, id_order_item) VALUES ${clothingPhotosSQLValues};`,
+                        undefined,
+                        (_, resultSet) => {
+                          if (resultSet.insertId && resultSet.insertId != 0) {
+                            return resolve({
+                              orderId: createdOrderId,
+                              orderItemId: createdOrderItemId,
+                            });
+                          }
+
+                          return reject(
+                            "Não foi possível cadastrar as fotos de modelo da roupa sob medida"
+                          );
+                        }
+                      );
                     }
                   );
                 }
@@ -310,6 +355,84 @@ export function useTailoredClothOrderModel(): TailoredClothOrderModelData {
                       }
                     );
                   }
+
+                  const modelPhotosToNotDelete = orderData.modelPhotos.filter(
+                    (modelPhoto) => modelPhoto.id !== undefined
+                  );
+
+                  if (modelPhotosToNotDelete.length === 3) {
+                    return resolve();
+                  }
+
+                  console.log(modelPhotosToNotDelete);
+
+                  if (modelPhotosToNotDelete.length > 0) {
+                    const modelPhotoIds = modelPhotosToNotDelete
+                      .map((modelPhoto) => modelPhoto.id as number)
+                      .join(",");
+
+                    transaction.executeSql(
+                      `DELETE FROM clothing_photos WHERE id NOT IN (${modelPhotoIds});`,
+                      undefined,
+                      (_, resultSet) => {
+                        if (resultSet.rowsAffected === 0) {
+                          console.log("Erro ao deletar fotos existentes");
+                          return reject();
+                        }
+
+                        console.log("Fotos deletadas com sucesso");
+                        return resolve();
+                      }
+                    );
+                  } else {
+                    transaction.executeSql(
+                      "DELETE FROM clothing_photos WHERE id_order_item = ?;",
+                      [orderData.orderItemId],
+                      (_, resultSet) => {
+                        if (resultSet.rowsAffected === 0) {
+                          console.log(
+                            "Erro ao deletar todas as fotos do pedido"
+                          );
+                          return reject();
+                        }
+
+                        console.log("Todas as fotos do pedido foram removidas");
+                        return resolve();
+                      }
+                    );
+                  }
+
+                  const modelPhotosToCreate = orderData.modelPhotos.filter(
+                    (modelPhoto) => modelPhoto.id === undefined
+                  );
+
+                  console.log(modelPhotosToCreate);
+
+                  if (modelPhotosToCreate.length > 0) {
+                    const modelPhotosSQLValues = modelPhotosToCreate
+                      .map(
+                        (orderPhoto) =>
+                          `(${orderData.orderItemId},"${orderPhoto.uri}")`
+                      )
+                      .join(",");
+
+                    transaction.executeSql(
+                      `INSERT INTO clothing_photos (id_order_item, photo_iri) VALUES ${modelPhotosSQLValues};`,
+                      undefined,
+                      (_, resultSet) => {
+                        if (resultSet.insertId && resultSet.insertId === 0) {
+                          console.log(
+                            "Não foi possível cadastrar as novas fotos"
+                          );
+                          return reject();
+                        }
+
+                        console.log("Fotos cadastradas com sucesso!");
+                        return resolve();
+                      }
+                    );
+                  }
+
                   resolve();
                 }
               );

@@ -23,7 +23,8 @@ export type ModalTypeVariations =
   | "EditPassword"
   | "ServiceSelection"
   | "MeasureList"
-  | "AgendaOrderOptions";
+  | "AgendaOrderOptions"
+  | "ModelPhotoView";
 
 export const AppContext = createContext({} as ContextData);
 
