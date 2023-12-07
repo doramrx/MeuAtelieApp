@@ -16,7 +16,7 @@ interface ViewControllerData {
 }
 
 export function useViewController({ customerId }: Props): ViewControllerData {
-  const [customerName, setCustomerName] = useState("");
+  const [customerName, setCustomerName] = useState("a");
   const [customerPhone, setCustomerPhone] = useState("");
 
   const viewModel = useCustomerViewModel();
@@ -29,11 +29,12 @@ export function useViewController({ customerId }: Props): ViewControllerData {
         .then((customer) => {
           setCustomerName(customer.name);
           setCustomerPhone(customer.phone);
+          console.log("Dados do cliente");
         })
         .catch(() => {
           Alert.alert("Erro", "Não foi possível obter os dados do cliente");
         });
-    }, [])
+    }, [customerId])
   );
 
   return {

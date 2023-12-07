@@ -4,12 +4,14 @@ import { Alert } from "react-native";
 import { Customer } from "../../entities/Customer";
 import { useCustomerViewModel } from "../../view-models/useCustomerViewModel";
 import { useAppContext } from "../../hooks/useAppContext";
+import { ModalTypeVariations } from "../../contexts/AppContext";
 
 export interface CustomerViewControllerData {
   customerId: number;
   customers: Customer[];
   isBottomModalOpen: boolean;
   isModalOpen: boolean;
+  modalType: ModalTypeVariations | null;
   onOpenDetailModal: () => void;
   onOpenEditModal: () => void;
   onOpenCreateModal: () => void;
@@ -25,6 +27,7 @@ export function useViewController(): CustomerViewControllerData {
   const {
     openModal,
     closeBottomModal,
+    closeModal,
     openBottomModal,
     modalType,
     isBottomModalOpen,
@@ -34,20 +37,37 @@ export function useViewController(): CustomerViewControllerData {
   const [customerId, setCustomerId] = useState<number>(-1);
 
   function onOpenDetailModal() {
-    openModal("Detail");
+    if (isBottomModalOpen) {
+      closeBottomModal();
+    }
+
+    if (isModalOpen) {
+      closeModal();
+    }
+    openModal("CustomerDetail");
   }
 
   function onOpenEditModal() {
-    openModal("Edit");
+    if (isBottomModalOpen) {
+      closeBottomModal();
+    }
+
+    if (isModalOpen) {
+      closeModal();
+    }
+    openModal("CustomerEdit");
   }
 
   function onOpenCreateModal() {
-    openModal("Create");
+    if (isModalOpen) {
+      closeModal();
+    }
+    openModal("CustomerCreate");
   }
 
   function onOpenBottomModal(customerId: number) {
     setCustomerId(customerId);
-    openBottomModal();
+    openBottomModal("CustomerActions");
   }
 
   async function deleteCustomer() {
@@ -85,7 +105,7 @@ export function useViewController(): CustomerViewControllerData {
     try {
       const customer = await viewModel.getCustomerById(customerId);
 
-      if (modalType === "Create") {
+      if (modalType === "CustomerCreate") {
         // Um novo cliente foi cadastrado
         // baixar os dados dele e inserir na lista!
         viewModel.addCustomerIntoList(customer);
@@ -107,6 +127,7 @@ export function useViewController(): CustomerViewControllerData {
     customers: viewModel.customers,
     isBottomModalOpen,
     isModalOpen,
+    modalType,
     onOpenDetailModal,
     onOpenEditModal,
     onOpenCreateModal,

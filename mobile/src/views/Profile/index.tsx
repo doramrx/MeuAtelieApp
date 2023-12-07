@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import { Text, TouchableHighlight, TouchableOpacity, View } from "react-native";
 
 import { THEME } from "../../theme";
@@ -8,6 +9,7 @@ import EditIcon from "../../assets/icons/edit-icon-with-border.svg";
 import PasswordIcon from "../../assets/icons/password-icon-with-border.svg";
 import LogOutIcon from "../../assets/icons/logout-icon.svg";
 import DeleteProfileIcon from "../../assets/icons/trash-icon.svg";
+import DeleteModelPhotosFolder from "../../assets/icons/trash-icon-with-border.svg";
 
 import { Screen } from "../../components/shared/Screen";
 import { Button } from "../../components/Profile/Button";
@@ -17,6 +19,9 @@ import {
   ProfileViewControllerData,
   useViewController,
 } from "./view-controller";
+import { DetailModal } from "../../components/Profile/Modal/DetailModal";
+import { EditProfileModal } from "../../components/Profile/Modal/EditProfileModal";
+import { EditPasswordModal } from "../../components/Profile/Modal/EditPasswordModal";
 
 interface Props {
   controller?: () => ProfileViewControllerData;
@@ -39,7 +44,7 @@ export function ProfileView({ controller }: Props) {
           testID="dressmaker-name"
           style={styles.name}
         >
-          {viewController.dressmakerName}
+          {viewController.dressmaker ? viewController.dressmaker.name : ""}
         </Text>
 
         <TouchableOpacity
@@ -78,6 +83,13 @@ export function ProfileView({ controller }: Props) {
           onItemPress={viewController.onOpenEditPasswordModal}
         />
 
+        <Button
+          buttonTestId="edit-password-profile-button"
+          text="Apagar fotos de modelo"
+          icon={DeleteModelPhotosFolder}
+          onItemPress={viewController.onDeleteOrderPhotosFolder}
+        />
+
         <View style={styles.logOutwrapper}>
           <TouchableHighlight
             testID="logout-button"
@@ -99,7 +111,36 @@ export function ProfileView({ controller }: Props) {
         </View>
       </Screen.Content>
 
-      {viewController.isModalOpen && <Modal userId={viewController.userId} />}
+      {viewController.isModalOpen &&
+        viewController.modalType === "ProfileDetail" && (
+          <DetailModal
+            dressmakerName={
+              viewController.dressmaker ? viewController.dressmaker.name : ""
+            }
+            dressmakerEmail={
+              viewController.dressmaker ? viewController.dressmaker.email : ""
+            }
+          />
+        )}
+
+      {viewController.isModalOpen &&
+        viewController.modalType === "ProfileEdit" && (
+          <EditProfileModal
+            userId={viewController.userId}
+            dressmakerName={
+              viewController.dressmaker ? viewController.dressmaker.name : ""
+            }
+            dressmakerEmail={
+              viewController.dressmaker ? viewController.dressmaker.email : ""
+            }
+            onUpdateDressmaker={viewController.onUpdateDressmaker}
+          />
+        )}
+
+      {viewController.isModalOpen &&
+        viewController.modalType === "EditPassword" && (
+          <EditPasswordModal userId={viewController.userId} />
+        )}
     </Screen.Root>
   );
 }

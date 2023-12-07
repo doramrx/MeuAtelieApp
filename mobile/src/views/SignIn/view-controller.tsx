@@ -19,8 +19,8 @@ export function useViewController(): SignInViewControllerData {
   const viewModel = useDressmakerViewModel();
   const { logIn } = useAuthContext();
 
-  const [email, setEmail] = useState("adm@adm.com");
-  const [password, setPassword] = useState("adm123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   function onUpdateEmail(email: string) {
     setEmail(email);

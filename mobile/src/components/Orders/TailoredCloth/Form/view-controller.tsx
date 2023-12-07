@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from "react";
-import { Alert } from "react-native";
+import { Alert, PermissionsAndroid } from "react-native";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
 import * as ImagePicker from "expo-image-picker";
@@ -16,6 +16,7 @@ import { useTailoredClothOrderViewModel } from "../../../../view-models/useTailo
 import { useDatePicker } from "../../../../utils/useDatePicker";
 import { useAppContext } from "../../../../hooks/useAppContext";
 import { database } from "../../../../database/database";
+import { ModalTypeVariations } from "../../../../contexts/AppContext";
 
 export interface ModelPhoto {
   uri: string;
@@ -29,6 +30,7 @@ interface ViewControllerData {
   dueDate: Date;
   isModalOpen: boolean;
   isBottomModalOpen: boolean;
+  modalType: ModalTypeVariations | null;
   modelPhotos: ModelPhotoView[];
   canAddMorePhotos: () => boolean;
   onUpdateTitle: (title: string) => void;
@@ -50,6 +52,7 @@ export function useViewController(): ViewControllerData {
   const navigation = useNavigation();
   const { selectedCustomerId } = useOrderContext();
   const {
+    modalType,
     isModalOpen,
     isBottomModalOpen,
     openModal,
@@ -96,46 +99,74 @@ export function useViewController(): ViewControllerData {
       return Alert.alert("Erro", "Nenhum cliente foi selecionado!");
     }
 
-    // console.log(modelPhotos);
-
     try {
-      const modelPhotosFileName = modelPhotos.map((modelPhoto) =>
-        modelPhoto.uri.split("/").at(-1)
-      );
-      console.log(modelPhotosFileName);
+      // const hasReadPermission = await PermissionsAndroid.check(
+      //   PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
+      // );
+      // if (!hasReadPermission) {
+      //   const readPermissionGranted = await PermissionsAndroid.request(
+      //     PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+      //     {
+      //       title: "Permissão para ler o armazenamento interno",
+      //       message:
+      //         "O aplicativo necessita de permissão para ler arquivos para conseguir salvar as fotos de modelo no seu celular",
+      //       buttonNeutral: "Perguntar mais tarde",
+      //       buttonNegative: "Cancelar",
+      //       buttonPositive: "OK",
+      //     }
+      //   );
 
-      // const folder = FileSystem.documentDirectory + "orderPhotos";
-      // await FileSystem.makeDirectoryAsync(folder);
+      //   if (readPermissionGranted !== PermissionsAndroid.RESULTS.GRANTED) {
+      //     return Alert.alert(
+      //       "Não foi possível criar o pedido de roupa sob medida por conta da falta de permissões"
+      //     );
+      //   }
+      // }
 
-      // console.log(await FileSystem.getInfoAsync(folder));
+      // const hasWritePermission = await PermissionsAndroid.check(
+      //   PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+      // );
 
-      // await FileSystem.deleteAsync(folder);
+      // if (!hasWritePermission) {
+      //   const writePermissionGranted = await PermissionsAndroid.request(
+      //     PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+      //     {
+      //       title: "Permissão para gravar arquivos no dispositivo",
+      //       message:
+      //         "O aplicativo necessita de permissão para escrever arquivos para salvar as fotos de modelo no seu celular",
+      //       buttonNeutral: "Perguntar mais tarde",
+      //       buttonNegative: "Cancelar",
+      //       buttonPositive: "OK",
+      //     }
+      //   );
 
-      // console.log(await FileSystem.getInfoAsync(modelPhotos[0].uri));
-      // await FileSystem.makeDirectoryAsync("file://orderPhotos");
-      // console.log("Diretório criado com sucesso!");
-    } catch (error) {
-      console.log(error);
-    }
+      //   if (writePermissionGranted !== PermissionsAndroid.RESULTS.GRANTED) {
+      //     return Alert.alert(
+      //       "Não foi possível criar o pedido de roupa sob medida por conta da falta de permissões"
+      //     );
+      //   }
+      // }
 
-    // const result = FileSystem.readDirectoryAsync("file://orders/");
-    // console.log(result);
-
-    try {
       const modelPhotosFileName = modelPhotos.map((modelPhoto) => {
         const splittedURI = modelPhoto.uri.split("/");
         return splittedURI[splittedURI.length - 1];
       });
 
       const orderFolder = FileSystem.documentDirectory + "orderPhotos";
+
+      // const hasFolderPermission =
+      //   await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync(
+      //     orderFolder
+      //   );
+
+      // if (!hasFolderPermission.granted) {
+      //   return Alert.alert(
+      //     "Não foi possível criar o pedido de roupa sob medida por conta da falta de permissões"
+      //   );
+      // }
+
       console.log(`orderFolder: ${orderFolder}`);
       const orderPhotosFolderInfo = await FileSystem.getInfoAsync(orderFolder);
-      //!Code to delete photo model folder
-      if (orderPhotosFolderInfo.exists) {
-        await FileSystem.deleteAsync(orderFolder);
-        console.log("Directory deleted");
-        return;
-      }
 
       const { orderItemId } = await tailoredClothOrderViewModel.createNewOrder({
         clothTitle: title,
@@ -200,26 +231,7 @@ export function useViewController(): ViewControllerData {
   }
 
   async function onGoToAgenda() {
-    const folder = FileSystem.documentDirectory + "orderPhotos/1";
-
-    try {
-      console.log(await FileSystem.readDirectoryAsync(folder));
-    } catch (error) {
-      console.log(error);
-    }
-
-    database?.transaction((transaction) => {
-      transaction.executeSql(
-        "SELECT * FROM clothing_photos;",
-        undefined,
-        (_, resultSet) => {
-          resultSet.rows._array.forEach((row) => {
-            console.log(row);
-            console.log("------------------------------------------");
-          });
-        }
-      );
-    });
+    // Todo
   }
 
   async function onChooseCameraSource() {
@@ -228,20 +240,20 @@ export function useViewController(): ViewControllerData {
     }
 
     //!Uncomment this before do commit
-    // const cameraPermission = await ImagePicker.getCameraPermissionsAsync();
+    const cameraPermission = await ImagePicker.getCameraPermissionsAsync();
 
-    // if (!cameraPermission.granted) {
-    //   const requestPermissionsResponse =
-    //     await ImagePicker.requestCameraPermissionsAsync();
+    if (!cameraPermission.granted) {
+      const requestPermissionsResponse =
+        await ImagePicker.requestCameraPermissionsAsync();
 
-    //   if (!requestPermissionsResponse.granted) {
-    //     Alert.alert(
-    //       "Erro ao abrir a câmera",
-    //       "Sem permissões para abrir a câmera"
-    //     );
-    //     return;
-    //   }
-    // }
+      if (!requestPermissionsResponse.granted) {
+        Alert.alert(
+          "Erro ao abrir a câmera",
+          "Sem permissões para abrir a câmera"
+        );
+        return;
+      }
+    }
 
     const loadedImage = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
@@ -270,21 +282,21 @@ export function useViewController(): ViewControllerData {
     }
 
     //!Uncomment this before do commit
-    // const galleryPermission =
-    //   await ImagePicker.getMediaLibraryPermissionsAsync();
+    const galleryPermission =
+      await ImagePicker.getMediaLibraryPermissionsAsync();
 
-    // if (!galleryPermission.granted) {
-    //   const requestPermissionsResponse =
-    //     await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!galleryPermission.granted) {
+      const requestPermissionsResponse =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-    //   if (!requestPermissionsResponse.granted) {
-    //     Alert.alert(
-    //       "Erro ao abrir a galeria",
-    //       "Sem permissões para abrir a galeria"
-    //     );
-    //     return;
-    //   }
-    // }
+      if (!requestPermissionsResponse.granted) {
+        Alert.alert(
+          "Erro ao abrir a galeria",
+          "Sem permissões para abrir a galeria"
+        );
+        return;
+      }
+    }
 
     const loadedImage = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
@@ -336,6 +348,10 @@ export function useViewController(): ViewControllerData {
     }
   }
 
+  function onOpenBottomModal() {
+    openBottomModal("ImageSourceSelection");
+  }
+
   useFocusEffect(
     useCallback(() => {
       customerMeasureViewModel.initCustomerMeasures();
@@ -350,6 +366,7 @@ export function useViewController(): ViewControllerData {
     dueDate,
     isModalOpen,
     isBottomModalOpen,
+    modalType,
     modelPhotos,
     canAddMorePhotos,
     onUpdateTitle,
@@ -358,7 +375,7 @@ export function useViewController(): ViewControllerData {
     onOpenDateTimePicker: openDateTimePicker,
     onUpdateCustomerMeasure: customerMeasureViewModel.updateCustomerMeasure,
     onCreateOrder,
-    onOpenBottomModal: openBottomModal,
+    onOpenBottomModal,
     onChooseCameraSource,
     onChooseGallerySource,
     onSelectPhoto,

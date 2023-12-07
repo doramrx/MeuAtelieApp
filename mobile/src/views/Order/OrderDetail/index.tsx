@@ -29,22 +29,24 @@ export function OrderDetail({ controller }: Props) {
           {viewController.mode === "detail" ? "Detalhes" : "Editar pedido"}
         </Text>
 
-        <TouchableOpacity
-          style={styles.headerButton}
-          onPress={viewController.onChangeMode}
-        >
-          {viewController.mode === "detail" ? (
-            <PenIcon
-              width={18}
-              color={THEME.COLORS.WHITE.FULL_WHITE}
-            />
-          ) : (
-            <XIcon
-              width={18}
-              color={THEME.COLORS.WHITE.FULL_WHITE}
-            />
-          )}
-        </TouchableOpacity>
+        {!viewController.orderFinished && (
+          <TouchableOpacity
+            style={styles.headerButton}
+            onPress={viewController.onChangeMode}
+          >
+            {viewController.mode === "detail" ? (
+              <PenIcon
+                width={18}
+                color={THEME.COLORS.WHITE.FULL_WHITE}
+              />
+            ) : (
+              <XIcon
+                width={18}
+                color={THEME.COLORS.WHITE.FULL_WHITE}
+              />
+            )}
+          </TouchableOpacity>
+        )}
       </Screen.Header>
 
       <Screen.Content additionalStyles={styles.mainContainer}>

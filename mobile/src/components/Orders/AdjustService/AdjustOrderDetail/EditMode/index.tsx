@@ -76,9 +76,9 @@ export function EditMode({
           </Pressable>
         </View>
 
-        <Text style={styles.serviceCountForDueDateText}>
+        {/* <Text style={styles.serviceCountForDueDateText}>
           * Existem 6 serviços para serem entregues nesta data!
-        </Text>
+        </Text> */}
       </View>
 
       <TouchableHighlight

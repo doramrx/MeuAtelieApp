@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({
     flex: 10,
     paddingVertical: 10,
     paddingHorizontal: 10,
+    justifyContent: "center",
   },
 
   title: {
@@ -29,5 +30,15 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
+  },
+
+  emptyListContainer: {
+    marginTop: 10,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  emptyListText: {
+    fontSize: 22,
   },
 });

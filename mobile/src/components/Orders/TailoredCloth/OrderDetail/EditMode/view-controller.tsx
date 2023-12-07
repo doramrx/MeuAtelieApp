@@ -363,6 +363,10 @@ export function useViewController({
     closeBottomModal();
   }
 
+  function onOpenBottomModal() {
+    openBottomModal("ImageSourceSelection");
+  }
+
   useFocusEffect(
     useCallback(() => {
       if (tailoredClothOrder.modelPhotos.length > 0) {
@@ -391,7 +395,7 @@ export function useViewController({
     modelPhotos,
     onSelectPhoto,
     canAddMorePhotos,
-    onOpenBottomModal: openBottomModal,
+    onOpenBottomModal,
     onRemoveModelPhoto,
     onGetModelPhoto,
     onChangeTitle,

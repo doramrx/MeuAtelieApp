@@ -110,7 +110,9 @@ export function useTailoredClothOrderModel(): TailoredClothOrderModelData {
           ON csm_mea.id = ord_csm_mea.id_customer_measure
         LEFT OUTER JOIN clothing_photos clo_pho
           ON clo_pho.id_order_item = ord_it.id
-        WHERE ord.id = ?;`,
+        WHERE ord.id = ?
+        ORDER BY order_item_id, customer_id, customer_measure_id, order_customer_measure_id, order_model_photo_id
+        ;`,
             [id],
             (_, resultSet) => {
               resolve(resultSet.rows._array);

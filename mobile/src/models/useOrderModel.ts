@@ -29,6 +29,12 @@ interface OrderModelData {
    * @returns raw order list
    */
   getOrdersByMonth: (month: number) => Promise<OrderRawData[]>;
+  /**
+   * @function isOrderFinished
+   * @param order id
+   * @retuns true if the order is finished; false otherwise
+   */
+  isOrderFinished: (id: number) => Promise<boolean>;
 }
 
 export function useOrderModel(): OrderModelData {
@@ -117,9 +123,25 @@ export function useOrderModel(): OrderModelData {
     });
   }
 
+  function isOrderFinished(id: number): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      database?.transaction((transaction) => {
+        transaction.executeSql(
+          "SELECT delivered_at FROM orders WHERE id = ?;",
+          [id],
+          (_, resultSet) => {
+            const finished = resultSet.rows._array[0].delivered_at !== null;
+            resolve(finished);
+          }
+        );
+      });
+    });
+  }
+
   return {
     getOrders,
     finishOrder,
     getOrdersByMonth,
+    isOrderFinished,
   };
 }

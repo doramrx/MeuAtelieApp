@@ -24,7 +24,7 @@ export function Agenda({ controller }: Props) {
       </Screen.Header>
 
       <Screen.Content additionalStyles={styles.mainContainer}>
-        <View style={{ flex: 1 }}>
+        <View style={{ marginBottom: 25 }}>
           <Calendar
             onDayPress={viewController.onSelectDay}
             onMonthChange={viewController.onMonthChange}

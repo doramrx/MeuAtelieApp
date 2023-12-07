@@ -87,9 +87,11 @@ export function useOrderAdapter(): AdapterFunctions {
           return;
         }
 
-        const lastModelPhotoId = modelPhotos[modelPhotos.length - 1].id;
+        const index = modelPhotos.findIndex(
+          (modelPhoto) => modelPhoto.id === rawModalPhoto.order_model_photo_id
+        );
 
-        if (rawModalPhoto.order_model_photo_id !== lastModelPhotoId) {
+        if (index === -1) {
           modelPhotos.push({
             id: rawModalPhoto.order_model_photo_id,
             filename: rawModalPhoto.order_model_photo_filename,
@@ -129,7 +131,7 @@ export function useOrderAdapter(): AdapterFunctions {
       });
     }
 
-    return {
+    const data = {
       id: rawData[0].order_item_id,
       title: rawData[0].order_item_title,
       description: rawData[0].order_item_description,
@@ -146,6 +148,8 @@ export function useOrderAdapter(): AdapterFunctions {
         phone: rawData[0].customer_phone,
       },
     };
+
+    return data;
   }
 
   function mapToAdjustOrderEntity(rawdata: AdjustOrderRawData[]): AdjustOrder {

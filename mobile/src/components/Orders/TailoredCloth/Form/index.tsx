@@ -49,36 +49,6 @@ export function TailoredClothOrderForm() {
           </Text>
 
           <View style={styles.photoContainer}>
-            {/* <ScrollView
-              contentContainerStyle={{
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-              horizontal={true}
-            >
-              {viewController.modelPhotos.map((photo, index) => {
-                return (
-                  <TouchableOpacity
-                    activeOpacity={0.8}
-                    key={index}
-                    onPress={() => viewController.onSelectPhoto(index)}
-                  >
-                    <Image
-                      key={index}
-                      source={{ uri: photo.uri, width: 100, height: 100 }}
-                      style={{
-                        marginRight: index < 2 ? 4 : 0,
-                        borderRadius: 10,
-                      }}
-                    />
-                  </TouchableOpacity>
-                );
-              })}
-
-              {viewController.canAddMorePhotos() && (
-                <PhotoCard onPress={viewController.onOpenBottomModal} />
-              )}
-            </ScrollView> */}
             <ModelPhotoList
               modelPhotos={viewController.modelPhotos}
               onSelectPhoto={viewController.onSelectPhoto}
@@ -143,7 +113,7 @@ export function TailoredClothOrderForm() {
             />
           </View>
 
-          <View style={styles.dueDateWrapper}>
+          <View style={[styles.dueDateWrapper, { marginBottom: 20 }]}>
             <Text style={styles.dueDateLabel}>Selecione a data de entrega</Text>
             <Pressable
               style={styles.dueDatePicker}
@@ -160,7 +130,7 @@ export function TailoredClothOrderForm() {
             </Pressable>
           </View>
 
-          <Text style={styles.serviceCountForDueDateText}>
+          {/* <Text style={styles.serviceCountForDueDateText}>
             * Existem 6 serviços para serem entregues nesta data!
           </Text>
 
@@ -172,7 +142,7 @@ export function TailoredClothOrderForm() {
             <Text style={[styles.buttonText, styles.navigateToAgendaText]}>
               Ir para a agenda
             </Text>
-          </TouchableHighlight>
+          </TouchableHighlight> */}
 
           <TouchableHighlight
             underlayColor={THEME.COLORS.PINK.V2_UNDERLAY}
@@ -185,12 +155,13 @@ export function TailoredClothOrderForm() {
           </TouchableHighlight>
         </View>
       </ScrollView>
-      {viewController.isBottomModalOpen && (
-        <ChoosePhotoSourceModal
-          onChooseCameraSource={viewController.onChooseCameraSource}
-          onChooseGallerySource={viewController.onChooseGallerySource}
-        />
-      )}
+      {viewController.isBottomModalOpen &&
+        viewController.modalType === "ImageSourceSelection" && (
+          <ChoosePhotoSourceModal
+            onChooseCameraSource={viewController.onChooseCameraSource}
+            onChooseGallerySource={viewController.onChooseGallerySource}
+          />
+        )}
       {viewController.isModalOpen && (
         <PhotoModal
           onGetModelPhoto={viewController.onGetModelPhoto}

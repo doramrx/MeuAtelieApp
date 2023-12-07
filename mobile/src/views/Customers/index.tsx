@@ -1,4 +1,5 @@
-import { Text, TouchableOpacity, FlatList } from "react-native";
+/* eslint-disable indent */
+import { Text, TouchableOpacity, FlatList, View } from "react-native";
 
 import { THEME } from "../../theme";
 import { styles } from "./styles";
@@ -9,16 +10,20 @@ import { BottomModal } from "../../components/shared/BottomModal";
 import { Screen } from "../../components/shared/Screen";
 import { Modal } from "../../components/Customers/Modal";
 
-import { CustomerViewControllerData, useViewController } from "./view-controller";
+import {
+  CustomerViewControllerData,
+  useViewController,
+} from "./view-controller";
+import { DetailModal } from "../../components/Customers/Modal/DetailModal";
+import { EditModal } from "../../components/Customers/Modal/EditModal";
+import { CreateModal } from "../../components/Customers/Modal/CreateModal";
 
 interface Props {
   controller?: () => CustomerViewControllerData;
 }
 
 export function Customers({ controller }: Props) {
-  const viewController = controller
-    ? controller()
-    : useViewController();
+  const viewController = controller ? controller() : useViewController();
 
   return (
     <Screen.Root>
@@ -55,25 +60,51 @@ export function Customers({ controller }: Props) {
               />
             );
           }}
+          ListEmptyComponent={() => (
+            <View style={styles.emptyListContainer}>
+              <Text style={styles.emptyListText}>
+                Nenhum cliente cadastrado
+              </Text>
+            </View>
+          )}
           onEndReached={viewController.onNextPage}
         />
       </Screen.Content>
 
-      {viewController.isModalOpen && (
+      {/* {viewController.isModalOpen && (
         <Modal
           customerId={viewController.customerId}
           callback={viewController.onListUpdate}
         />
-      )}
+      )} */}
 
-      {viewController.isBottomModalOpen && (
-        <BottomModal
-          onDetailOption={viewController.onOpenDetailModal}
-          onEditOption={viewController.onOpenEditModal}
-          onDeleteOption={viewController.onDeleteCustomer}
-          onCloseModal={viewController.onCloseBottomModal}
-        />
-      )}
+      {viewController.isModalOpen &&
+        viewController.modalType === "CustomerDetail" && (
+          <DetailModal customerId={viewController.customerId} />
+        )}
+
+      {viewController.isModalOpen &&
+        viewController.modalType === "CustomerEdit" && (
+          <EditModal
+            callback={viewController.onListUpdate}
+            customerId={viewController.customerId}
+          />
+        )}
+
+      {viewController.isModalOpen &&
+        viewController.modalType === "CustomerCreate" && (
+          <CreateModal callback={viewController.onListUpdate} />
+        )}
+
+      {viewController.isBottomModalOpen &&
+        viewController.modalType === "CustomerActions" && (
+          <BottomModal
+            onDetailOption={viewController.onOpenDetailModal}
+            onEditOption={viewController.onOpenEditModal}
+            onDeleteOption={viewController.onDeleteCustomer}
+            onCloseModal={viewController.onCloseBottomModal}
+          />
+        )}
     </Screen.Root>
   );
 }

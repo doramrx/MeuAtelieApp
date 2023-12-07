@@ -1,43 +1,50 @@
 import { useCallback, useState } from "react";
 import { Alert } from "react-native";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import * as FileSystem from "expo-file-system";
 
 import { useDressmakerViewModel } from "../../view-models/useDressmakerViewModel";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useAppContext } from "../../hooks/useAppContext";
+import { ModalTypeVariations } from "../../contexts/AppContext";
+import { Dressmaker } from "../../entities/Dressmaker";
 
 export interface ProfileViewControllerData {
   userId: number;
-  dressmakerName: string;
+  dressmaker: Dressmaker | null;
   isModalOpen: boolean;
+  modalType: ModalTypeVariations | null;
   onUpdateDressmakerName: (name: string) => void;
   onOpenDetailModal: () => void;
   onOpenEditModal: () => void;
   onOpenEditPasswordModal: () => void;
   onLogOut: () => void;
   onDeleteAccount: () => void;
+  onDeleteOrderPhotosFolder: () => void;
+  onUpdateDressmaker: (
+    dressmakerId: number,
+    name: string,
+    email: string
+  ) => Promise<void>;
 }
 
 export function useViewController(): ProfileViewControllerData {
   const navigation = useNavigation();
 
-  const viewModel = useDressmakerViewModel();
-
   const { logOut, userId } = useAuthContext();
-  const { openModal, isModalOpen } = useAppContext();
+  const { openModal, closeModal, isModalOpen, modalType } = useAppContext();
 
-  const [dressmakerName, setDressmakerName] = useState("");
-
-  function onUpdateDressmakerName(name: string) {
-    setDressmakerName(name);
-  }
+  const viewModel = useDressmakerViewModel({
+    dressmakerId: userId as number,
+    shouldFetch: true,
+  });
 
   function onOpenDetailModal() {
-    openModal("Detail");
+    openModal("ProfileDetail");
   }
 
   function onOpenEditModal() {
-    openModal("Edit");
+    openModal("ProfileEdit");
   }
 
   function onOpenEditPasswordModal() {
@@ -80,24 +87,57 @@ export function useViewController(): ProfileViewControllerData {
     );
   }
 
+  async function onDeleteOrderPhotosFolder() {
+    try {
+      const orderFolder = FileSystem.documentDirectory + "orderPhotos";
+      const orderPhotosFolderInfo = await FileSystem.getInfoAsync(orderFolder);
+      if (orderPhotosFolderInfo.exists) {
+        await FileSystem.deleteAsync(orderFolder);
+        console.log("Directory deleted");
+      }
+      Alert.alert(
+        "Sucesso",
+        "Diretório de fotos de modelo dos pedidos deletado com sucesso"
+      );
+    } catch {
+      Alert.alert(
+        "Erro",
+        "Não foi possível remover o diretório de fotos de modelo dos pedidos"
+      );
+    }
+  }
+
+  async function onUpdateDressmakerName() {
+    await viewModel.fetchDressmaker();
+  }
+
+  async function onUpdateDressmaker(
+    dressmakerId: number,
+    name: string,
+    email: string
+  ) {
+    try {
+      await viewModel.updateDressmaker(dressmakerId, name, email);
+      await viewModel.fetchDressmaker();
+      Alert.alert("Sucesso", "Dados da costureira atualizados com sucesso!");
+      closeModal();
+    } catch (error) {
+      if (typeof error === "string") {
+        return Alert.alert("Erro", error);
+      }
+
+      Alert.alert("Erro", "Não foi possível atualizar os dados da costureira");
+    }
+  }
+
   if (!userId) {
     logOut();
   }
 
-  useFocusEffect(
-    useCallback(() => {
-      console.log("[ViewController] getDressmakerById");
-      viewModel.getDressmakerById(userId as number).then(() => {
-        setDressmakerName(
-          viewModel.dressmaker ? viewModel.dressmaker.name : ""
-        );
-      });
-    }, [viewModel.dressmaker && viewModel.dressmaker.name])
-  );
-
   return {
     userId: userId as number,
-    dressmakerName,
+    dressmaker: viewModel.dressmaker,
+    modalType,
     onUpdateDressmakerName,
     onOpenDetailModal,
     onOpenEditModal,
@@ -105,5 +145,7 @@ export function useViewController(): ProfileViewControllerData {
     onLogOut,
     isModalOpen,
     onDeleteAccount: showDeleteConfirmationAlert,
+    onDeleteOrderPhotosFolder,
+    onUpdateDressmaker,
   };
 }

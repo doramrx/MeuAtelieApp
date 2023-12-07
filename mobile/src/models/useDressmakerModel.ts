@@ -47,6 +47,17 @@ interface DressmakerModelData {
     email: string,
     password: string
   ) => Promise<number>;
+  /**
+   * @function updateDressmaker
+   * @param dressmakerId
+   * @param name
+   * @param email
+   */
+  updateDressmaker: (
+    dressmakerId: number,
+    name: string,
+    email: string
+  ) => Promise<void>;
 }
 
 export function useDressmakerModel(): DressmakerModelData {
@@ -187,11 +198,55 @@ export function useDressmakerModel(): DressmakerModelData {
     });
   }
 
+  function updateDressmaker(
+    dressmakerId: number,
+    name: string,
+    email: string
+  ): Promise<void> {
+    return new Promise((resolve, reject) => {
+      database?.transaction(
+        (transaction) => {
+          transaction.executeSql(
+            "SELECT id FROM dressmakers WHERE email = ? AND NOT id = ?;",
+            [email, dressmakerId],
+            (_, resultSet) => {
+              if (resultSet.rows.length !== 0) {
+                return reject("Email em uso");
+              }
+
+              transaction.executeSql(
+                "UPDATE dressmakers SET name = ?, email = ? WHERE id = ?;",
+                [name, email, dressmakerId],
+                (_, resultSet) => {
+                  if (resultSet.rowsAffected !== 1) {
+                    return reject(
+                      "Não foi possível editar os dados da costureira!"
+                    );
+                  }
+
+                  resolve();
+                }
+              );
+            }
+          );
+        },
+        (error) => {
+          console.log(error);
+          reject();
+        },
+        () => {
+          console.log("[Model] Dressmaker updated successfully");
+        }
+      );
+    });
+  }
+
   return {
     getDressmakerById,
     deleteDressmaker,
     getDressmakerIdByEmailAndPassword,
     checkIfExists,
     createDressmaker,
+    updateDressmaker,
   };
 }

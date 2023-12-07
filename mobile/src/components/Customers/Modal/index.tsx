@@ -1,3 +1,4 @@
+import { View } from "react-native";
 import { useAppContext } from "../../../hooks/useAppContext";
 
 import { CreateModal } from "./CreateModal";
@@ -24,6 +25,6 @@ export function Modal({ customerId, callback }: Props) {
   } else if (modalType === "Create") {
     return <CreateModal callback={callback} />;
   } else {
-    return null;
+    return <View></View>;
   }
 }

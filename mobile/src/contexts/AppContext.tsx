@@ -6,7 +6,7 @@ interface ContextData {
   isModalOpen: boolean;
   modalType: ModalTypeVariations | null;
 
-  openBottomModal: () => void;
+  openBottomModal: (type: ModalTypeVariations) => void;
   closeBottomModal: () => void;
   isBottomModalOpen: boolean;
 }
@@ -17,14 +17,21 @@ interface ProviderProps {
 
 export type ModalTypeVariations =
   | "Create"
+  | "CustomerCreate"
   | "Detail"
+  | "CustomerDetail"
+  | "ProfileDetail"
   | "Edit"
+  | "CustomerEdit"
+  | "ProfileEdit"
   | "Update"
   | "EditPassword"
   | "ServiceSelection"
   | "MeasureList"
   | "AgendaOrderOptions"
-  | "ModelPhotoView";
+  | "ModelPhotoView"
+  | "ImageSourceSelection"
+  | "CustomerActions";
 
 export const AppContext = createContext({} as ContextData);
 
@@ -43,11 +50,13 @@ export function AppContextProvider({ children }: ProviderProps) {
     setIsModalVisible(false);
   }
 
-  function openBottomModal() {
+  function openBottomModal(type: ModalTypeVariations) {
+    setModalType(type);
     setIsBottomModalVisible(true);
   }
 
   function closeBottomModal() {
+    setModalType(null);
     setIsBottomModalVisible(false);
   }
 

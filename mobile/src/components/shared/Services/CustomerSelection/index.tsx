@@ -31,12 +31,12 @@ export function CustomerSelection({ title }: Props) {
 
       <Text style={[styles.text, { marginBottom: 8 }]}>ou</Text>
 
-      <Text style={styles.text}>Selecionar um cliente existente</Text>
-      <Input
+      <Text style={[styles.text, { marginBottom: 18 }]}>Selecionar um cliente existente</Text>
+      {/* <Input
         icon={SearchIcon}
         placeholder="Pesquisar por um cliente"
         containerStyles={styles.input}
-      />
+      /> */}
 
       <RadioGroup
         customerData={viewController.customers}

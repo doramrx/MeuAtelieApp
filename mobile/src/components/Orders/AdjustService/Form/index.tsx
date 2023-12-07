@@ -19,9 +19,7 @@ interface Props {
 }
 
 export function AdjustOrderForm({ controller }: Props) {
-  const viewController = controller
-    ? controller()
-    : useViewController();
+  const viewController = controller ? controller() : useViewController();
 
   return (
     <ScrollView>
@@ -57,7 +55,7 @@ export function AdjustOrderForm({ controller }: Props) {
           <Text style={styles.text}>R$ {viewController.onGetTotal()}</Text>
         </View>
 
-        <View style={styles.padBetweenComponents}>
+        <View style={[styles.padBetweenComponents, { marginBottom: 20 }]}>
           <Text style={styles.dueDateLabel}>Selecione a data de entrega</Text>
           <Pressable
             style={styles.dueDatePicker}
@@ -74,11 +72,11 @@ export function AdjustOrderForm({ controller }: Props) {
           </Pressable>
         </View>
 
-        <Text style={styles.serviceCountText}>
+        {/* <Text style={styles.serviceCountText}>
           * Existem 6 serviços para serem entregues nesta data!
-        </Text>
+        </Text> */}
 
-        <TouchableHighlight
+        {/* <TouchableHighlight
           underlayColor={THEME.COLORS.GRAY.LIGHT.V2}
           onPress={() => {
             // Todo
@@ -88,7 +86,7 @@ export function AdjustOrderForm({ controller }: Props) {
           <Text style={[styles.buttonText, styles.agentaText]}>
             Ir para a agenda
           </Text>
-        </TouchableHighlight>
+        </TouchableHighlight> */}
 
         <TouchableHighlight
           underlayColor={THEME.COLORS.PINK.V2_UNDERLAY}

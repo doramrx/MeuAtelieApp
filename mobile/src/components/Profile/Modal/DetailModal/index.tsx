@@ -14,29 +14,30 @@ import DetailModalIcon from "../../../../assets/icons/detail-icon-with-baloon-bo
 import { ModalTemplate } from "../../../shared/ModalTemplate";
 
 interface Props {
-  userId: number;
+  dressmakerName: string;
+  dressmakerEmail: string;
 }
 
-export function DetailModal({ userId }: Props) {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+export function DetailModal({ dressmakerEmail, dressmakerName }: Props) {
+  // const [name, setName] = useState("");
+  // const [email, setEmail] = useState("");
 
   const { closeModal } = useAppContext();
 
-  useFocusEffect(
-    useCallback(() => {
-      database.transaction((transaction) => {
-        transaction.executeSql(
-          "SELECT name, email FROM dressmakers WHERE id = ?;",
-          [userId],
-          (_, resultSet) => {
-            setName(resultSet.rows.item(0).name);
-            setEmail(resultSet.rows.item(0).email);
-          }
-        );
-      });
-    }, [])
-  );
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     database.transaction((transaction) => {
+  //       transaction.executeSql(
+  //         "SELECT name, email FROM dressmakers WHERE id = ?;",
+  //         [userId],
+  //         (_, resultSet) => {
+  //           setName(resultSet.rows.item(0).name);
+  //           setEmail(resultSet.rows.item(0).email);
+  //         }
+  //       );
+  //     });
+  //   }, [])
+  // );
 
   return (
     <ModalTemplate.Root>
@@ -54,8 +55,8 @@ export function DetailModal({ userId }: Props) {
             </View>
 
             <View>
-              <Text style={styles.text}>{name}</Text>
-              <Text style={styles.text}>{email}</Text>
+              <Text style={styles.text}>{dressmakerName}</Text>
+              <Text style={styles.text}>{dressmakerEmail}</Text>
             </View>
           </View>
         </ModalTemplate.Content>

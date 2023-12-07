@@ -8,6 +8,7 @@ import { useOrderAdapter } from "../adapters/orderAdapter";
 interface OrderViewModelData {
   orders: Order[];
   finishOrder: (orderId: number) => Promise<boolean>;
+  orderFinished: (orderId: number) => Promise<boolean>;
 }
 
 interface ViewModelArgs {
@@ -45,6 +46,10 @@ export function useOrderViewModel({
     }
   }
 
+  async function orderFinished(orderId: number) {
+    return await model.isOrderFinished(orderId);
+  }
+
   useFocusEffect(
     useCallback(() => {
       if (shouldFetchData && shouldFetchData) {
@@ -56,5 +61,6 @@ export function useOrderViewModel({
   return {
     orders,
     finishOrder,
+    orderFinished,
   };
 }

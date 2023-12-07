@@ -47,7 +47,7 @@ export function Orders({ controller }: Props) {
       </Screen.Header>
 
       <Screen.Content additionalStyles={styles.mainContainer}>
-        <Options />
+        {/* <Options /> */}
 
         <FlatList
           data={viewController.orders}

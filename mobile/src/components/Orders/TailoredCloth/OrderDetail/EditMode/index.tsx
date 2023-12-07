@@ -164,9 +164,9 @@ export function EditMode({
         </Pressable>
       </View>
 
-      <Text style={styles.serviceCountForDueDateText}>
+      {/* <Text style={styles.serviceCountForDueDateText}>
         * Existem 6 serviços para serem entregues nesta data!
-      </Text>
+      </Text> */}
 
       <TouchableHighlight
         underlayColor={THEME.COLORS.PINK.V2_UNDERLAY}

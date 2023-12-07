@@ -58,6 +58,7 @@ export function useViewController({
         .then((customer) => {
           setCustomerName(customer.name);
           setCustomerPhone(customer.phone);
+          console.log("Dados do cliente atualizados");
         })
         .catch(() => {
           Alert.alert("Erro", "Não foi possível obter os dados do cliente");

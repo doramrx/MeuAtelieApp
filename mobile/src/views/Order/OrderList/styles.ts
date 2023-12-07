@@ -33,6 +33,7 @@ export const styles = StyleSheet.create({
   listCounter: {
     color: THEME.COLORS.GRAY.MEDIUM.V1,
     fontSize: 15,
+    marginTop: 20,
     marginLeft: 18,
     marginBottom: 8,
   },
