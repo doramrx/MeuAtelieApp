@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "MeuAteliê",
-    "slug": "MeuAteliê",
+    "slug": "meuatelie",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -23,7 +23,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -33,15 +35,19 @@
         "backgroundColor": "#FF9FA4"
       },
       "softwareKeyboardLayoutMode": "pan",
-      "package": "com.igor_ia.mobile"
+      "package": "com.igor_ia.mobile",
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "59e8d8a1-3d57-4b96-9742-b08b468d0aa1"
+        "projectId": "2aed03c1-4e79-4174-a248-ff31bf90ed4c"
       }
-    }
+    },
+    "owner": "igor_ia"
   }
 }
